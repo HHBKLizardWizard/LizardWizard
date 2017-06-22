@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+created by Sil van Vliet
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ApplicationViewModel">
+    <rowConstraints>
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+        <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
+    </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" />
+        <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" />
+        <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" />
+        <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" />
+    </columnConstraints>
+    <children>
+        <VBox maxWidth="600.0" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="4">
+            <children>
+                <MenuBar maxWidth="600.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="Datei">
+                            <items>
+                                <MenuItem fx:id="menuReport" mnemonicParsing="false" text="Report Export" />
+                                <MenuItem fx:id="menuUser" mnemonicParsing="false" text="Benutzer Verwaltung" />
+                                <MenuItem fx:id="menuTemplate" mnemonicParsing="false" text="Template Verwaltung" />
+                            </items>
+                        </Menu>
+                        <Menu fx:id="menuLogout" mnemonicParsing="false" text="Logout" />
+                        <Menu fx:id="menuExit" mnemonicParsing="false" text="Beenden" />
+                    </menus>
+                    <VBox.margin>
+                        <Insets bottom="-5.0" left="-5.0" right="-5.0" />
+                    </VBox.margin>
+                </MenuBar>
+            </children>
+        </VBox>
+        <Label text="Bildungsbreich" underline="true" GridPane.rowIndex="1">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label text="Jahr" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <ChoiceBox fx:id="cbSector" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="3" GridPane.rowIndex="2" />
+        <ChoiceBox fx:id="cbYear" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        <Label text="Vorlage" GridPane.rowIndex="3" />
+        <ChoiceBox fx:id="cbTemplate" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+
+        <!--
+                @todo: Optional !?!?!?!?!
+
+                <Label text="Fächer" underline="true" GridPane.rowIndex="5">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                </Label>
+                <RadioButton mnemonicParsing="false" text="Alle" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <RadioButton mnemonicParsing="false" text="Einzeln" GridPane.rowIndex="6" />
+                <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="23.0" text="Fach" textAlignment="RIGHT" textOverrun="CLIP" GridPane.rowIndex="7" />
+                <ChoiceBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+                <Label text="Lernsituation" GridPane.rowIndex="8" />
+                <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" />
+        -->
+        <Button fx:id="btnExport" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportPdf" text="PDF Export" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+    </children>
+</GridPane>
