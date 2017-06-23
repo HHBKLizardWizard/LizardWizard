@@ -17,36 +17,11 @@ import java.io.IOException;
 /**
  * Created by Slade on 22.06.2017.
  */
-public class AnnualReport {
+public class AnnualReport implements IReportFiller {
 
-    /**
-     *
-     * @param fileName  a string representing the name of the generated pdf file
-     * @return          a named PdfDocument object
-     * @throws IOException
-     */
-    public PdfDocument createPdf(String fileName) throws IOException {
-        PdfWriter writer = new PdfWriter(fileName);
-        PdfDocument pdf = new PdfDocument(writer);
-        return pdf;
-    }
+    public void fillReport(Document document, Object data) {
 
-    public void createDocument(PdfDocument pdf, boolean isLandscape) {
-        Document document = isLandscape ? new Document(pdf, PageSize.A4.rotate()) : new Document(pdf);
-        document.setMargins(20, 20, 20, 20);
-
-        Paragraph parTitle = new Paragraph("Hello World");
-        parTitle.setHorizontalAlignment(HorizontalAlignment.CENTER);
-        document.add(parTitle);
-        Table table = this.createAnnualReport();
-        table = this.createRow(table, null);
-        table = this.addLernbereich(table);
-        document.add(table);
         document.close();
-    }
-
-    public Table createTable() {
-        return null;
     }
 
     public Table createAnnualReport() {
@@ -82,4 +57,5 @@ public class AnnualReport {
         table.addCell(lernbereich);
         return table;
     }
+
 }

@@ -13,15 +13,10 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import jdk.nashorn.internal.runtime.Source;
 import models.Template;
 import util.AnnualReport;
-import util.PdfGenerator;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.BatchUpdateException;
 import java.util.ResourceBundle;
 
 /**
