@@ -1,4 +1,4 @@
-package util;
+package reports;
 
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
