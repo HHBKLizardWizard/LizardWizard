@@ -8,4 +8,6 @@ public class LTDetailStore
     Integer LTDSID;
     Integer ID_LernsituationLerntechnik;
     Integer ID_LTDetail;
+
+    LTDetail ltDetail;
 }

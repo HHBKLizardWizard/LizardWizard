@@ -8,4 +8,5 @@ public class Subject
     Integer FID;
     String Bezeichnung;
     Integer Lernbereich;
+    
 }

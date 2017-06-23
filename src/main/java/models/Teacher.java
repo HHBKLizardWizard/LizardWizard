@@ -18,4 +18,6 @@ public class Teacher
     String DIFAbteiungen;
     String logintime;
     String regtime;
+
+    Department department;
 }
