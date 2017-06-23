@@ -12,4 +12,6 @@ public class SchemeData
     String Kuerzelefault;
     String Namefrei;
     String Kuerzelfrei;
+
+    Scheme scheme;
 }

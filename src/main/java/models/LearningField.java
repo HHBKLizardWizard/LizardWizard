@@ -31,4 +31,6 @@ public class LearningField
     String LFGeaendert_am;
     Boolean Deletet;
     Boolean Sichtbar;
+
+    ProfessionSubject professionSubject;
 }
