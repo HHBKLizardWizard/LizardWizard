@@ -42,10 +42,10 @@ created by Sil van Vliet
       <Label text="Login" GridPane.rowIndex="3" />
       <Label text="Passwort" GridPane.rowIndex="5" />
       <Label text="Rolle" GridPane.rowIndex="7" />
-      <TextField fx:id="inpName" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <TextField fx:id="inpFirstName" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <TextField fx:id="inpLogin" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <TextField fx:id="inpPassword" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+      <TextField fx:id="txtLastName" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <TextField fx:id="txtFirstName" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <TextField fx:id="txtLogin" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <TextField fx:id="txtPassword" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
       <ChoiceBox fx:id="cbRole" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
       <Button fx:id="btnSave" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Speichern" GridPane.rowIndex="9" />
       <Button fx:id="btnDelete" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Löschen" GridPane.columnIndex="1" GridPane.rowIndex="9" />

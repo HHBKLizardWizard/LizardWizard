@@ -47,7 +47,7 @@ created by Sil van Vliet
                 </font>
             </Label>
             <Label text="Name" GridPane.rowIndex="3" />
-            <TextField fx:id="btnTempName" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <TextField fx:id="txtTempName" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
             <CheckBox fx:id="chk_zenario" mnemonicParsing="false" text="Einstiegsszenario" GridPane.columnSpan="2" GridPane.rowIndex="4" />
             <CheckBox fx:id="chk_kompetenzen" mnemonicParsing="false" text="Wesentliche Kompetenzen" GridPane.columnSpan="2" GridPane.rowIndex="5" />
             <CheckBox fx:id="chk_produkt" mnemonicParsing="false" text="Handlungsprodukt/Lernergebnis" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
