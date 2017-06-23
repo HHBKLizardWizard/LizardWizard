@@ -1,5 +1,6 @@
 package viewmodels;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,19 +10,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import jdk.nashorn.internal.runtime.Source;
 import models.Template;
-import util.AnnualReport;
-import util.PdfGenerator;
+import util.ReportBuilder;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.BatchUpdateException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -30,7 +26,7 @@ import java.util.ResourceBundle;
 public class ApplicationViewModel implements Initializable {
 
     @FXML
-    private ChoiceBox cbSector; //@todo define what type it is.
+    private ChoiceBox cbSector; //@todo define what type it is?
 
     @FXML
     private ChoiceBox<Integer> cbYear;
@@ -42,15 +38,14 @@ public class ApplicationViewModel implements Initializable {
     private Button btnExport;
 
     @FXML
-    private MenuItem menuReport, menuUser, menuTemplate;
-
-    @FXML Menu menuLogout, menuExit;
-
+    private MenuItem menuUser, menuTemplate, menuLogout, menuExit;
 
     public void exportPdf() {
-        AnnualReport pdf = new AnnualReport();
+        ReportBuilder reportBuilder = new ReportBuilder();
+
         try {
-            pdf.createDocument(pdf.createPdf("test.pdf"), true);
+            PdfDocument pdf = reportBuilder.createPdf("test.pdf");
+            reportBuilder.createDocument(pdf, false);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -72,24 +67,33 @@ public class ApplicationViewModel implements Initializable {
     public void openTargetWindowAction(ActionEvent event){
         try{
             Object eventSource= event.getSource();
-            FXMLLoader fxmlLoader;
+            Parent root2;
+            String menuItemClickedId = "", stageTitle = "";
+
+            if(eventSource instanceof MenuItem){
+                MenuItem menuItemClicked = (MenuItem) eventSource;
+                menuItemClickedId = menuItemClicked.getId();
+            }
 
             //check what button was pressed to be able to determine what fxml file to open
-            if (eventSource == menuReport) {
-                fxmlLoader = new FXMLLoader(getClass().getResource("application.fxml"));
-            } else if (eventSource == menuTemplate) {
-                fxmlLoader = new FXMLLoader(getClass().getResource("templates.fxml"));
-            } else if (eventSource == menuUser) {
-                fxmlLoader = new FXMLLoader(getClass().getResource("users.fxml"));
+            if (Objects.equals(menuItemClickedId, menuTemplate.getId())) {
+                root2 = FXMLLoader.load(getClass().getClassLoader().getResource("templates.fxml"));
+                stageTitle = "Templates";
+            } else if (Objects.equals(menuItemClickedId, menuUser.getId())) {
+                root2 = FXMLLoader.load(getClass().getClassLoader().getResource("users.fxml"));
+                stageTitle = "Benutzer";
             }else{
                 throw new Exception(); //@todo create own exception? is it worth it?
             }
 
-            //open scene with chosen fxml
-            Parent root1 = fxmlLoader.load();
+            System.out.println(root2);
+            System.out.println(stageTitle);
+
             Stage stage = new Stage();
+            stage.setTitle(stageTitle);
+            stage.setScene(new Scene(root2, 600, 400));
+            stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root1));
             stage.show();
 
         } catch (Exception e) {
