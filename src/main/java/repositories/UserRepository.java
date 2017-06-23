@@ -79,9 +79,6 @@ public class UserRepository implements IUserRepository
             ps.setString(4, hashed);
             ps.setString(5, user.getRights().toString());
 
-
-
-
             ps.execute();
 
         }
@@ -118,50 +115,60 @@ public class UserRepository implements IUserRepository
         return null;
     }
 
-    public User getUserbyUsername(String username)
+    public boolean getUserbyUsername(String username)
     {
         String sql = "SELECT Username FROM users WHERE Username = ?";
 
         try
         {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "username");
+            ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next() )
             {
-                System.out.println(rs.getString("name"));
+                System.out.println(rs.getString("Username"));
             }
+
+            if (username.equals(rs))
+                return true;
+            else
+                return false;
         }
         catch (Exception e)
         {
             System.out.println(e);
         }
-        return null;
+        return true;
     }
 
-    public User getPassword(User user)
+    public boolean getPassword(String password)
     {
         String sql = "SELECT Password FROM users WHERE Username = ?";
 
         try
         {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, user.getUsername());
+            ps.setString(1, password);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next() )
             {
-                System.out.println(rs.getString("name"));
+                System.out.println(rs.getString("Password"));
             }
+
+            if (BCrypt.checkpw(password, String.valueOf(rs)))
+                return true;
+            else
+                return false;
         }
         catch (Exception e)
         {
             System.out.println(e);
         }
-        return null;
+        return true;
     }
 
     public User updateUserbyUsername (String firstname, String lastname,

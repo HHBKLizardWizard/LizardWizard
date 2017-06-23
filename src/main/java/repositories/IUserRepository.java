@@ -11,13 +11,13 @@ public interface IUserRepository
 
     public User getUserById(long id);
 
-    public User getUserbyUsername(String username);
+    public boolean getUserbyUsername(String username);
 
     public User updateUserbyUsername(String firstname, String lastname,
                                      String username, String password, String rights);
 
     public User deleteUserbyUsername(String username);
 
-    public User getPassword(User user);
+    public boolean getPassword(String password);
 
 }

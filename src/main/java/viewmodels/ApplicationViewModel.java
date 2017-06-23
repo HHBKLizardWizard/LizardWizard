@@ -14,7 +14,10 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Template;
-import util.ReportBuilder;
+import models.User;
+import models.UserRights;
+import repositories.IUserRepository;
+//import util.ReportBuilder;
 
 import java.net.URL;
 import java.util.Objects;
@@ -24,6 +27,8 @@ import java.util.ResourceBundle;
  * Created by iho on 20.06.2017.
  */
 public class ApplicationViewModel implements Initializable {
+
+    private IUserRepository userRepository;
 
     @FXML
     private ChoiceBox cbSector; //@todo define what type it is?
@@ -40,6 +45,7 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private MenuItem menuUser, menuTemplate, menuLogout, menuExit;
 
+    /*
     public void exportPdf() {
         ReportBuilder reportBuilder = new ReportBuilder();
 
@@ -50,8 +56,8 @@ public class ApplicationViewModel implements Initializable {
             System.out.println(e);
         }
     }
-
-    @Override
+*/
+  //  @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
@@ -100,4 +106,25 @@ public class ApplicationViewModel implements Initializable {
             e.printStackTrace(); //@todo create appropriate error message for user to contact administrator
         }
     }
+
+    public void test() {
+
+        String user = "root";
+        String pw = "test";
+
+        if ((userRepository.getUserbyUsername(user)))
+            System.out.println("Looks good!");
+        else
+            System.out.println("Something went wrong;");
+
+        if ((userRepository.getPassword(pw)))
+            System.out.println("Looks good!");
+        else
+            System.out.println("Something went wrong;");
+
+        /*
+        User user = new User("Admin", "admin", "root", UserRights.ADMIN,"test");
+        userRepository.registerUser(user);*/
+    }
+
 }
