@@ -4,6 +4,7 @@ import repositories.UserRepository;
 
 import java.util.List;
 
+
 /**
  * Created by iho on 22.06.2017.
  */
@@ -14,14 +15,16 @@ public class User extends UserRepository {
     private String lastname;
     private String password;
     private List<Template> templateList;
-    //private rights rights;
+    private UserRights rights;
 
-    public User(String username) {
-        this.username = username;
-    }
-
-    public User(String username, String firstname, String lastname, String rights, String password){
+    public User(String username, String firstname, String lastname, UserRights rights, String password){
         //@todo rights soll kein String sein
+
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.rights   = rights;
+        this.password = password;
 
     }
 
@@ -51,6 +54,14 @@ public class User extends UserRepository {
 
     public String getLastname() {
         return lastname;
+    }
+
+    public UserRights getRights() {
+        return rights;
+    }
+
+    public void setRights(UserRights rights) {
+        this.rights = rights;
     }
 
     public void setLastname(String lastname) {

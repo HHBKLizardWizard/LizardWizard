@@ -11,13 +11,14 @@ created by Sil van Vliet
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ApplicationViewModel">
+<GridPane alignment="center" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ApplicationViewModel">
     <rowConstraints>
         <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
         <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
@@ -45,13 +46,13 @@ created by Sil van Vliet
                     <menus>
                         <Menu mnemonicParsing="false" text="Datei">
                             <items>
-                                <MenuItem fx:id="menuReport" mnemonicParsing="false" onAction="#openTargetWindowAction" text="Report Export" />
                                 <MenuItem fx:id="menuUser" mnemonicParsing="false" onAction="#openTargetWindowAction" text="Benutzer Verwaltung" />
-                                <MenuItem fx:id="menuTemplate" mnemonicParsing="false" text="Template Verwaltung" />
+                                <MenuItem fx:id="menuTemplate" mnemonicParsing="false" onAction="#openTargetWindowAction" text="Template Verwaltung" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuLogout" mnemonicParsing="false" onAction="#logoutAction" text="Logout" />
+                        <MenuItem fx:id="menuExit" mnemonicParsing="false" onAction="#closeButtonAction" text="Beenden" />
                             </items>
                         </Menu>
-                        <Menu fx:id="menuLogout" mnemonicParsing="false" text="Logout" />
-                        <Menu fx:id="menuExit" mnemonicParsing="false" onAction="#closeButtonAction" text="Beenden" />
                     </menus>
                     <VBox.margin>
                         <Insets bottom="-5.0" left="-5.0" right="-5.0" />
@@ -85,6 +86,6 @@ created by Sil van Vliet
                 <Label text="Lernsituation" GridPane.rowIndex="8" />
                 <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" />
         -->
-        <Button fx:id="btnExport" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportPdf" text="PDF Export" GridPane.columnIndex="3" GridPane.rowIndex="10" />
+        <Button fx:id="btnExport" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#test" text="PDF Export" GridPane.columnIndex="3" GridPane.rowIndex="10" />
     </children>
 </GridPane>

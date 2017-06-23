@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
-import models.User;
 
 import java.awt.*;
 import java.net.URL;
@@ -28,7 +27,7 @@ public class UserEditViewModel implements Initializable {
     @FXML
     private Button btnSave, btnDelete, btnBack;
 
-    @Override
+    //@Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
@@ -48,7 +47,7 @@ public class UserEditViewModel implements Initializable {
             //todo if filled otherwise leave password as it was)
         }else{
             //todo create new User
-            User user = new User(uName, fName, lName, uRights, password); //todo add Right (right module missing??
+            //User user = new User(uName, fName, lName, uRights, password); //todo add Right (right module missing??
 
         }
 

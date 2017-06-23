@@ -1,7 +1,7 @@
 # --------------------------------------------------------------
 # Name: User_Template.sql                                      -
 # Author: Patrick Schorn                                       -
-# Last change: 22.06.2017                                      -
+# Last change: 23.06.2017                                      -
 # Description: Creates the database and tables for our program -
 # --------------------------------------------------------------
 
@@ -15,11 +15,11 @@ use user_template_db;
 CREATE TABLE users
 (
   PK_ID int AUTO_INCREMENT,
+  Username varchar(25) UNIQUE,
   Vorname varchar(25),
   Nachname varchar(25),
-  Username varchar(25) UNIQUE,
   Password varchar(25),
-  Roll int,
+  Rights varchar(6),
   PRIMARY KEY (PK_ID)
 );
 

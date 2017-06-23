@@ -1,6 +1,7 @@
 package repositories;
 
 import models.User;
+import org.mindrot.jbcrypt.BCrypt;
 import util.DatabaseConnector;
 
 import java.sql.Connection;
@@ -10,9 +11,32 @@ import java.sql.ResultSet;
 /**
  * Created by iho on 22.06.2017.
  */
+
+/*********************************************************************************************\
+* Code for hashing a password
+*
+*
+            // -- Hash a password for the first time --
+            String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+
+            // -- gensalt's log_rounds parameter determines the complexity the work factor is 2**log_rounds, and the default is 10 --
+            hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
+
+            // -- Check a hashed password with an unhashed password --
+            if (BCrypt.checkpw(password, hashed))
+                System.out.println("It matches");
+            else
+                System.out.println("It does not match");
+*
+**********************************************************************************************/
+
 public class UserRepository implements IUserRepository
 {
-    Connection con = new DatabaseConnector().getConnection();
+    Connection con = null;
+
+    public UserRepository() {
+        con = new DatabaseConnector().getConnection();
+    }
 
     public User getUserById(long id)
     {
@@ -37,28 +61,28 @@ public class UserRepository implements IUserRepository
         return null;
     }
 
-    public User registerUser(String firstname, String lastname,
-                             String username, String password, long rights)
+    public User registerUser(User user)
     {
 
-        String sql = "INSERT INTO users(firstname, lastname, username, password, rights) " +
+        String sql = "INSERT INTO users(Vorname, Nachname, Username, Password, Rights) " +
                 "VALUES (?,?,?,?,?)";
 
         try
         {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "firstname");
-            ps.setString(2, "lastname");
-            ps.setString(3, "username");
-            ps.setString(4, "password");
-            ps.setString(5, "rights");
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getFirstname());
+            ps.setString(3, user.getLastname());
 
-            ResultSet rs = ps.executeQuery();
+            String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
-            while(rs.next() )
-            {
-                System.out.println(rs.getString("name"));
-            }
+            ps.setString(4, hashed);
+            ps.setString(5, user.getRights().toString());
+
+
+
+
+            ps.execute();
 
         }
         catch (Exception e)
@@ -96,7 +120,7 @@ public class UserRepository implements IUserRepository
 
     public User getUserbyUsername(String username)
     {
-        String sql = "SELECT * FROM users WHERE Username = ?";
+        String sql = "SELECT Username FROM users WHERE Username = ?";
 
         try
         {
@@ -117,14 +141,37 @@ public class UserRepository implements IUserRepository
         return null;
     }
 
+    public User getPassword(User user)
+    {
+        String sql = "SELECT Password FROM users WHERE Username = ?";
+
+        try
+        {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user.getUsername());
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next() )
+            {
+                System.out.println(rs.getString("name"));
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public User updateUserbyUsername (String firstname, String lastname,
-                                      String username, String password, long rights)
+                                      String username, String password, String rights)
     {
         String sql = "UPDATE users SET Vorname = ?, " +
-                "Nachname = ?, " +
-                "Username = ?, " +
-                "Password = ?," +
-                "Roll     = ?";
+                                        "Nachname = ?, " +
+                                        "Username = ?, " +
+                                        "Password = ?," +
+                                        "Rights     = ?";
 
         try
         {
