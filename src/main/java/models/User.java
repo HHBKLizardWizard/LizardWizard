@@ -1,20 +1,28 @@
 package models;
 
+import repositories.UserRepository;
+
 import java.util.List;
 
 /**
  * Created by iho on 22.06.2017.
  */
-public class User {
+public class User extends UserRepository {
     private long id;
     private String username;
     private String firstname;
     private String lastname;
     private String password;
     private List<Template> templateList;
+    //private rights rights;
 
     public User(String username) {
         this.username = username;
+    }
+
+    public User(String username, String firstname, String lastname, String rights, String password){
+        //@todo rights soll kein String sein
+
     }
 
     public long getId() {
