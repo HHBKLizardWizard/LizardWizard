@@ -22,7 +22,6 @@ public class User extends UserRepository {
 
     public User(String username, String firstname, String lastname, String rights, String password){
         //@todo rights soll kein String sein
-
     }
 
     public long getId() {
