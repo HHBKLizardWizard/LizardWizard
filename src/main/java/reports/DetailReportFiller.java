@@ -21,7 +21,7 @@ public class DetailReportFiller implements IReportFiller {
 
     public Document createHeader(Document document) {
         String header = "pdfHtml Header and footer example using page-events";
-        Header headerHandler = new Header(header);
+        //Header headerHandler = new Header(header);
         //document.add();
         return null;
     }

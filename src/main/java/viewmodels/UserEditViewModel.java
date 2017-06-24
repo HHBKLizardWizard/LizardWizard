@@ -1,9 +1,13 @@
 package viewmodels;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
+import javafx.stage.Stage;
 import models.User;
 import models.UserRights;
 import repositories.IUserRepository;
@@ -29,9 +33,14 @@ public class UserEditViewModel implements Initializable {
     private ChoiceBox<UserRights> cbRole; //@todo define what type it is.
 
     @FXML
-    private Button btnSave, btnDelete, btnBack;
+    private Button btnSave, btnBack;
 
     public void initialize(URL location, ResourceBundle resources) {
+        ObservableList<UserRights> rightsList = FXCollections.observableArrayList();
+        rightsList.add(UserRights.ADMIN);
+        rightsList.add(UserRights.LEHRER);
+        rightsList.add(UserRights.ADMIN);
+        cbRole.setItems(rightsList);
 
     }
 
@@ -72,5 +81,10 @@ public class UserEditViewModel implements Initializable {
 
         return 0;
 
+    }
+
+    public void closeButtonAction(){
+        Stage stage = (Stage) btnBack.getScene().getWindow();
+        stage.close();
     }
 }

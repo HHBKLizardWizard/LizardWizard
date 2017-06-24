@@ -14,7 +14,7 @@ created by Sil van Vliet
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="460.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ApplicationViewModel">
+<GridPane alignment="center" hgap="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="460.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.UserEditViewModel">
     <rowConstraints>
         <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="28.0" />
         <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="28.0" />
@@ -48,8 +48,7 @@ created by Sil van Vliet
       <TextField fx:id="txtLogin" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
       <ChoiceBox fx:id="cbRole" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
       <Button fx:id="btnSave" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Speichern" GridPane.rowIndex="9" />
-      <Button fx:id="btnDelete" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Löschen" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-      <Button fx:id="btnBack" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Züruck" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+      <Button fx:id="btnBack" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#closeButtonAction" text="Züruck" GridPane.columnIndex="2" GridPane.rowIndex="9" />
       <PasswordField maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
       <TextField fx:id="txtUserId" visible="false" GridPane.columnIndex="1" />
       <Label text="Benutzername" GridPane.rowIndex="1" />

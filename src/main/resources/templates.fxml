@@ -15,7 +15,7 @@ created by Sil van Vliet
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" maxWidth="600.0" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ApplicationViewModel">
+<GridPane alignment="center" hgap="10" maxWidth="600.0" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.TemplatesViewModel">
     <rowConstraints>
         <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
         <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
