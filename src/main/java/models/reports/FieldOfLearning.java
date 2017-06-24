@@ -1,6 +1,6 @@
 package models.reports;
 
-import models.LearningSituation;
+import models.reports.LearningSituation;
 
 import java.util.List;
 
@@ -12,6 +12,15 @@ public class FieldOfLearning {
     private int lessonHours;
     private List<LearningSituation> learningSituationList;
     private String name;
+    private int lfNmr;
+
+    public int getLfNmr() {
+        return lfNmr;
+    }
+
+    public void setLfNmr(int lfNmr) {
+        this.lfNmr = lfNmr;
+    }
 
     public String getName() {
         return name;

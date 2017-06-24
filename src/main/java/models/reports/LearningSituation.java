@@ -3,11 +3,9 @@ package models.reports;
 /**
  * Created by iho on 23.06.2017.
  */
-public class LearningSituation {
+public class LearningSituation extends LearningSituationTableElement {
     private long id;
     private String name;
-    private int startWeek;
-    private int endWeek;
     private int lessonHours;
     private String subject;
     private String subjectArea;
@@ -17,7 +15,7 @@ public class LearningSituation {
     private String organisationalDetails;
     private String classMaterial;
     private String studyTechniques;
-    private String ceritficateOfPerformance;
+    private String certificateOfPerformance;
     private String scenario;
     private String requiredSituation;
 
@@ -35,22 +33,6 @@ public class LearningSituation {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getStartWeek() {
-        return startWeek;
-    }
-
-    public void setStartWeek(int startWeek) {
-        this.startWeek = startWeek;
-    }
-
-    public int getEndWeek() {
-        return endWeek;
-    }
-
-    public void setEndWeek(int endWeek) {
-        this.endWeek = endWeek;
     }
 
     public int getLessonHours() {
@@ -125,12 +107,12 @@ public class LearningSituation {
         this.studyTechniques = studyTechniques;
     }
 
-    public String getCeritficateOfPerformance() {
-        return ceritficateOfPerformance;
+    public String getCertificateOfPerformance() {
+        return certificateOfPerformance;
     }
 
-    public void setCeritficateOfPerformance(String ceritficateOfPerformance) {
-        this.ceritficateOfPerformance = ceritficateOfPerformance;
+    public void setCertificateOfPerformance(String certificateOfPerformance) {
+        this.certificateOfPerformance = certificateOfPerformance;
     }
 
     public String getScenario() {

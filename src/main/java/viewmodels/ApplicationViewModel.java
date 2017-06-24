@@ -1,6 +1,9 @@
 package viewmodels;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,9 +17,11 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Template;
-import models.User;
-import models.UserRights;
+import models.reports.ReportData;
+import models.reports.ReportHeader;
+import reports.ReportBuilder;
 import repositories.IUserRepository;
+import util.TestData;
 //import util.ReportBuilder;
 
 import java.net.URL;
@@ -45,18 +50,26 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private MenuItem menuUser, menuTemplate, menuLogout, menuExit;
 
-    /*
-    public void exportPdf() {
+
+    public void createAnnualReport() {
+        ReportData reportData = new TestData().getReportDataExample();
+
+        // get data from database
+
+
+        // build report
         ReportBuilder reportBuilder = new ReportBuilder();
 
         try {
             PdfDocument pdf = reportBuilder.createPdf("test.pdf");
-            reportBuilder.createDocument(pdf, false);
+
+            Document document = reportBuilder.createAnnualReport(pdf, reportData);
+            document.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
-*/
+
   //  @Override
     public void initialize(URL location, ResourceBundle resources) {
 

@@ -47,6 +47,8 @@
             <version>7.0.2</version>
         </dependency>
 
+
+        <!-- bCrypt -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
