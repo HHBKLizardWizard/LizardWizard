@@ -4,6 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
+import models.User;
+import models.UserRights;
+import repositories.IUserRepository;
+import repositories.UserRepository;
 
 import java.awt.*;
 import java.net.URL;
@@ -22,33 +26,47 @@ public class UserEditViewModel implements Initializable {
     private PasswordField txtPassword;
 
     @FXML
-    private ChoiceBox cbRole; //@todo define what type it is.
+    private ChoiceBox<UserRights> cbRole; //@todo define what type it is.
 
     @FXML
     private Button btnSave, btnDelete, btnBack;
 
-    //@Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
-    public Integer createUser() {
+    public Integer createOrUpdateUser() {
 
         Integer userId = Integer.parseInt(txtUserId.getText());
+        UserRights uRight = cbRole.getSelectionModel().getSelectedItem();
         String  lName = txtLastName.getText(),
                 fName = txtFirstName.getText(),
-                uName = txtUsername.getText();
-        //todo gett right, missing right module
-        String uRights = "blabla";
-        String password = txtPassword.getText();
+                userName = txtUsername.getText(),
+                uPass = txtPassword.getText(),
+                password = txtPassword.getText();
 
         if(!userId.equals("") && userId > 0){
-            //todo update the existing user (only update password
-            //todo if filled otherwise leave password as it was)
-        }else{
-            //todo create new User
-            //User user = new User(uName, fName, lName, uRights, password); //todo add Right (right module missing??
+            //User was found, check if password field is filled,
+            // case it isn't don't update password
+            if(!password.equals("")){
+                //password field is filled so update it
+                IUserRepository userRepository = new UserRepository();
+                User user = userRepository.getUserbyId(userId);
 
+                user.setFirstname(fName);
+                user.setLastname(lName);
+                user.setPassword("blabla");
+                user.setRights(uRight);
+
+                userRepository.updateUser(user);
+            }else{
+                //password field is not filled so only update User info
+
+            }
+        }else{
+            //No id found => creating new User
+            UserRepository userRepository = new UserRepository();
+            userRepository.registerUser(new User(userName,fName,lName,uRight,password));
         }
 
 

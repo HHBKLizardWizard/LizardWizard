@@ -5,19 +5,11 @@ import models.User;
 /**
  * Created by patrick on 6/22/17.
  */
-public interface IUserRepository
-{
-    public User registerUser(User user);
-
-    public User getUserById(long id);
-
-    public boolean getUserbyUsername(String username);
-
-    public User updateUserbyUsername(String firstname, String lastname,
-                                     String username, String password, String rights);
-
-    public User deleteUserbyUsername(String username);
-
-    public boolean getPassword(String password);
-
+public interface IUserRepository{
+    public boolean registerUser(User user);
+    public boolean deleteUserbyId(Integer userId);
+    public User getUserbyId(Integer userId);
+    public User getUserbyUsername(String userName);
+    public String getPasswordByUserId(Integer userId);
+    public boolean updateUser(User user);
 }

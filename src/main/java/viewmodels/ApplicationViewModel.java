@@ -1,6 +1,5 @@
 package viewmodels;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,14 +13,13 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Template;
-import models.User;
-import models.UserRights;
 import repositories.IUserRepository;
-//import util.ReportBuilder;
 
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+//import util.ReportBuilder;
 
 /**
  * Created by iho on 20.06.2017.
@@ -92,13 +90,12 @@ public class ApplicationViewModel implements Initializable {
                 throw new Exception(); //@todo create own exception? is it worth it?
             }
 
-            System.out.println(root2);
-            System.out.println(stageTitle);
-
+            //Open new Window with correct title
             Stage stage = new Stage();
             stage.setTitle(stageTitle);
             stage.setScene(new Scene(root2, 600, 400));
             stage.setResizable(false);
+            //disable Primary Stage
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
 
@@ -112,15 +109,23 @@ public class ApplicationViewModel implements Initializable {
         String user = "root";
         String pw = "test";
 
-        if ((userRepository.getUserbyUsername(user)))
+
+        //we can not do anything with true or false .. if need to get the user by ID or
+        //by username, we need the data of that person back. not true or false...
+
+
+/*        if ((userRepository.getUserbyUsername(user)))
             System.out.println("Looks good!");
         else
             System.out.println("Something went wrong;");
 
-        if ((userRepository.getPassword(pw)))
+        if ((userRepository.get(pw)))
             System.out.println("Looks good!");
         else
-            System.out.println("Something went wrong;");
+            System.out.println("Something went wrong;");*/
+
+
+
 
         /*
         User user = new User("Admin", "admin", "root", UserRights.ADMIN,"test");
