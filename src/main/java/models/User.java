@@ -1,15 +1,12 @@
 package models;
 
-import repositories.UserRepository;
-
 import java.util.List;
-
 
 /**
  * Created by iho on 22.06.2017.
  */
-public class User extends UserRepository {
-    private long id;
+public class User {
+    private Integer id;
     private String username;
     private String firstname;
     private String lastname;
@@ -17,22 +14,21 @@ public class User extends UserRepository {
     private List<Template> templateList;
     private UserRights rights;
 
-    public User(String username, String firstname, String lastname, UserRights rights, String password){
-        //@todo rights soll kein String sein
+    public User(){}
 
+    public User(String username, String firstname, String lastname, UserRights rights, String password){
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.rights   = rights;
         this.password = password;
-
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

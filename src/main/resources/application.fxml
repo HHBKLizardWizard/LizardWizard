@@ -60,7 +60,7 @@ created by Sil van Vliet
                 </MenuBar>
             </children>
         </VBox>
-        <Label text="Bildungsbreich" underline="true" GridPane.rowIndex="2">
+        <Label text="Bildungsbereich" underline="true" GridPane.rowIndex="2">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>

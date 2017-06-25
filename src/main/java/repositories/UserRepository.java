@@ -1,6 +1,7 @@
 package repositories;
 
 import models.User;
+import models.UserRights;
 import org.mindrot.jbcrypt.BCrypt;
 import util.DatabaseConnector;
 
@@ -30,45 +31,19 @@ import java.sql.ResultSet;
 *
 **********************************************************************************************/
 
-public class UserRepository implements IUserRepository
-{
+public class UserRepository implements IUserRepository{
     Connection con = null;
 
     public UserRepository() {
         con = new DatabaseConnector().getConnection();
     }
 
-    public User getUserById(long id)
-    {
-        String sql = "SELECT * FROM users WHERE PK_ID = ?";
-
-        try
-        {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "id");
-
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next() )
-            {
-                System.out.println(rs.getString("name"));
-            }
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-        return null;
-    }
-
-    public User registerUser(User user)
-    {
+    public boolean registerUser(User user){
 
         String sql = "INSERT INTO users(Vorname, Nachname, Username, Password, Rights) " +
                 "VALUES (?,?,?,?,?)";
 
-        try
-        {
+        try{
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getFirstname());
@@ -81,127 +56,126 @@ public class UserRepository implements IUserRepository
 
             ps.execute();
 
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
             System.out.println(e);
+            return false;
         }
 
-        return null;
-    }
-
-    public User deleteUserbyUsername(String username)
-    {
-        String sql = "DELETE FROM users WHERE Username = ?";
-
-        try
-        {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "Username");
-
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next() )
-            {
-                System.out.println(rs.getString("name"));
-            }
-
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-
-        return null;
-    }
-
-    public boolean getUserbyUsername(String username)
-    {
-        String sql = "SELECT Username FROM users WHERE Username = ?";
-
-        try
-        {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, username);
-
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next() )
-            {
-                System.out.println(rs.getString("Username"));
-            }
-
-            if (username.equals(rs))
-                return true;
-            else
-                return false;
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
         return true;
     }
 
-    public boolean getPassword(String password)
-    {
-        String sql = "SELECT Password FROM users WHERE Username = ?";
+    public boolean deleteUserbyId(Integer userId){
+        String sql = "DELETE FROM users WHERE PK_ID = ?";
 
-        try
-        {
+        try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, password);
+            ps.setString(1, userId.toString());
 
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next() )
-            {
-                System.out.println(rs.getString("Password"));
-            }
-
-            if (BCrypt.checkpw(password, String.valueOf(rs)))
-                return true;
-            else
-                return false;
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
             System.out.println(e);
+            return false;
         }
+
         return true;
     }
 
-    public User updateUserbyUsername (String firstname, String lastname,
-                                      String username, String password, String rights)
-    {
+    public User getUserbyId(Integer userId){
+        String sql = "SELECT * FROM users WHERE PK_ID = ?";
+        User newUser = null;
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, userId.toString());
+
+            ResultSet rs = ps.executeQuery();
+
+            newUser = new User(
+                    rs.getString("Username"),
+                    rs.getString("Vorname"),
+                    rs.getString("Nachname"),
+                    UserRights.valueOf(rs.getString("Rights")),
+                    rs.getString("Password")
+            );
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return newUser;
+    }
+
+    public User getUserbyUsername(String userName){
+        String sql = "SELECT * FROM users WHERE Username = ?";
+        User newUser = null;
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, userName);
+
+            ResultSet rs = ps.executeQuery();
+
+            newUser = new User(
+                    rs.getString("Username"),
+                    rs.getString("Vorname"),
+                    rs.getString("Nachname"),
+                    UserRights.valueOf(rs.getString("Rights")),
+                    rs.getString("Password")
+            );
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return newUser;
+    }
+
+
+
+    public String getPasswordByUserId(Integer userId){
+        String password = "";
+        String sql = "SELECT Password FROM users WHERE PK_ID = ?";
+
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, userId.toString());
+            ResultSet rs = ps.executeQuery();
+
+            password = rs.getString("Password");
+
+            //todo: unhash password for admin or is that a no go?
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return password;
+    }
+
+    public boolean updateUser (User user){
         String sql = "UPDATE users SET Vorname = ?, " +
                                         "Nachname = ?, " +
                                         "Username = ?, " +
                                         "Password = ?," +
                                         "Rights     = ?";
 
-        try
-        {
+        //@TODO : Update where User id = ?
+
+        try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "firstname");
-            ps.setString(2, "lastname");
-            ps.setString(3, "username");
-            ps.setString(4, "password");
-            ps.setString(5, "rights");
+            ps.setString(1, user.getFirstname());
+            ps.setString(2, user.getLastname());
+            ps.setString(3, user.getUsername());
+            ps.setString(4, user.getPassword());
+            ps.setString(5, user.getRights().toString());
 
             ResultSet rs = ps.executeQuery();
 
-            while(rs.next() )
-            {
+            while(rs.next() ){
                 System.out.println(rs.getString("name"));
             }
 
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
             System.out.println(e);
+            return false;
         }
 
-        return null;
+        return true;
     }
 }

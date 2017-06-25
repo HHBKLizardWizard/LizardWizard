@@ -2,8 +2,6 @@ package viewmodels;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,15 +16,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Template;
 import models.reports.ReportData;
-import models.reports.ReportHeader;
 import reports.ReportBuilder;
 import repositories.IUserRepository;
 import util.TestData;
-//import util.ReportBuilder;
 
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 
 /**
  * Created by iho on 20.06.2017.
@@ -70,26 +67,26 @@ public class ApplicationViewModel implements Initializable {
         }
     }
 
-  //  @Override
+    //  @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
-    public void closeButtonAction(){
+    public void closeButtonAction() {
         Platform.exit();
     }
 
-    public void logoutAction(){
+    public void logoutAction() {
         //@todo well ... everything is to do !! get a move on!!
     }
 
-    public void openTargetWindowAction(ActionEvent event){
-        try{
-            Object eventSource= event.getSource();
+    public void openTargetWindowAction(ActionEvent event) {
+        try {
+            Object eventSource = event.getSource();
             Parent root2;
             String menuItemClickedId = "", stageTitle = "";
 
-            if(eventSource instanceof MenuItem){
+            if (eventSource instanceof MenuItem) {
                 MenuItem menuItemClicked = (MenuItem) eventSource;
                 menuItemClickedId = menuItemClicked.getId();
             }
@@ -101,17 +98,16 @@ public class ApplicationViewModel implements Initializable {
             } else if (Objects.equals(menuItemClickedId, menuUser.getId())) {
                 root2 = FXMLLoader.load(getClass().getClassLoader().getResource("users.fxml"));
                 stageTitle = "Benutzer";
-            }else{
+            } else {
                 throw new Exception(); //@todo create own exception? is it worth it?
             }
 
-            System.out.println(root2);
-            System.out.println(stageTitle);
-
+            //Open new Window with correct title
             Stage stage = new Stage();
             stage.setTitle(stageTitle);
             stage.setScene(new Scene(root2, 600, 400));
             stage.setResizable(false);
+            //disable Primary Stage
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
 
@@ -125,15 +121,23 @@ public class ApplicationViewModel implements Initializable {
         String user = "root";
         String pw = "test";
 
-        if ((userRepository.getUserbyUsername(user)))
+
+        //we can not do anything with true or false .. if need to get the user by ID or
+        //by username, we need the data of that person back. not true or false...
+
+
+/*        if ((userRepository.getUserbyUsername(user)))
             System.out.println("Looks good!");
         else
             System.out.println("Something went wrong;");
 
-        if ((userRepository.getPassword(pw)))
+        if ((userRepository.get(pw)))
             System.out.println("Looks good!");
         else
-            System.out.println("Something went wrong;");
+            System.out.println("Something went wrong;");*/
+
+
+
 
         /*
         User user = new User("Admin", "admin", "root", UserRights.ADMIN,"test");
