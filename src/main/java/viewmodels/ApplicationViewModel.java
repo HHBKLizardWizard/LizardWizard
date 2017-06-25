@@ -3,6 +3,8 @@ package viewmodels;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.layout.Document;
 import javafx.application.Platform;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,14 +16,18 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import models.Profession;
 import models.Template;
 import models.reports.ReportData;
 import reports.ReportBuilder;
+import repositories.DidaktRepository;
 import repositories.IUserRepository;
 import util.TestData;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
+import java.util.Observable;
 import java.util.ResourceBundle;
 
 
@@ -33,7 +39,7 @@ public class ApplicationViewModel implements Initializable {
     private IUserRepository userRepository;
 
     @FXML
-    private ChoiceBox cbSector; //@todo define what type it is?
+    private ChoiceBox<Profession> cbSector; //@todo define what type it is?
 
     @FXML
     private ChoiceBox<Integer> cbYear;
@@ -46,7 +52,8 @@ public class ApplicationViewModel implements Initializable {
 
     @FXML
     private MenuItem menuUser, menuTemplate, menuLogout, menuExit;
-
+    private ObservableList<Profession> professionObservableList;
+    private DidaktRepository didaktRepository;
 
     public void createAnnualReport() {
         ReportData reportData = new TestData().getReportDataExample();
@@ -68,8 +75,10 @@ public class ApplicationViewModel implements Initializable {
     }
 
     //  @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    public void initialize(URL location, ResourceBundle resources){
+        didaktRepository = new DidaktRepository();
+        professionObservableList = (ObservableList<Profession>)didaktRepository.getProfessions();
+        cbSector.setItems(professionObservableList);
     }
 
     public void closeButtonAction() {
