@@ -16,4 +16,12 @@ public class Profession
     Department department;
     Teacher depChief;
     Scheme scheme;
+
+    public Profession(Integer bid, String professionName, Integer depID, Integer chiefID, Integer schemeID){
+        this.BId = bid;
+        this.Berufname = professionName;
+        this.ID_Abteilung = depID;
+        this.ID_BLeitung = chiefID;
+        this.ID_Schema = schemeID;
+    }
 }
