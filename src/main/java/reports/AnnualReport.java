@@ -2,10 +2,13 @@ package reports;
 
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.color.DeviceRgb;
+import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import models.reports.*;
 
@@ -41,7 +44,8 @@ public class AnnualReport {
 
             Paragraph blockWeek = new Paragraph((i < 9 ? "0" + (i + 1) : i + 1).toString())
                     .setTextAlignment(TextAlignment.CENTER)
-                    .setFontSize(8);
+                    .setFontSize(8)
+                    .setWidth(50); //TODO hier gehts weiter //alternativ fixed width an table .. margin? strings größer machen?
 
             Cell cell = new Cell()
                     .add(blockWeek);
@@ -51,9 +55,7 @@ public class AnnualReport {
 
     }
 
-    public void createAnnualReportBody(ReportData reportData) {
-        this.createSections(reportData);
-    }
+    public void createAnnualReportBody(ReportData reportData) { this.createSections(reportData); }
 
     private void createSections(ReportData reportData) {
         Style paragraphStyle = new Style()

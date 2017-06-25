@@ -106,9 +106,14 @@ public class ReportBuilder {
         return document;
     }
 
-    public Table createDetailReport() {
+    public Document createDetailReport(PdfDocument pdfDocument, ReportData reportData) {
+        Document document = this.createDocument(pdfDocument, false);
         Table table = new Table(new float[]{1 ,1, 1, 1});
+        DetailReport detailReport = new DetailReport(table);
 
-        return null;
+        table.setWidthPercent(100);
+
+
+        return document;
     }
 }
