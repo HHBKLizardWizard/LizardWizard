@@ -147,34 +147,6 @@ public class AnnualReport {
         return filledList;
     }
 
-    /*
-         private List<LearningSituationTableElement> fillWithPlaceholders(List<LearningSituation> sortedList) {
-        List<LearningSituationTableElement> filledList = new ArrayList<>();
-
-        for (int i = 0; i < sortedList.size(); i++) {
-            LearningSituationTableElement current = sortedList.get(i);
-
-            // adds a placeholder to the beginning if the first LearningSituation is not starting in week 1
-            if (0 == i && current.getStartWeek() > 1) {
-                filledList.add(0, new LearningSituationTableElement(1, current.getStartWeek() - 1));
-            }
-            filledList.add(current);
-
-            /*  Adds a placeholder to the end if the last LearningSituation is not ending on week 12.
-                Fills the report with placeholders ending before the next LearningSituation in the list      *//*
-            if (12 == current.getEndWeek()) {
-        return filledList;
-    } else if (sortedList.size() - 1 == i && current.getEndWeek() < 12) {
-        filledList.add(i + 1, new LearningSituationTableElement(current.getEndWeek() + 1, 12));
-    } else if (current.getEndWeek() + 1 < sortedList.get(i + 1).getStartWeek()) {
-        filledList.add(i + 1, new LearningSituationTableElement(
-                current.getEndWeek() + 1, sortedList.get(i + 1).getStartWeek() - 1));
-    }
-}
-        return filledList;
-                }
-      * */
-
     private List<LearningSituation> sortLearningSituationsByStartWeek(List<LearningSituation> learningSituationList) {
         Comparator<LearningSituation> byStartWeek = (ls1, ls2) -> Integer.compare(
                 ls1.getStartWeek(), ls2.getStartWeek());
