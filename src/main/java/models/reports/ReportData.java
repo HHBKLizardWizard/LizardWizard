@@ -6,8 +6,17 @@ import java.util.List;
  * Created by iho on 23.06.2017.
  */
 public class ReportData {
+    private List<LearningSituation> learningSituations;
     private List<AreaOfEducation> areaOfEducationList;
     private ReportHeader reportHeader;
+
+    public List<LearningSituation> getLearningSituations() {
+        return learningSituations;
+    }
+
+    public void setLearningSituations(List<LearningSituation> learningSituations) {
+        this.learningSituations = learningSituations;
+    }
 
     public ReportHeader getReportHeader() {
         return reportHeader;

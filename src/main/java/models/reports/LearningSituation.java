@@ -18,6 +18,24 @@ public class LearningSituation extends LearningSituationTableElement {
     private String certificateOfPerformance;
     private String scenario;
     private String requiredSituation;
+    private FieldOfLearning fieldOfLearning;
+    private Integer lsnr;
+
+    public FieldOfLearning getFieldOfLearning() {
+        return fieldOfLearning;
+    }
+
+    public void setFieldOfLearning(FieldOfLearning fieldOfLearning) {
+        this.fieldOfLearning = fieldOfLearning;
+    }
+
+    public Integer getLsnr() {
+        return this.lsnr;
+    }
+
+    public void setLsnr(Integer lsnr) {
+        this.lsnr = lsnr;
+    }
 
     public long getId() {
         return id;

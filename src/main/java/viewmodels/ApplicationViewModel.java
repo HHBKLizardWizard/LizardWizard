@@ -61,6 +61,7 @@ public class ApplicationViewModel implements Initializable {
             PdfDocument pdf = reportBuilder.createPdf("test.pdf");
 
             Document document = reportBuilder.createAnnualReport(pdf, reportData);
+            //Document document = reportBuilder.createDetailReport(pdf, reportData);
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
