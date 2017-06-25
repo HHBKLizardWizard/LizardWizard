@@ -40,7 +40,7 @@ CREATE TABLE templates
 );
 
 # -- At least create a table for both UserID and TemplateID --
-CREATE TABLE ID_s
+CREATE TABLE user_templates
 (
   FK_UserID int,
   FK_TemplateID int,

@@ -31,6 +31,6 @@ created by Sil van Vliet
       <TextField fx:id="txtLogin" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <Button fx:id="btnLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#loginAction" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="3" />
       <PasswordField GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <Label fx:id="lblWrongPass" maxWidth="1.7976931348623157E308" text="Falsche Login oder Passwort !!" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+      <Label fx:id="lblLoginFailed" maxWidth="1.7976931348623157E308" text="Falsche Login oder Passwort !!" textFill="RED" visible="false" GridPane.columnIndex="1" GridPane.columnSpan="2" />
    </children>
 </GridPane>
