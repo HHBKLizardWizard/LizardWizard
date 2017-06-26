@@ -1,5 +1,7 @@
 package repositories;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.Template;
 import models.User;
 
@@ -8,8 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by patrick on 22.06.2017.
@@ -27,8 +27,8 @@ public class TemplateRepository implements ITemplateRepository
         }
     }
 
-    public List<Template> getTemplatesByUser(User user) {
-        List<Template> templateList = new ArrayList<>();
+    public ObservableList<Template> getTemplatesByUser(User user) {
+        ObservableList<Template> templateList = FXCollections.observableArrayList();
 
         String fields = "ut.templatename, t.achievements, t.competences, t.contents," +
                 " t.materials, t.notes, t.results, t.scenario, t.technics";

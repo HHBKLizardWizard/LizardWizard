@@ -40,8 +40,10 @@ public class UserViewModel implements Initializable {
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
-    // Class        : initialize
-    // Beschreibung : Füllt die Benutzertablle mit allen Benutzern aus der Datenbank
+    /**
+     *   Class        : initialize
+     *   Beschreibung : Füllt die Benutzertablle mit allen Benutzern aus der Datenbank.
+     */
     public void initialize(URL location, ResourceBundle resources) {
         //todo: instead of what is below, get all users from DB
         IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
@@ -60,8 +62,10 @@ public class UserViewModel implements Initializable {
         tblUsers.getItems().addAll(userList);
     }
 
-    // Class        : deleteUserAction
-    // Beschreibung : Benutzer löschen
+    /**
+     *   Class        : deleteUserAction
+     *   Beschreibung : Benutzer löschen.
+     */
     public void deleteUserAction(){
         User selectedUser = getSelectedUser();
 
@@ -73,9 +77,11 @@ public class UserViewModel implements Initializable {
         }
     }
 
-    // Class        : getSelectedUser
-    // Beschreibung : Den ausgewählten Benutzer laden, wenn keiner ausgewählt wurde,
-    //                eine Fehlermeldung ausgeben
+    /**
+     *   Class        : getSelectedUser
+     *   Beschreibung : Den ausgewählten Benutzer laden, wenn keiner ausgewählt wurde,
+     *                  eine Fehlermeldung ausgeben
+     */
     public User getSelectedUser(){
         User selectedUser = (User) tblUsers.getSelectionModel().getSelectedItem();
 
@@ -92,22 +98,28 @@ public class UserViewModel implements Initializable {
         }
     }
 
-    // Class        : closeButtonAction
-    // Beschreibung : Schließt die User View Übersicht
+    /**
+     *   Class        : closeButtonAction
+     *   Beschreibung : Schließt die User View Übersicht.
+     */
     public void closeButtonAction(){
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
     }
 
-    // Class        : createUserAction
-    // Beschreibung : Ruft die creatUpdateUser Methode mit 0 auf, so dass ein neuer Benutzer erstellt wird
+    /**
+     *   Class        : createUserAction
+     *   Beschreibung : Ruft die creatUpdateUser Methode mit 0 auf, so dass ein neuer Benutzer erstellt wird.
+     */
     public void createUserAction(){
         creatUpdateUser(0);
     }
 
-    // Class        : updateUserAction
-    // Beschreibung : Überpruft, ob der Benutzer ausgewählt ist und ruft die creatUpdateUser Methode mit
-    //                der ID vom ausgewählten Benutzer auf, so das die nächste View gefüllt werden kann.
+    /**
+     *   Class        : updateUserAction
+     *   Beschreibung : Überpruft, ob der Benutzer ausgewählt ist und ruft die creatUpdateUser Methode mit
+     *                  der ID vom ausgewählten Benutzer auf, so das die nächste View gefüllt werden kann.
+     */
     public void updateUserAction(){
         User selectedUser = getSelectedUser();
         if(selectedUser != null){
@@ -115,10 +127,12 @@ public class UserViewModel implements Initializable {
         }
     }
 
-    // Class        : creatUpdateUser
-    // Beschreibung : Erstellt oder aktualiesiert einen Benutzer.
-    // Extra Info   : wenn userId = 0 => erstellt einen neuen Benutzer
-    //              : wenn userId > 0 => aktualisiert einen Benutzer
+    /**
+     *   Class        : creatUpdateUser
+     *   Beschreibung : Erstellt oder aktualiesiert einen Benutzer.
+     *   Extra Info   : wenn userId = 0 => erstellt einen neuen Benutzer
+     *                  wenn userId > 0 => aktualisiert einen Benutzer
+     */
     private void creatUpdateUser(Integer userId){
         try{
 

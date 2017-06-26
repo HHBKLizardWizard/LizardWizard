@@ -11,7 +11,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Template;
@@ -23,10 +26,8 @@ import repositories.*;
 import util.DatabaseConnector;
 import util.TestData;
 import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
 
 /**
  * Created by iho on 20.06.2017.
@@ -51,24 +52,44 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private SeparatorMenuItem smiLine;
 
-    @FXML
-    private TextField txtUserId;
-
-    private ObservableList<String> professionList;
+    private ObservableList<String> professionList = FXCollections.observableArrayList();
+    private ObservableList<Template> templateList = FXCollections.observableArrayList();
     private IDidaktRepository didaktRepository;
     private IUserRepository userRepository;
     private ITemplateRepository templateRepository;
     private DatabaseConnector dbConnector;
-    private User user;
+    private User loggedUser;
 
     /**
-     * Generiert das pdf
+     *   Class        : initialize
+     *   Beschreibung : Hollt sich die liste von Fäche, jahre und templates und
+     *                  füllt die ComboBoxen.
+     */
+    public void initialize(URL location, ResourceBundle resources){
+        dbConnector = new DatabaseConnector();
+        didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
+        userRepository = new UserRepository(dbConnector.getUserDataSource());
+        templateRepository = new TemplateRepository(dbConnector.getUserDataSource());
+
+        professionList = didaktRepository.getProfessions();
+        cbSector.setItems(professionList);
+        cbSector.getSelectionModel().select(0);
+
+        templateList = templateRepository.getTemplatesByUser(loggedUser);
+        cbTemplate.setItems(templateList);
+        cbTemplate.getSelectionModel().select(0);
+    }
+
+    /**
+     *   Class        : createAnnualReport
+     *   Beschreibung : Generiert das pdf
      */
     public void createAnnualReport() {
         ReportData reportData = new TestData().getReportDataExample();
         
         // get data from database and build report
         ReportBuilder reportBuilder = new ReportBuilder();
+        didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
 
         try {
             PdfDocument pdf = reportBuilder.createPdf("test.pdf");
@@ -80,27 +101,18 @@ public class ApplicationViewModel implements Initializable {
         }
     }
 
-    public void initialize(URL location, ResourceBundle resources){
-        dbConnector = new DatabaseConnector();
-        didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
-        userRepository = new UserRepository(dbConnector.getUserDataSource());
-        templateRepository = new TemplateRepository(dbConnector.getUserDataSource());
-
-        FXCollections.observableArrayList();
-        professionList = didaktRepository.getProfessions();
-        cbSector.setItems(professionList);
-        cbSector.getSelectionModel().select(0);
-
-    }
-
-    // Class        : closeButtonAction
-    // Beschreibung : Schließt das Programm
+    /**
+     *   Class        : closeButtonAction
+     *   Beschreibung : Schließt das Programm
+     */
     public void closeButtonAction() {
         Platform.exit();
     }
 
-    // Class        : openTargetWindowAction
-    // Beschreibung : Öffnet das Fenster abhängig davon, welches Menu Item ausgewählt wurde.
+    /**
+     *   Class        : openTargetWindowAction
+     *   Beschreibung : Öffnet das Fenster abhängig davon, welches Menu Item ausgewählt wurde.
+     */
     public void openTargetWindowAction(ActionEvent event) {
         try {
             String menuItemClickedId = "", stageTitle = "";
@@ -146,23 +158,23 @@ public class ApplicationViewModel implements Initializable {
         }
     }
 
-    // Class        : setUserId
-    // Beschreibung : Setzt UserId so, dass es in der nächsten View wieder verwendet werden kann
-    // Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
-    public void setUserId(Integer userId) {
-        txtUserId.setText(String.valueOf(userId));
-        checkViewRights(userId);
+    /**
+     *   Class        : setUserId
+     *   Beschreibung : Setzt UserId so, dass es in der nächsten View wieder verwendet werden kann
+     *   Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
+     */
+    public void setUser(User user) {
+        loggedUser = loggedUser;
+        checkViewRights(user);
     }
 
-    // Class        : checkViewRights
-    // Beschreibung : Setzt bestimmte Felder in der nächsten View auf "hidden", abhängig von den Benutzerrechten
-    // Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
-    public void checkViewRights(Integer userId) {
-        IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
-        //User loggedUser = userRepository.getUserById(userId);
-        User loggedUser = new User(1, "root","root","root", "root",  UserRights.ADMIN);
-
-        UserRights loggedUserRights = loggedUser.getRights();
+    /**
+     *   Class        : checkViewRights
+     *   Beschreibung : Setzt bestimmte Felder in der nächsten View auf "hidden", abhängig von den Benutzerrechten
+     *   Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
+     */
+    public void checkViewRights(User user) {
+        UserRights loggedUserRights = user.getRights();
 
         if(loggedUserRights.equals(UserRights.AZUBI)){
             menuUser.setVisible(false);

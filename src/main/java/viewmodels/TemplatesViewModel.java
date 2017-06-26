@@ -33,7 +33,9 @@ public class TemplatesViewModel implements Initializable {
 
     }
 
-    // Class        :
-    // Beschreibung :
+    /**
+     *   Class        :
+     *   Beschreibung :
+     */
 
 }
