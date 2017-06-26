@@ -93,16 +93,31 @@ public class DidaktRepository implements IDidaktRepository {
 
         }
         catch(Exception e){
-
+            System.out.println(e);
         }
 
         return null;
     }
 
     @Override
-    public Integer getAusbildungsdauer(String profName)
+    public Integer getDuration(String profName)
     {
-        return null;
+        String sql = "SELECT DISTINCT count(Jahr) FROM tbl_beruffach\n" +
+                    "INNER JOIN tbl_uformberuf\n" +
+                    "ON tbl_beruffach.ID_UFormBeruf = tbl_uformberuf.UBID\n" +
+                    "INNER JOIN tbl_beruf ON tbl_uformberuf.ID_Beruf = tbl_beruf.BId\n" +
+                    "WHERE tbl_beruf.Berufname = ?";
+        Integer duration = null;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, profName);
+            ResultSet rs = ps.executeQuery();
+            duration = rs.getInt("Jahr");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return duration;
     }
 
 

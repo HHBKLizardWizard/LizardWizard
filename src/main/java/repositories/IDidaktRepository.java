@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
  */
 public interface IDidaktRepository {
     ReportData getReportData(String profName, Integer year);
-    Integer getAusbildungsdauer(String profName);
+    Integer getDuration(String profName);
     ObservableList<String> getProfessions();
 }
 
