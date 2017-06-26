@@ -10,7 +10,7 @@ import models.User;
 public interface ITemplateRepository
 {
     public Template getTemplate();
-    public Template saveTemplate();
+    public Template createTemplate(Template template, User user);
     public Template updateTemplate();
     public boolean deleteTemplate();
     public ObservableList<Template> getTemplatesByUser(User user);
