@@ -37,7 +37,7 @@ public class UserEditViewModel implements Initializable {
     private Label lblPwInfo;
 
     // Class        : initialize
-    // Beschreibung : Füllt die ChoiceBox mit alle Rechten Daten.
+    // Beschreibung : Füllt die ChoiceBoxes mit allen Rechten.
     public void initialize(URL location, ResourceBundle resources) {
         ObservableList<UserRights> rightsList = FXCollections.observableArrayList();
         rightsList.addAll(UserRights.ADMIN, UserRights.LEHRER, UserRights.AZUBI);
@@ -46,14 +46,14 @@ public class UserEditViewModel implements Initializable {
     }
 
     // Class        : setUserData
-    // Beschreibung : würd im UserViewModel benutzt (deswegen public).
-    //                Füllt alle felder mit die selected user daten.
+    // Beschreibung : Wird im UserViewModel benutzt (deswegen public).
+    //                Füllt alle Felder mit den selektierten Benutzerdaten.
     public void setUserData(String txtUserId) {
         IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
         lblPwInfo.setVisible(true);
 
         //todo: get user by userID
-        //User user = userRepository.getUserbyId(Integer.valueOf(txtUserId));
+        //User user = userRepository.getUserById(Integer.valueOf(txtUserId));
         User user = new User("Sil123","Sil","van Vliet", UserRights.AZUBI, "qwe");
 
         txtFirstName.setText(user.getFirstname());
@@ -69,17 +69,17 @@ public class UserEditViewModel implements Initializable {
 
     //needs to be public due to being used in UserViewModel
     // Class        : setUserId
-    // Beschreibung : würd im UserViewModel benutzt (deswegen public). Setzt die UserID im ein
-    //                hidden feld so das im diese view die (wenn ausgewählt) ausgewählte user
-    //                daten anzeigen und aktualiesieren kann.
+    // Beschreibung : Wird im UserViewModel benutzt (deswegen public). Setzt die UserID in ein
+    //                "hidden" Feld, so dass in dieser View die (wenn ausgewählt) ausgewählten
+    //                Benutzerdaten angezeigt und aktualisiert werden können.
     public void setUserId(Integer userId) {
         txtUserId.setText(String.valueOf(userId));
     }
 
     // Class        : saveUserAction
-    // Beschreibung : Nach überprufung ob alle Felder richtig gefüllt sind wird überpruft
-    //                ob es um ein benutzer aktualiesierung oder ein neue Benutzer anlegen geht
-    //                und so entprechend die richtige aktion ausführt
+    // Beschreibung : Nach der Überprüfung, ob alle Felder richtig gefüllt sind, wird überprüft,
+    //                ob es sich um eine Benutzeraktualisierung oder um das Anlegen eines neuen Benutzers
+    //                handelt und so entprechend die richtige Aktion ausführt
     public void saveUserAction() {
         UserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
 
@@ -130,9 +130,10 @@ public class UserEditViewModel implements Initializable {
     }
 
     // Class        : checkFieldsAction
-    // Beschreibung : Überpruft ob alle Felder gefüllt sind
-    // Extra info   : passwort feld bei benutzer aktualiesierung muss nicht
-    //                gefüllt sein. Wenn Leer das blebt das passwort wie vorher.
+    // Beschreibung : Überprüft, ob alle Felder gefüllt sind
+    // Extra info   : Passwortfeld bei der Benutzeraktualisierung muss nicht
+    //                gefüllt sein. Wenn es leer bleibt, blebt das vorherige Passwort
+    //                bestehen.
     private boolean checkFieldsAction() {
         Integer userId = Integer.parseInt(txtUserId.getText());
         Boolean allGood = true;
@@ -177,7 +178,7 @@ public class UserEditViewModel implements Initializable {
     }
 
     // Class        : closeButtonAction
-    // Beschreibung : Schließt die User Edit übersicht
+    // Beschreibung : Schließt die User Edit Übersicht
     public void closeButtonAction(){
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();

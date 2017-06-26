@@ -40,7 +40,7 @@ public class LoginViewModel implements Initializable {
 
 
     // Class        : LoginAction
-    // Beschreibung : Benutzer Login Uberprüfung
+    // Beschreibung : Benutzer Login Überprüfung
     public void loginAction(){
         lblLoginFailed.setVisible(false);
 
@@ -52,7 +52,7 @@ public class LoginViewModel implements Initializable {
             String checkPw = txtPassword.getText();
 
             //todo wenn das obere gefxed ist, untere: 1. zeile comment weg nehmen, 2. zeile löschen
-            //User user = userRepository.getUserbyUsername(checkUser);
+            //User user = userRepository.getUserByUsername(checkUser);
             User user = new User(1, "root","root","root", UserRights.ADMIN, "root");
 
             if (user == null || !checkPw.equals(user.getPassword())) {
@@ -66,7 +66,7 @@ public class LoginViewModel implements Initializable {
     }
 
     // Class        : checkLoginFields
-    // Beschreibung : Uberprüfung ob Benutzername und Passwort feld gefüllt sind
+    // Beschreibung : Überprüfung, ob Benutzername- und Passwortfeld gefüllt sind
     private boolean checkLoginFields() {
         if(!txtLogin.getText().equals("") && (txtPassword != null && !txtPassword.getText().equals(""))){
             return true;
