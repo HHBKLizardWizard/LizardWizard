@@ -1,6 +1,8 @@
 package repositories;
 
 import models.reports.AreaOfEducation;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.reports.ReportData;
 import models.reports.ReportHeader;
 import models.reports.Subject;
@@ -14,8 +16,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by walde on 25.06.2017.
@@ -38,10 +38,9 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     @Override
-    public List<String> getProfessions() {
+    public ObservableList<String> getProfessions() {
         String sql = "SELECT Berufname FROM tbl_beruf";
-        List<String> professionList = new ArrayList<>();
-
+        ObservableList<String> professionList = FXCollections.observableArrayList();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -53,7 +52,7 @@ public class DidaktRepository implements IDidaktRepository {
         }
         return professionList;
     }
-    @@@
+    @Override
     public ReportData getReportData(String profName, Integer year){
         String sql = "SELECT * FROM tbl_fach\n" +
                 "LEFT JOIN tbl_beruffach\n" +

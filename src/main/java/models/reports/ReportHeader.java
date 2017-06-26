@@ -10,8 +10,8 @@ public class ReportHeader {
     private String classForm;
     private String educationalSupervisor;
 
-    public ReportHeader()
-    {
+    public ReportHeader() {
+        // Nothing to do here
     }
 
     public ReportHeader(String department,

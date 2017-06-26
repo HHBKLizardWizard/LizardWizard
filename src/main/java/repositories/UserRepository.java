@@ -1,9 +1,10 @@
 package repositories;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.User;
 import models.UserRights;
 import org.mindrot.jbcrypt.BCrypt;
-import util.DatabaseConnector;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -12,29 +13,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by iho on 22.06.2017.
+ * Created by patrick on 22.06.2017.
  */
 
-/*********************************************************************************************\
-* Code for hashing a password
-*
-*
-            // -- Hash a password for the first time --
-            String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-
-            // -- gensalt's log_rounds parameter determines the complexity the work factor is 2**log_rounds, and the default is 10 --
-            hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
-
-            // -- Check a hashed password with an unhashed password --
-            if (BCrypt.checkpw(password, hashed))
-                System.out.println("It matches");
-            else
-                System.out.println("It does not match");
-*
-**********************************************************************************************/
-
 public class UserRepository implements IUserRepository{
+
     Connection con = null;
+    public ObservableList<User> userList = FXCollections.observableArrayList();
 
     public UserRepository(DataSource dataSource) {
         try {
@@ -44,9 +29,10 @@ public class UserRepository implements IUserRepository{
         }
     }
 
+
     public boolean registerUser(User user){
 
-        String sql = "INSERT INTO users(Vorname, Nachname, Username, Password, Rights) " +
+        String sql = "INSERT INTO users(firstname, lastname, username, password, rights) " +
                 "VALUES (?,?,?,?,?)";
 
         try{
@@ -89,42 +75,42 @@ public class UserRepository implements IUserRepository{
 
     public User getUserById(Integer userId){
         String sql = "SELECT * FROM users WHERE PK_ID = ?";
-        User user = null;
+        User newUser = null;
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, userId.toString());
 
             ResultSet rs = ps.executeQuery();
 
-            user = new User(
-                    rs.getString("Username"),
-                    rs.getString("Vorname"),
-                    rs.getString("Nachname"),
-                    UserRights.valueOf(rs.getString("Rights")),
-                    rs.getString("Password")
+            newUser = new User(
+                    rs.getString("username"),
+                    rs.getString("firstname"),
+                    rs.getString("lastname"),
+                    UserRights.valueOf(rs.getString("rights")),
+                    rs.getString("password")
             );
         }catch (Exception e){
             System.out.println(e);
         }
 
-        return user;
+        return newUser;
     }
 
-    public User getUserByUsername(String userName){
-        String sql = "SELECT * FROM users WHERE Username = ?";
+    public User getUserByUsername(String username){
+        String sql = "SELECT * FROM users WHERE username = ?";
         User newUser = null;
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, userName);
+            ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
 
             newUser = new User(
-                    rs.getString("Username"),
-                    rs.getString("Vorname"),
-                    rs.getString("Nachname"),
-                    UserRights.valueOf(rs.getString("Rights")),
-                    rs.getString("Password")
+                    rs.getString("username"),
+                    rs.getString("firstname"),
+                    rs.getString("lastname"),
+                    UserRights.valueOf(rs.getString("rights")),
+                    rs.getString("password")
             );
         }catch (Exception e){
             System.out.println(e);
@@ -137,16 +123,14 @@ public class UserRepository implements IUserRepository{
 
     public String getPasswordByUserId(Integer userId){
         String password = "";
-        String sql = "SELECT Password FROM users WHERE PK_ID = ?";
+        String sql = "SELECT password FROM users WHERE PK_ID = ?";
 
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, userId.toString());
             ResultSet rs = ps.executeQuery();
 
-            password = rs.getString("Password");
-
-            //todo: unhash password for admin or is that a no go?
+            password = rs.getString("password");
 
         }catch (Exception e){
             System.out.println(e);
@@ -155,13 +139,12 @@ public class UserRepository implements IUserRepository{
     }
 
     public boolean updateUser (User user){
-        String sql = "UPDATE users SET Vorname = ?, " +
-                                        "Nachname = ?, " +
-                                        "Username = ?, " +
-                                        "Password = ?," +
-                                        "Rights     = ?";
-
-        //@TODO : Update where User id = ?
+        String sql = "UPDATE users SET firstname = ?, " +
+                                        "lastname = ?, " +
+                                        "username = ?, " +
+                                        "password = ?," +
+                                        "rights    = ? " +
+                                        "WHERE pk_id = ?";
 
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -170,6 +153,7 @@ public class UserRepository implements IUserRepository{
             ps.setString(3, user.getUsername());
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getRights().toString());
+            ps.setString(6, user.getId().toString());
 
             ResultSet rs = ps.executeQuery();
 
@@ -183,5 +167,30 @@ public class UserRepository implements IUserRepository{
         }
 
         return true;
+    }
+
+    public ObservableList<User> getAllUsers()
+    {
+        String sql = "SELECT * FROM users";
+
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            User user = new User(
+                    rs.getString("username"),
+                    rs.getString("firstname"),
+                    rs.getString("lastname"),
+                    UserRights.valueOf(rs.getString("rights")),
+                    rs.getString("password")
+            );
+            userList.add(user);
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        return userList;
     }
 }

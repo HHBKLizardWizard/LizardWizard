@@ -16,6 +16,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.User;
 import models.UserRights;
+import repositories.IUserRepository;
+import repositories.UserRepository;
+import util.DatabaseConnector;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -38,9 +41,11 @@ public class UserViewModel implements Initializable {
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
     // Class        : initialize
-    // Beschreibung : Füllt die benutzer tablle mit alle benutzer vom DatenBank
+    // Beschreibung : Füllt die Benutzertablle mit allen Benutzern aus der Datenbank
     public void initialize(URL location, ResourceBundle resources) {
         //todo: instead of what is below, get all users from DB
+        IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
+        //ObservableList<User> = userRepository.getAllUSers????
         userList.add(new User("Sil123","Sil","van Vliet", UserRights.ADMIN, "qwe"));
         userList.add(new User("Ingo123","Ingo","Hotischeck", UserRights.ADMIN, "qwe"));
 
@@ -69,7 +74,8 @@ public class UserViewModel implements Initializable {
     }
 
     // Class        : getSelectedUser
-    // Beschreibung : Die ausgewählte benutzer laden, wenn kein ausgewählt Fehlermeldung ausgeben
+    // Beschreibung : Den ausgewählten Benutzer laden, wenn keiner ausgewählt wurde,
+    //                eine Fehlermeldung ausgeben
     public User getSelectedUser(){
         User selectedUser = (User) tblUsers.getSelectionModel().getSelectedItem();
 
@@ -87,21 +93,21 @@ public class UserViewModel implements Initializable {
     }
 
     // Class        : closeButtonAction
-    // Beschreibung : Schließt die User View übersicht
+    // Beschreibung : Schließt die User View Übersicht
     public void closeButtonAction(){
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
     }
 
     // Class        : createUserAction
-    // Beschreibung : ruft die creatUpdateUser methode auf mit 0 so das eine neue benutzer erstellt würd
+    // Beschreibung : Ruft die creatUpdateUser Methode mit 0 auf, so dass ein neuer Benutzer erstellt wird
     public void createUserAction(){
         creatUpdateUser(0);
     }
 
     // Class        : updateUserAction
-    // Beschreibung : Überpruft ob Benutzer ausgewählt ist und ruft die creatUpdateUser methode auf mit
-    //                die ID vom ausgewählte benutzer so das die nächste view gefüllt werden kann.
+    // Beschreibung : Überpruft, ob der Benutzer ausgewählt ist und ruft die creatUpdateUser Methode mit
+    //                der ID vom ausgewählten Benutzer auf, so das die nächste View gefüllt werden kann.
     public void updateUserAction(){
         User selectedUser = getSelectedUser();
         if(selectedUser != null){
@@ -110,9 +116,9 @@ public class UserViewModel implements Initializable {
     }
 
     // Class        : creatUpdateUser
-    // Beschreibung : Erstellt oder aktualiesiert ein Benutzer.
-    // Extra Info   : wenn userId = 0 => erstellt neue Benutzer
-    //              : wenn userId > 0 => aktualiesiert Benutzer
+    // Beschreibung : Erstellt oder aktualiesiert einen Benutzer.
+    // Extra Info   : wenn userId = 0 => erstellt einen neuen Benutzer
+    //              : wenn userId > 0 => aktualisiert einen Benutzer
     private void creatUpdateUser(Integer userId){
         try{
 

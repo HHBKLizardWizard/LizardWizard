@@ -1,6 +1,9 @@
 package viewmodels;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +18,6 @@ import models.Template;
 import models.User;
 import models.UserRights;
 import models.reports.ReportData;
-import models.ui_util.Profession;
 import reports.ReportBuilder;
 import repositories.DidaktRepository;
 import repositories.IDidaktRepository;
@@ -24,7 +26,6 @@ import repositories.UserRepository;
 import util.DatabaseConnector;
 import util.TestData;
 import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -35,13 +36,13 @@ import java.util.ResourceBundle;
 public class ApplicationViewModel implements Initializable {
 
     @FXML
-    private ChoiceBox<String> cbSector; //@todo define what type it is?
+    private ComboBox<String> cbSector;
 
     @FXML
-    private ChoiceBox<Integer> cbYear;
+    private ComboBox<Integer> cbYear;
 
     @FXML
-    private ChoiceBox<Template> cbTemplate;
+    private ComboBox<Template> cbTemplate;
 
     @FXML
     private Button btnExport;
@@ -52,14 +53,13 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private SeparatorMenuItem smiLine;
 
-    public ObservableList<String> professions;
-    private List<String> professionList;
+    @FXML
+    private TextField txtUserId;
+
+    private ObservableList<String> professionList;
     private IDidaktRepository didaktRepository;
     private IUserRepository userRepository;
     private DatabaseConnector dbConnector;
-
-    @FXML
-    private TextField txtUserId;
 
     // Class        : createAnnualReport
     // Beschreibung : Generiert das pdf
@@ -71,16 +71,11 @@ public class ApplicationViewModel implements Initializable {
         didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
 
         try {
-            /*PdfDocument pdf = reportBuilder.createPdf("test.pdf");
+            PdfDocument pdf = reportBuilder.createPdf("test.pdf");
 
-            Document document = reportBuilder.createAnnualReport(pdf,
-            reportData);*/
-            for (String string : didaktRepository.getProfessions()){
-                System.out.println(string);
-            }
-            //Document document = reportBuilder.createDetailReport(pdf, reportData);
-            //document.close();
-
+            //Document document = reportBuilder.createAnnualReport(pdf, reportData);
+            Document document = reportBuilder.createDetailReport(pdf, reportData);
+            document.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,9 +86,11 @@ public class ApplicationViewModel implements Initializable {
         didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
         userRepository = new UserRepository(dbConnector.getUserDataSource());
 
+        FXCollections.observableArrayList();
         professionList = didaktRepository.getProfessions();
+        cbSector.setItems(professionList);
+        cbSector.getSelectionModel().select(0);
     }
-
 
     // Class        : closeButtonAction
     // Beschreibung : Schließt das Programm
@@ -102,7 +99,7 @@ public class ApplicationViewModel implements Initializable {
     }
 
     // Class        : openTargetWindowAction
-    // Beschreibung : Öffnet das fenster abhängig von welche Menu Item ausgewählt war.
+    // Beschreibung : Öffnet das Fenster abhängig davon, welches Menu Item ausgewählt wurde.
     public void openTargetWindowAction(ActionEvent event) {
         try {
             String menuItemClickedId = "", stageTitle = "";
@@ -149,19 +146,19 @@ public class ApplicationViewModel implements Initializable {
     }
 
     // Class        : setUserId
-    // Beschreibung : Setzt UserId so das es im nächste view wieder verwendet werden kann
-    // Extra Info   : muss Public sein weil es im UserViewModel aufgerüfen würd
+    // Beschreibung : Setzt UserId so, dass es in der nächsten View wieder verwendet werden kann
+    // Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
     public void setUserId(Integer userId) {
         txtUserId.setText(String.valueOf(userId));
         checkViewRights(userId);
     }
 
     // Class        : checkViewRights
-    // Beschreibung : Setzt bestimmte Felder hidden im nächste view abhängig von Benutzer Rechten
-    // Extra Info   : muss Public sein weil es im UserViewModel aufgerüfen würd
+    // Beschreibung : Setzt bestimmte Felder in der nächsten View auf "hidden", abhängig von den Benutzerrechten
+    // Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
     public void checkViewRights(Integer userId) {
         IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
-        //User loggedUser = userRepository.getUserbyId(userId);
+        //User loggedUser = userRepository.getUserById(userId);
         User loggedUser = new User(1, "root","root","root", UserRights.ADMIN, "root");
 
         UserRights loggedUserRights = loggedUser.getRights();

@@ -1,5 +1,6 @@
 package repositories;
 
+import javafx.collections.ObservableList;
 import models.User;
 
 /**
@@ -12,4 +13,5 @@ public interface IUserRepository{
     public User getUserByUsername(String userName);
     public String getPasswordByUserId(Integer userId);
     public boolean updateUser(User user);
+    public ObservableList<User> getAllUsers();
 }
