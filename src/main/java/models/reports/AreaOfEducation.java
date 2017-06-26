@@ -13,6 +13,7 @@ public class AreaOfEducation {
 
     public AreaOfEducation()
     {
+        subjectList = new ArrayList<>();
     }
 
     public AreaOfEducation(String name)

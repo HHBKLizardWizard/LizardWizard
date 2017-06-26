@@ -11,6 +11,17 @@ public class ReportData {
     private List<AreaOfEducation> areaOfEducationList = new ArrayList<>();
     private ReportHeader reportHeader;
 
+    public ReportData() {
+        this.getAreaOfEducationList().add(new AreaOfEducation
+                ("Berufsbezogerner " +
+                        "Lernbereich"));
+        this.getAreaOfEducationList().add(new AreaOfEducation
+                ("Berufsübergreifender" +
+                        "Lernbereich"));
+        this.getAreaOfEducationList().add(new AreaOfEducation
+                ("Differenzierungsbereich"));
+    }
+
     public List<LearningSituation> getLearningSituations() {
         return learningSituations;
     }
