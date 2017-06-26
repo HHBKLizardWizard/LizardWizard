@@ -8,8 +8,7 @@ import models.User;
  */
 public interface IUserRepository{
     public User registerUser(User user);
-    public boolean deleteUserById(Integer userId);
-    public User getUserById(Integer userId);
+    public void deleteUser(User user);
     public User getUserByUsername(String userName);
     public String getPasswordByUserId(Integer userId);
     public boolean updateUser(User user);

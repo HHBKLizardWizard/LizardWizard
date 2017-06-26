@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,14 +17,17 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import models.Template;
 import models.User;
 import models.UserRights;
+import models.reports.Profession;
 import models.reports.ReportData;
 import reports.ReportBuilder;
 import repositories.*;
 import util.DatabaseConnector;
 import util.TestData;
+
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -36,7 +38,7 @@ import java.util.ResourceBundle;
 public class ApplicationViewModel implements Initializable {
 
     @FXML
-    private ComboBox<String> cbSector;
+    private ComboBox<Profession> cbProfession;
 
     @FXML
     private ComboBox<Integer> cbYear;
@@ -53,7 +55,7 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private SeparatorMenuItem smiLine;
 
-    private ObservableList<String> professionList = FXCollections.observableArrayList();
+    private ObservableList<Profession> professionList = FXCollections.observableArrayList();
     private ObservableList<Template> templateList = FXCollections.observableArrayList();
     private IDidaktRepository didaktRepository;
     private IUserRepository userRepository;
@@ -72,9 +74,24 @@ public class ApplicationViewModel implements Initializable {
         userRepository = new UserRepository(dbConnector.getUserDataSource());
         templateRepository = new TemplateRepository(dbConnector.getUserDataSource());
 
-        professionList = didaktRepository.getProfessions();
-        cbSector.setItems(professionList);
-        cbSector.getSelectionModel().select(0);
+        cbProfession.setItems(didaktRepository.getProfessionList());
+
+        //convert professionList to only show name instead of object
+        cbProfession.setConverter(new StringConverter<Profession>() {
+
+            @Override
+            public String toString(Profession object) {
+                return object.getName();
+            }
+
+            @Override
+            public Profession fromString(String string) {
+                return cbProfession.getItems().stream().filter(ap ->
+                        ap.getName().equals(string)).findFirst().orElse(null);
+            }
+        });
+
+        cbProfession.getSelectionModel().select(0);
 
     }
 
@@ -86,17 +103,10 @@ public class ApplicationViewModel implements Initializable {
         ReportData reportData = new TestData().getReportDataExample();
         
         // get data from database and build report
-        ReportBuilder reportBuilder = new ReportBuilder();
+
         didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
 
-        try {
-            PdfDocument pdf = reportBuilder.createPdf("test.pdf");
-            Document document = reportBuilder.createAnnualReport(pdf, reportData);
-            //Document document = reportBuilder.createDetailReport(pdf, reportData);
-            document.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport();
     }
 
     /**
@@ -163,8 +173,38 @@ public class ApplicationViewModel implements Initializable {
      */
     public void setUser(User user) {
         loggedUser = user;
+
+        //templates mussen vor Initialize gefüllt werden weil variable loggedUser im Initialize noch null ist.
         templateList = templateRepository.getTemplatesByUser(loggedUser);
+
         cbTemplate.setItems(templateList);
+
+        //convert template to only show name instead of object
+        cbTemplate.setConverter(new StringConverter<Template>() {
+
+            @Override
+            public String toString(Template object) {
+                return object.getTemplateName();
+            }
+
+            @Override
+            public Template fromString(String string) {
+                return cbTemplate.getItems().stream().filter(ap ->
+                        ap.getTemplateName().equals(string)).findFirst().orElse(null);
+            }
+        });
+
+        /* back to id when exporting to pdf
+        combo.valueProperty().addListener((obs, oldval, newval) -> {
+            if(newval != null)
+                System.out.println("Selected airport: " + newval.getName()
+                        + ". ID: " + newval.getID());
+        });*/
+
+
+
+
+
         cbTemplate.getSelectionModel().select(0);
         checkViewRights(user);
     }

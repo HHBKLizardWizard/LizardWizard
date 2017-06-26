@@ -1,6 +1,7 @@
 package reports;
 
 import com.itextpdf.kernel.color.DeviceRgb;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -11,6 +12,7 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 
 import models.reports.LearningSituation;
+import models.reports.LearningSituationTableElement;
 import models.reports.ReportData;
 import models.reports.ReportHeader;
 
@@ -22,23 +24,28 @@ import java.util.List;
  */
 public class ReportBuilder {
 
-    /**
-     * @param fileName a string representing the name of the generated pdf file
-     * @return a named PdfDocument object
-     * @throws IOException
-     */
-    public PdfDocument createPdf(String fileName) throws IOException {
-        PdfWriter writer = new PdfWriter(fileName);
-        PdfDocument pdf = new PdfDocument(writer);
-        return pdf;
+    private List<LearningSituationTableElement> learningSituationList;
+    private PdfDocument pdf;
+    private ReportData reportData;
+
+    public ReportBuilder(String fileName, ReportData reportData) {
+        try {
+            /* //TODO so solls nachher laufen wenn der merge der pdf`s läuft.
+            PdfWriter writer = new PdfWriter(fileName);
+            this.pdf = new PdfDocument(writer);
+            */
+
+            this.reportData = reportData;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * @param pdf         a PdfDocument object
      * @param isLandscape defines if the document should be picture or landscape
      * @return            returns a Document object to be filled by ReportFillers
      */
-    private Document createDocument(PdfDocument pdf, boolean isLandscape) {
+    private Document createDocument(boolean isLandscape) {
         Document document = isLandscape ? new Document(pdf, PageSize.A4.rotate()) : new Document(pdf);
         document.setMargins(20, 20, 20, 20);
         return document;
@@ -91,8 +98,27 @@ public class ReportBuilder {
         document.add(educationalSupervisor);
     }
 
-    public Document createAnnualReport(PdfDocument pdfDocument, ReportData reportData) {
-        Document document = this.createDocument(pdfDocument, true);
+    /**
+     *
+     */
+    public void createReport() {
+        try {
+            PdfWriter writer = new PdfWriter("annualReport.pdf");
+            this.pdf = new PdfDocument(writer);
+            this.createAnnualReport();
+
+            this.createDetailReports();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     */
+    private void createAnnualReport() {
+        Document document = this.createDocument(true);
         Table table = new Table(new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
         AnnualReport annualReport = new AnnualReport(table);
 
@@ -105,26 +131,50 @@ public class ReportBuilder {
         document.add(new Paragraph(""));
         document.add(table);
 
-        return document;
+        this.learningSituationList = annualReport.getLearningSituationList();
+        document.close();
     }
 
-    public Document createDetailReport(PdfDocument pdfDocument, ReportData reportData) {
-        Document document = this.createDocument(pdfDocument, false);
-        Table table = new Table(new float[]{6 ,2, 1, 1});
-        DetailReport detailReport = new DetailReport(table);
+    /**
+     *
+     */
+    private void createDetailReports() {
+       for (LearningSituationTableElement learningSituation : this.learningSituationList) {
+           if (learningSituation instanceof LearningSituation) {
+               this.createDetailReport((LearningSituation) learningSituation);
+               break; //entfernen
+           }
+       }
+    }
+
+    /**
+     * creates a single detailReport
+     */
+    private void createDetailReport(LearningSituation learningSituation) {
+        try {
+            PdfWriter writer = new PdfWriter("detailReport" + learningSituation.getId() +".pdf");
+            this.pdf = new PdfDocument(writer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Document document = this.createDocument(false);
+        Table table = new Table(new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
+        DetailReport detailReport = new DetailReport(table, learningSituation);
 
         table.setWidthPercent(100);
+        table.setFixedLayout();
 
-        List<LearningSituation>  testList = reportData.getLearningSituations();
-
-        for (LearningSituation learningSituation : reportData.getLearningSituations()) {
-            this.createPdfHeader(document, reportData.getReportHeader());
-            //detailReport.createDetailReport(reportData);
-        }
+        this.createPdfHeader(document, this.reportData.getReportHeader());
+        detailReport.createDetailReportHeader();
+        detailReport.createDetailReportBody();
 
         document.add(new Paragraph(""));
         document.add(table);
+        document.close();
+    }
 
-        return document;
+    public Document mergeDocuments(Document document1, Document document2) {
+        return null;
     }
 }

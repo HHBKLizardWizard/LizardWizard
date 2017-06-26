@@ -1,8 +1,8 @@
 package repositories;
 
-import models.reports.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import models.reports.*;
 import util.DatabaseConnector;
 
 import javax.sql.DataSource;
@@ -50,9 +50,9 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     @Override
-    public List<Profession> getProfessionList() {
+    public ObservableList<Profession> getProfessionList() {
         String sql = "SELECT * FROM tbl_beruf";
-        List<Profession> professionList = new ArrayList<>();
+        ObservableList<Profession> professionList = FXCollections.observableArrayList();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -94,6 +94,11 @@ public class DidaktRepository implements IDidaktRepository {
             e.printStackTrace();;
         }
         return subjects;
+    }
+
+    @Override
+    public List<FieldOfLearning> getFieldList(Subject subject) {
+        return null;
     }
 
     @Override
@@ -143,11 +148,11 @@ public class DidaktRepository implements IDidaktRepository {
 
 
     private ReportHeader getReportHeader(){
-        String sql = "SELECTä"
+        String sql = "SELECTä";
         ReportHeader rh = null;
         try
         {
-            String teacher = null;
+       /*     String teacher = null;
             if (rs.getString("Geschlecht") == "W"){
                 teacher = ("Frau" + rs.getString("Lehrername"));
             }
@@ -158,8 +163,8 @@ public class DidaktRepository implements IDidaktRepository {
                                                rs.getString("Berufname"),
                                                rs.getInt("Jahr"),
                                                rs.getString("UFormname"),
-                                               teacher);
-        } catch (SQLException e)
+                                               teacher);*/
+        } catch (Exception e)
         {
             e.printStackTrace();
         }

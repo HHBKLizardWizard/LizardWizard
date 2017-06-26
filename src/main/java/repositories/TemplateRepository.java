@@ -28,6 +28,11 @@ public class TemplateRepository implements ITemplateRepository
         }
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     public ObservableList<Template> getTemplatesByUser(User user) {
         ObservableList<Template> templateList = FXCollections.observableArrayList();
 
@@ -99,6 +104,12 @@ public class TemplateRepository implements ITemplateRepository
         return template;
     }
 
+    /**
+     *
+     * @param template
+     * @param user
+     * @return
+     */
     @Transactional
     public Template createTemplate(Template template, User user) {
         String sqlTemplates = "INSERT INTO templates (scenario, competences, materials, technics," +
@@ -132,10 +143,28 @@ public class TemplateRepository implements ITemplateRepository
             ps.execute();
         }
         catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         return template;
+    }
+
+    /**
+     *
+     * @param template
+     */
+    public void deleteTemplate(Template template) {
+        String sql = "DELETE FROM templates WHERE pk_id = ?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, template.getId());
+
+            ps.execute();
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Template updateTemplate()
@@ -176,29 +205,4 @@ public class TemplateRepository implements ITemplateRepository
         return template;
 
     }
-
-    public boolean deleteTemplate()
-    {
-        String sql = "DELETE FROM templates WHERE pk_id = ?";
-
-        Template template = null;
-
-        try
-        {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, String.valueOf(template.getId()));
-
-            ps.executeQuery();
-
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-            return false;
-        }
-
-        return true;
-    }
-
-
 }

@@ -1,5 +1,6 @@
 package reports;
 
+import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
@@ -11,38 +12,63 @@ import models.reports.*;
 public class DetailReport {
 
     private Table table;
+    private LearningSituation learningSituation;
+    private final Style style = new Style()
+            .setFontSize(8);
 
-    public DetailReport(Table table) { this.table = table; }
+    private final Style boldStyle = new Style()
+            .setFontSize(8);
 
-    public void createDetailReport(ReportData reportData) {
 
-        for (AreaOfEducation areaOfEducation : reportData.getAreaOfEducationList()) {
-            for (Subject subject : areaOfEducation.getSubjectList()) {
-                this.insertLearningSituationData(areaOfEducation, subject);
-            }
-        }
+    public DetailReport(Table table, LearningSituation learningSituation) {
+        this.table = table;
+        this.learningSituation = learningSituation;
     }
 
-    private void insertLearningSituationData(AreaOfEducation areaOfEducation, Subject subject) {
-        for (FieldOfLearning fieldOfLearning : subject.getFieldOfLearningList()) {
-            for (LearningSituation learningSituation : fieldOfLearning.getLearningSituationList()) {
-                this.createDetailReport(areaOfEducation, subject, fieldOfLearning, learningSituation);
-            }
-        }
+    public void createDetailReportBody() {
+        this.table.addCell(new Cell(1, 10).add(new Paragraph("")));
+        this.table.addCell(new Cell(1, 10).add(new Paragraph("")));
+        this.table.addCell(new Cell(1, 10).add(new Paragraph("")));
     }
 
-    public void createDetailReport(AreaOfEducation areaOfEducation, Subject subject,
-                                   FieldOfLearning fieldOfLearning, LearningSituation learningSituation) {
-        Paragraph subjectParagraph = new Paragraph("Fach: " + learningSituation.getSubject())
-                .setFontSize(8);
+    public void createDetailReportHeader() {
+        Paragraph subject = new Paragraph("Fach: " + this.learningSituation.getSubject())
+                .addStyle(boldStyle);
 
-        Paragraph fieldOfLearningParagraph = new Paragraph("Lernfeld :");//TODO Infos aus FieldOfLearning einfügen
+        Paragraph fieldOfLearning = new Paragraph("Lernfeld: ")
+                .addStyle(boldStyle);
 
-        this.table.addHeaderCell(new Cell(1, 4)
-                .add(subjectParagraph));
+        Paragraph requiredSituation = new Paragraph("Anforderungssituation: ")
+                .addStyle(boldStyle);
 
-        this.table.addHeaderCell(new Cell(1, 4)
-                .add(fieldOfLearningParagraph));
+        Paragraph learningSituation = new Paragraph("Lernsituation X: ")
+                .addStyle(boldStyle);
 
+        Paragraph duration = new Paragraph("Dauer: " + "" + "UStd")
+                .addStyle(boldStyle);
+
+        Paragraph id = new Paragraph("ID: ")
+                .addStyle(boldStyle);
+
+        this.table.addCell(new Cell(1, 10)
+                .add(subject));
+
+        this.table.addCell(new Cell(1, 10)
+                .add(fieldOfLearning));
+
+        this.table.addCell(new Cell(1, 10)
+                .add(requiredSituation));
+
+        this.table.addCell(new Cell(1, 6)
+                .add(learningSituation));
+
+        this.table.addCell(new Cell(1, 2)
+                .add(duration));
+
+        this.table.addCell(new Cell(1, 1)
+                .add(id));
+
+        this.table.addCell(new Cell(1, 1)
+                .add(new Paragraph("")));
     }
 }

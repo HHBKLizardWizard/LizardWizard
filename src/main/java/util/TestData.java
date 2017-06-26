@@ -36,8 +36,8 @@ public class TestData {
     public FieldOfLearning getFieldOfLearningExample(String name) {
         List<LearningSituation> learningSituationList = new ArrayList<>();
 
-        learningSituationList.add(this.getLearningSituationExample("LS 1.4: Blabla IchBinEsLeid", 4, 11, 4));
-        learningSituationList.add(this.getLearningSituationExample("LS 1.5: Hilfe, ich kann nicht aufhören!", 9, 12, 5));
+        learningSituationList.add(this.getLearningSituationExample("LS 1.4: Wirschaft oder so", 4, 11, 4));
+        learningSituationList.add(this.getLearningSituationExample("LS 1.5: TestText", 9, 12, 5));
         learningSituationList.add(this.getLearningSituationExample("LS 1.2: Erarbeitung von Zeug", 3, 6, 2)); //TODO addLearningSituation
         learningSituationList.add(this.getLearningSituationExample("LS 1.1: Erarbeitung von was anderem", 1, 2, 1));
         learningSituationList.add(this.getLearningSituationExample("LS 1.3: Präsentation über Zeug", 7, 11, 3));

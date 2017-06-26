@@ -44,7 +44,9 @@ CREATE TABLE user_templates
   fk_userid int,
   fk_templateid int,
   templatename varchar(30) NOT NULL,
-  FOREIGN KEY (fk_userid) REFERENCES users(pk_id),
+  FOREIGN KEY (fk_userid) REFERENCES users(pk_id)
+  ON DELETE CASCADE,
   FOREIGN KEY (fk_templateid) REFERENCES templates(pk_id)
+  ON DELETE CASCADE
 );
 

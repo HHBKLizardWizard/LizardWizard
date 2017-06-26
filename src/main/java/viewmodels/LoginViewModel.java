@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.User;
-import models.UserRights;
 import repositories.IUserRepository;
 import repositories.UserRepository;
 import util.DatabaseConnector;
@@ -49,13 +48,10 @@ public class LoginViewModel implements Initializable {
         if(checkLoginFields()) {
             String checkUser = txtLogin.getText();
 
-            //todo verschlusselung von password
+            //todo verschlusselung von password, machen wir das ?
             //String checkPw = BCrypt.hashpw(txtPassword.getText(), "Hund");
             String checkPw = txtPassword.getText();
-
-            //todo wenn das obere gefxed ist, untere: 1. zeile comment weg nehmen, 2. zeile löschen
-            //User user = userRepository.getUserByUsername(checkUser);
-            User user = new User(1, "root","root","root", "root", UserRights.ADMIN);
+            User user = userRepository.getUserByUsername(checkUser);
 
             if (user == null || !checkPw.equals(user.getPassword())) {
                 //user not found error or incorrect password
