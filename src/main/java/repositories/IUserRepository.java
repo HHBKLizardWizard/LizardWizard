@@ -7,7 +7,7 @@ import models.User;
  * Created by patrick on 6/22/17.
  */
 public interface IUserRepository{
-    public boolean registerUser(User user);
+    public User registerUser(User user);
     public boolean deleteUserById(Integer userId);
     public User getUserById(Integer userId);
     public User getUserByUsername(String userName);

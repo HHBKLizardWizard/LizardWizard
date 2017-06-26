@@ -15,11 +15,11 @@ use user_template_db;
 CREATE TABLE users
 (
   pk_id int AUTO_INCREMENT,
-  username varchar(25) UNIQUE,
-  firstname varchar(25),
-  lastname varchar(25),
-  password varchar(25),
-  rights varchar(6),
+  username varchar(25) UNIQUE NOT NULL,
+  firstname varchar(25) NOT NULL,
+  lastname varchar(25) NOT NULL,
+  password varchar(50) NOT NULL,
+  rights varchar(6) NOT NULL,
   PRIMARY KEY (pk_id)
 );
 

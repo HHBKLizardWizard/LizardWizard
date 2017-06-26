@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import models.User;
 import models.UserRights;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -29,10 +30,9 @@ public class UserRepository implements IUserRepository{
         }
     }
 
+    public User registerUser(User user){
 
-    public boolean registerUser(User user){
-
-        String sql = "INSERT INTO users(firstname, lastname, username, password, rights) " +
+        String sql = "INSERT INTO users(username, firstname, lastname, password, rights) " +
                 "VALUES (?,?,?,?,?)";
 
         try{
@@ -41,19 +41,25 @@ public class UserRepository implements IUserRepository{
             ps.setString(2, user.getFirstname());
             ps.setString(3, user.getLastname());
 
+            //TODO encryption fixen
             String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
-            ps.setString(4, hashed);
+            ps.setString(4, user.getPassword());
             ps.setString(5, user.getRights().toString());
 
             ps.execute();
 
+            ResultSet rs = con.prepareStatement("SELECT LAST_INSERT_ID()").executeQuery();
+
+            while(rs.next()) {
+                user.setId(rs.getInt(1));
+            }
         }catch (Exception e){
             e.printStackTrace();
-            return false;
+            return null;
         }
 
-        return true;
+        return user;
     }
 
     public boolean deleteUserById(Integer userId){
