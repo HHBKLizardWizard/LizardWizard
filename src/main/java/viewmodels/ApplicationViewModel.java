@@ -66,7 +66,7 @@ public class ApplicationViewModel implements Initializable {
 
         // get data from database and build report
         ReportBuilder reportBuilder = new ReportBuilder();
-        didaktRepository = new DidaktRepository(new DatabaseConnector().getConnection());
+        didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
 
         try {
             /*PdfDocument pdf = reportBuilder.createPdf("test.pdf");
