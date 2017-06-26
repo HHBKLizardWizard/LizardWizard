@@ -53,7 +53,7 @@ public class LoginViewModel implements Initializable {
 
             //todo wenn das obere gefxed ist, untere: 1. zeile comment weg nehmen, 2. zeile löschen
             //User user = userRepository.getUserByUsername(checkUser);
-            User user = new User(1, "root","root","root", UserRights.ADMIN, "root");
+            User user = new User(1, "root","root","root", "root", UserRights.ADMIN);
 
             if (user == null || !checkPw.equals(user.getPassword())) {
                 //user not found error or incorrect password

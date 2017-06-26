@@ -49,7 +49,7 @@ public class UserRepository implements IUserRepository{
             ps.execute();
 
         }catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
             return false;
         }
 
@@ -86,8 +86,8 @@ public class UserRepository implements IUserRepository{
                     rs.getString("username"),
                     rs.getString("firstname"),
                     rs.getString("lastname"),
-                    UserRights.valueOf(rs.getString("rights")),
-                    rs.getString("password")
+                    rs.getString("password"),
+                    UserRights.valueOf(rs.getString("rights"))
             );
         }catch (Exception e){
             System.out.println(e);
@@ -98,25 +98,30 @@ public class UserRepository implements IUserRepository{
 
     public User getUserByUsername(String username){
         String sql = "SELECT * FROM users WHERE username = ?";
-        User newUser = null;
+        User user = null;
+
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
 
-            newUser = new User(
-                    rs.getString("username"),
-                    rs.getString("firstname"),
-                    rs.getString("lastname"),
-                    UserRights.valueOf(rs.getString("rights")),
-                    rs.getString("password")
-            );
+            while(rs.next()) {
+                user = new User(
+                        rs.getInt("pk_id"),
+                        rs.getString("username"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("password"),
+                        UserRights.valueOf(rs.getString("rights").toUpperCase())
+                );
+            }
+
         }catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
-        return newUser;
+        return user;
     }
 
 
@@ -152,8 +157,8 @@ public class UserRepository implements IUserRepository{
             ps.setString(2, user.getLastname());
             ps.setString(3, user.getUsername());
             ps.setString(4, user.getPassword());
-            ps.setString(5, user.getRights().toString());
-            ps.setString(6, user.getId().toString());
+            ps.setString(5, user.getId().toString());
+            ps.setString(6, user.getRights().toString());
 
             ResultSet rs = ps.executeQuery();
 
@@ -182,8 +187,8 @@ public class UserRepository implements IUserRepository{
                     rs.getString("username"),
                     rs.getString("firstname"),
                     rs.getString("lastname"),
-                    UserRights.valueOf(rs.getString("rights")),
-                    rs.getString("password")
+                    rs.getString("password"),
+                    UserRights.valueOf(rs.getString("rights"))
             );
             userList.add(user);
 

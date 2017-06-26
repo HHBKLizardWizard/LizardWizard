@@ -16,17 +16,17 @@ public class User {
 
     public User(){}
 
-    public User(String username, String firstname, String lastname, UserRights rights, String password){
+    public User(String username, String firstname, String lastname, String password, UserRights rights){
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.rights   = rights;
         this.password = password;
+        this.rights   = rights;
     }
 
 
     /*testtesttesttest*/
-    public User(Integer id, String username, String firstname, String lastname, UserRights rights, String password){
+    public User(Integer id, String username, String firstname, String lastname, String password, UserRights rights){
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;

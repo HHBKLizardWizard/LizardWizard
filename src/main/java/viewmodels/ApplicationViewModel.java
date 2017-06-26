@@ -90,6 +90,7 @@ public class ApplicationViewModel implements Initializable {
         professionList = didaktRepository.getProfessions();
         cbSector.setItems(professionList);
         cbSector.getSelectionModel().select(0);
+
     }
 
     // Class        : closeButtonAction
@@ -159,7 +160,7 @@ public class ApplicationViewModel implements Initializable {
     public void checkViewRights(Integer userId) {
         IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
         //User loggedUser = userRepository.getUserById(userId);
-        User loggedUser = new User(1, "root","root","root", UserRights.ADMIN, "root");
+        User loggedUser = new User(1, "root","root","root", "root",  UserRights.ADMIN);
 
         UserRights loggedUserRights = loggedUser.getRights();
 

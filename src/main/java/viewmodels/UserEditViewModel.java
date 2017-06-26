@@ -54,7 +54,7 @@ public class UserEditViewModel implements Initializable {
 
         //todo: get user by userID
         //User user = userRepository.getUserById(Integer.valueOf(txtUserId));
-        User user = new User("Sil123","Sil","van Vliet", UserRights.AZUBI, "qwe");
+        User user = new User("Sil123","Sil","van Vliet", "qwe", UserRights.AZUBI);
 
         txtFirstName.setText(user.getFirstname());
         txtLastName.setText(user.getLastname());
@@ -117,7 +117,7 @@ public class UserEditViewModel implements Initializable {
                 msgTitle = "User created";
             }else{
                 //No id found => creating new User
-                userRepository.registerUser(new User(userName,fName,lName,uRight,password));
+                userRepository.registerUser(new User(userName,fName,lName,password, uRight));
             }
 
             //success message

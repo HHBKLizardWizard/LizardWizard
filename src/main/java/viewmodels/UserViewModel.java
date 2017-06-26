@@ -46,8 +46,8 @@ public class UserViewModel implements Initializable {
         //todo: instead of what is below, get all users from DB
         IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
         //ObservableList<User> = userRepository.getAllUSers????
-        userList.add(new User("Sil123","Sil","van Vliet", UserRights.ADMIN, "qwe"));
-        userList.add(new User("Ingo123","Ingo","Hotischeck", UserRights.ADMIN, "qwe"));
+        userList.add(new User("Sil123","Sil","van Vliet", "qwe", UserRights.ADMIN));
+        userList.add(new User("Ingo123","Ingo","Hotischeck", "qwe", UserRights.ADMIN));
 
         userList.get(0).setId(1);
         userList.get(1).setId(2);
