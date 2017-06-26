@@ -66,16 +66,19 @@ public class ApplicationViewModel implements Initializable {
 
         // get data from database and build report
         ReportBuilder reportBuilder = new ReportBuilder();
+        didaktRepository = new DidaktRepository(new DatabaseConnector().getConnection());
 
         try {
+            /*PdfDocument pdf = reportBuilder.createPdf("test.pdf");
 
+            Document document = reportBuilder.createAnnualReport(pdf,
+            reportData);*/
+            for (String string : didaktRepository.getProfessions()){
+                System.out.println(string);
+            }
+            //Document document = reportBuilder.createDetailReport(pdf, reportData);
+            //document.close();
 
-            /*
-            PdfDocument pdf = reportBuilder.createPdf("test.pdf");
-
-            //Document document = reportBuilder.createAnnualReport(pdf, reportData);
-            Document document = reportBuilder.createDetailReport(pdf, reportData);
-            document.close();*/
         } catch (Exception e) {
             e.printStackTrace();
         }
