@@ -1,5 +1,7 @@
 package models;
 
+import models.ui_util.Teacher;
+
 import java.util.List;
 
 /**
