@@ -1,7 +1,7 @@
 package models.reports;
 
-import models.ui_util.Department;
-import models.ui_util.Teacher;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 22.06.2017.
@@ -10,7 +10,10 @@ public class Profession
 {
     private Integer id;
     private String name;
+    private List<Subject> subjectList = new ArrayList<>();
+    public Profession(){
 
+    }
     public Profession(Integer bid, String professionName){
         this.id = bid;
         this.name = professionName;
@@ -36,4 +39,11 @@ public class Profession
         this.name = name;
     }
 
+    public List<Subject> getSubjectList() {
+        return subjectList;
+    }
+
+    public void setSubjectList(List<Subject> subjectList) {
+        this.subjectList = subjectList;
+    }
 }

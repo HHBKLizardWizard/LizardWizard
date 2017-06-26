@@ -32,5 +32,4 @@ public class LearningSituation
     Integer Farbid;
 
     LearningField learningField;
-    List<LearningTechnique> learningTechniqueList;
 }

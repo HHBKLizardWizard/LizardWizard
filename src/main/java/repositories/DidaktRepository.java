@@ -3,9 +3,6 @@ package repositories;
 import models.reports.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import models.ui_util.Department;
-import models.ui_util.Teacher;
-import models.ui_util.WayOfTeachingProfession;
 import util.DatabaseConnector;
 
 import javax.sql.DataSource;
@@ -71,37 +68,48 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     @Override
-    public ReportData getReportData(String profName, Integer year){
+    public List<Subject> getSubjectList(Profession profession) {
         String sql = "SELECT * FROM tbl_fach\n" +
-                "LEFT JOIN tbl_beruffach\n" +
-                "ON tbl_fach.FID = tbl_beruffach.ID_Fach\n" +
-                "INNER JOIN tbl_uformberuf\n" +
-                "ON tbl_beruffach.ID_UFormBeruf = tbl_uformberuf.UBID\n" +
-                "INNER JOIN tbl_uform\n"+
-                "ON tbl_uformberuf.ID_UForm = tbl_uform.UID\n" +
-                "INNER JOIN tbl_beruf\n" +
-                "ON tbl_uformberuf.ID_Beruf = tbl_beruf.BId\n"+
-                "INNER JOIN tbl_abteilung\n" +
-                "ON tbl_abteilung.Aid = tbl_beruf.ID_Abteilung\n" +
-                "INNER JOIN tbl_lehrer\n" +
-                "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId\n" +
-                "WHERE tbl_beruf.Berufname = ?" +
-                "AND tbl_fach.jahr = ?";
-                ReportData dataSet = null;
-
+                     "INNER JOIN tbl_beruffach\n" +
+                     "ON tbl_fach.FID = tbl_beruffach.ID_Fach\n" +
+                     "INNER JOIN tbl_uformberuf\n" +
+                     "ON tbl_beruffach.ID_UFormBeruf = tbl_uformberuf.UBID\n" +
+                     "WHERE tbl_uformberuf.ID_Beruf = ?";
+        List<Subject> subjects = new ArrayList<>();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, profName);
-            ps.setString(2, year.toString());
+            ps.setInt(1, profession.getId());
             ResultSet rs = ps.executeQuery();
-            dataSet = new ReportData();
 
-            while(rs.next()){
-                Integer aoe = rs.getInt("Jahr");
-
+            while (rs.next()){
+                Subject foo = new Subject(rs.getInt("FID"),
+                                          rs.getInt("Jahr"),
+                                          rs.getInt("Position"),
+                                          rs.getInt("Lernbereich"),
+                                          rs.getString("Bezeichnung"));
+                subjects.add(foo);
             }
-            ReportHeader rh = getReportHeader(rs);
+        }
+        catch (Exception e){
+            e.printStackTrace();;
+        }
+        return subjects;
+    }
 
+    @Override
+    public List<LearningSituation> getLearningSituationList(FieldOfLearning field) {
+        return null;
+    }
+
+    @Override
+    public ReportData getReportData(Profession profession){
+        ReportData dataSet = new ReportData();
+
+        try{
+            for (Subject subject : profession.getSubjectList()) {
+                subject.setAreaOfEducation(dataSet.getAreaOfEducationList().get(subject.getAoeID()-1));
+                dataSet.getAreaOfEducationList().get(subject.getAoeID()-1).getSubjectList().add(subject);
+            }
 
         }
         catch(Exception e){
@@ -112,19 +120,20 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     @Override
-    public Integer getDuration(String profName)
+
+    public List<Integer> getDuration(Integer id)
     {
-        String sql = "SELECT DISTINCT count(Jahr) FROM tbl_beruffach\n" +
+        String sql = "SELECT DISTINCT count(Jahr) AS Dauer FROM tbl_beruffach\n" +
                     "INNER JOIN tbl_uformberuf\n" +
                     "ON tbl_beruffach.ID_UFormBeruf = tbl_uformberuf.UBID\n" +
                     "INNER JOIN tbl_beruf ON tbl_uformberuf.ID_Beruf = tbl_beruf.BId\n" +
-                    "WHERE tbl_beruf.Berufname = ?";
-        Integer duration = null;
+                    "WHERE tbl_beruf.Bid = ?";
+        List<Integer> duration = null;
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, profName);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            duration = rs.getInt("Jahr");
+            Integer foo = rs.getInt("Dauer")
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -133,7 +142,8 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
 
-    private ReportHeader getReportHeader(ResultSet rs){
+    private ReportHeader getReportHeader(){
+        String sql = "SELECTä"
         ReportHeader rh = null;
         try
         {

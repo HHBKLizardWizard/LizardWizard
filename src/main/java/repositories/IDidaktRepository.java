@@ -1,20 +1,21 @@
 package repositories;
 
 import javafx.collections.ObservableList;
-import models.reports.Profession;
-import models.reports.ReportData;
+import models.reports.*;
 
 import java.util.List;
-import javafx.collections.ObservableList;
 
 
 /**
  * Created by walde on 25.06.2017.
  */
 public interface IDidaktRepository {
-    ReportData getReportData(String profName, Integer year);
-    Integer getDuration(String profName);
+    ReportData getReportData(Profession profession);
+    List<Integer> getDuration(Integer id);
     ObservableList<String> getProfessions();
     List<Profession> getProfessionList();
+    List<Subject> getSubjectList(Profession profession);
+    List<FieldOfLearning> getFieldList(Subject subject);
+    List<LearningSituation> getLearningSituationList(FieldOfLearning field);
 }
 

@@ -7,12 +7,23 @@ import java.util.List;
  */
 public class Subject {
     private Integer id;
+    private Integer year;
+    private Integer position;
+    private Integer aoeID;
     private String name;
     private AreaOfEducation areaOfEducation;
     private List<FieldOfLearning> fieldOfLearningList;
 
     public Subject()
     {
+    }
+
+    public Subject(Integer id, Integer year, Integer position, Integer aoeId, String name) {
+        this.id = id;
+        this.year = year;
+        this.position = position;
+        this.aoeID = aoeId;
+        this.name = name;
     }
 
     public Subject(Integer id,
@@ -24,6 +35,30 @@ public class Subject {
         this.name = name;
         this.areaOfEducation = areaOfEducation;
         this.fieldOfLearningList = fieldOfLearningList;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public Integer getAoeID() {
+        return aoeID;
+    }
+
+    public void setAoeID(Integer aoeID) {
+        this.aoeID = aoeID;
     }
 
     public String getName() {
