@@ -34,7 +34,7 @@ public class DatabaseConnector {
         dataSource.setDriverClassName(this.driverClassName);
         dataSource.setUsername("root");
         dataSource.setPassword("");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/user_template_db?serverTimezone=UTC");
 
         return dataSource;
     }

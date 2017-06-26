@@ -48,4 +48,3 @@ CREATE TABLE user_templates
   FOREIGN KEY (FK_TemplateID) REFERENCES templates(PK_ID)
 );
 
-# -- We are done here --

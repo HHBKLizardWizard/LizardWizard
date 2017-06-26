@@ -1,6 +1,9 @@
 package viewmodels;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -71,20 +74,11 @@ public class ApplicationViewModel implements Initializable {
         ReportBuilder reportBuilder = new ReportBuilder();
 
         try {
-
-            List<String> professionList = didaktRepository.getProfessions();
-
-            for (String string : professionList) {
-                System.out.println(string);
-            }
-
-
-            /*
             PdfDocument pdf = reportBuilder.createPdf("test.pdf");
 
             //Document document = reportBuilder.createAnnualReport(pdf, reportData);
             Document document = reportBuilder.createDetailReport(pdf, reportData);
-            document.close();*/
+            document.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,6 +89,7 @@ public class ApplicationViewModel implements Initializable {
         didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
         userRepository = new UserRepository(dbConnector.getUserDataSource());
 
+        FXCollections.observableArrayList();
         professionList = didaktRepository.getProfessions();
     }
 

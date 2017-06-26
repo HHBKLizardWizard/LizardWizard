@@ -116,9 +116,11 @@ public class ReportBuilder {
 
         table.setWidthPercent(100);
 
+        List<LearningSituation>  testList = reportData.getLearningSituations();
+
         for (LearningSituation learningSituation : reportData.getLearningSituations()) {
             this.createPdfHeader(document, reportData.getReportHeader());
-            detailReport.createDetailReport(reportData);
+            //detailReport.createDetailReport(reportData);
         }
 
         document.add(new Paragraph(""));
