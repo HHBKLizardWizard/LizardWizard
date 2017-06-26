@@ -11,6 +11,21 @@ public class Subject {
     private AreaOfEducation areaOfEducation;
     private List<FieldOfLearning> fieldOfLearningList;
 
+    public Subject()
+    {
+    }
+
+    public Subject(Integer id,
+                   String name,
+                   AreaOfEducation areaOfEducation,
+                   List<FieldOfLearning> fieldOfLearningList)
+    {
+        this.id = id;
+        this.name = name;
+        this.areaOfEducation = areaOfEducation;
+        this.fieldOfLearningList = fieldOfLearningList;
+    }
+
     public String getName() {
         return name;
     }

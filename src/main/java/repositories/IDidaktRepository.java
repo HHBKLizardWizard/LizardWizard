@@ -1,5 +1,7 @@
 package repositories;
 
+import models.reports.ReportData;
+
 import java.util.List;
 
 /**
@@ -7,5 +9,7 @@ import java.util.List;
  */
 public interface IDidaktRepository {
     List<String> getProfessions();
+    ReportData getReportData(String profName, Integer year);
+    Integer getAusbildungsdauer(String profName);
 }
 
