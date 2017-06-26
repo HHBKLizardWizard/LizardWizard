@@ -7,9 +7,12 @@ import models.ui_util.Teacher;
 import models.ui_util.WayOfTeachingProfession;
 import util.DatabaseConnector;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,22 +21,33 @@ import java.util.List;
 public class DidaktRepository implements IDidaktRepository {
     Connection con = null;
 
-    public DidaktRepository(Connection con) {
+    public DidaktRepository(Connection con)
+    {
         this.con = con;
+        DatabaseConnector databaseConnector = new DatabaseConnector();
+    }
+
+    public DidaktRepository(DataSource dataSource) {
+        try {
+            this.con = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public List<String> getProfessions() {
-        String sql = "SELECT Berufname from tbl_beruf";
-        List<String> professionList = null;
+        String sql = "SELECT Berufname FROM tbl_beruf";
+        List<String> professionList = new ArrayList<>();
+
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 professionList.add(rs.getString("Berufname"));
-            };
-        }catch (Exception e){
-            System.out.println(e);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
         return professionList;
     }

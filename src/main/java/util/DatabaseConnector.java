@@ -3,36 +3,39 @@ package util;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Created by iho on 22.06.2017.
  */
 public class DatabaseConnector {
-    public Connection con = null;
-    private static final String driverClassName = "com.mysql.jdbc.Driver";
-    private static final String url =
-            "jdbc:mysql://localhost:3306/db_didakt?serverTimezone=UTC";
-    private static final String dbUsername = "root";
-    private static final String dbPassword = "";
 
-    private DataSource getDataSource() {
+    private final String driverClassName = "com.mysql.jdbc.Driver";
+
+    public DatabaseConnector() {
+
+    }
+
+    public DataSource getDidaktDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setUsername(dbUsername);
-        dataSource.setPassword(dbPassword);
-        dataSource.setUrl(url);
+        dataSource.setDriverClassName(this.driverClassName);
+        dataSource.setUsername("root");
+        dataSource.setPassword("");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/didakt?serverTimezone=UTC");
 
         return dataSource;
     }
 
-    public Connection getConnection() {
+    public DataSource getUserDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(this.driverClassName);
+        dataSource.setUsername("root");
+        dataSource.setPassword("");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/");
 
-        try {
-            this.con = this.getDataSource().getConnection();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return con;
+        return dataSource;
     }
 }
