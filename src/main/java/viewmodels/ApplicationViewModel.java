@@ -62,10 +62,7 @@ public class ApplicationViewModel implements Initializable {
     public void createAnnualReport() {
         ReportData reportData = new TestData().getReportDataExample();
 
-        // get data from database
-
-
-        // build report
+        // get data from database and build report
         ReportBuilder reportBuilder = new ReportBuilder();
 
         try {
@@ -79,7 +76,6 @@ public class ApplicationViewModel implements Initializable {
         }
     }
 
-    //  @Override
     public void initialize(URL location, ResourceBundle resources){
 
     }

@@ -80,6 +80,7 @@ public class DidaktRepository implements IDidaktRepository {
     public WayOfTeachingProfession getWayOfTeachingProfession(Integer id){
         con = databaseConnector.getConnection();
         String sql = "SELECT";
+
         return null;
     }
 }
