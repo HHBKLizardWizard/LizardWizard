@@ -43,6 +43,7 @@ public class DidaktRepository implements IDidaktRepository {
     public Department getDepartment(Integer bid)
     {
         con = databaseConnector.getConnection();
-        String sql = "SELECT * FROM"
+        String sql = "SELECT * FROM";
+        return null;
     }
 }

@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.User;
+import models.UserRights;
 import org.mindrot.jbcrypt.BCrypt;
 import repositories.IUserRepository;
 
@@ -46,9 +47,13 @@ public class LoginViewModel implements Initializable {
         lblLoginFailed.setVisible(false);
 
         String checkUser = txtLogin.getText();
+
         String checkPw = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
 
         User user = userRepository.getUserbyUsername(checkUser);
+        user = new User("root", "root", "root", UserRights.ADMIN,BCrypt.hashpw("root", BCrypt.gensalt()));
+
+        System.out.println(user.getPassword());
 
         if(user == null || !checkPw.equals(user.getPassword())){
             //user not found error or incorrect password
@@ -65,7 +70,7 @@ public class LoginViewModel implements Initializable {
 
             FXMLLoader loader = new FXMLLoader();
 
-            loader.setLocation(getClass().getClassLoader().getResource("application.fxml"));
+            loader.setLocation(getClass().getClassLoader().getResource("user_edit.fxml"));
             loader.load();
 
             UserEditViewModel userEditViewModel = loader.getController();
