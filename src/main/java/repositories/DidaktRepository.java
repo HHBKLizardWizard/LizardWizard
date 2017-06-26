@@ -1,11 +1,8 @@
 package repositories;
 
-import models.reports.AreaOfEducation;
+import models.reports.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import models.reports.ReportData;
-import models.reports.ReportHeader;
-import models.reports.Subject;
 import models.ui_util.Department;
 import models.ui_util.Teacher;
 import models.ui_util.WayOfTeachingProfession;
@@ -16,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by walde on 25.06.2017.
@@ -77,15 +75,9 @@ public class DidaktRepository implements IDidaktRepository {
             ps.setString(2, year.toString());
             ResultSet rs = ps.executeQuery();
             dataSet = new ReportData();
-            dataSet.getAreaOfEducationList().add(new AreaOfEducation
-                                                         ("Berufsbezogerner " +
-                                                                  "Lernbereich"));
-            dataSet.getAreaOfEducationList().add(new AreaOfEducation
-                                                         ("Berufsübergreifender" +
-                                                          "Lernbereich"));
-            dataSet.getAreaOfEducationList().add(new AreaOfEducation
-                                                         ("Differenzierungsbereich"));
+
             while(rs.next()){
+                Integer aoe = rs.getInt("Jahr");
 
             }
             ReportHeader rh = getReportHeader(rs);
@@ -145,6 +137,23 @@ public class DidaktRepository implements IDidaktRepository {
         return  rh;
     }
 
+   /* private Subject getSubject(ResultSet rs, AreaOfEducation area){
+        Subject foo = null;
+        try {
+            foo = new Subject(rs.getInt("FId"),
+                                      rs.getString("Bezeichnung"),
+                                      area,
+                                      getFieldOfLearning(rs));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return foo;
+    }
+
+    private List<FieldOfLearning> getFieldOfLearning(){
+        return null;
+    }
+ää
 
    /* public Department getDepartment(Integer bid)
     {
