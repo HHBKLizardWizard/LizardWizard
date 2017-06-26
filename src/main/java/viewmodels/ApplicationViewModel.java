@@ -19,14 +19,12 @@ import models.User;
 import models.UserRights;
 import models.reports.ReportData;
 import reports.ReportBuilder;
-import repositories.DidaktRepository;
-import repositories.IDidaktRepository;
-import repositories.IUserRepository;
-import repositories.UserRepository;
+import repositories.*;
 import util.DatabaseConnector;
 import util.TestData;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -60,22 +58,23 @@ public class ApplicationViewModel implements Initializable {
     private ObservableList<String> professionList;
     private IDidaktRepository didaktRepository;
     private IUserRepository userRepository;
+    private ITemplateRepository templateRepository;
     private DatabaseConnector dbConnector;
+    private User user;
 
-    // Class        : createAnnualReport
-    // Beschreibung : Generiert das pdf
+    /**
+     * Generiert das pdf
+     */
     public void createAnnualReport() {
         ReportData reportData = new TestData().getReportDataExample();
 
         // get data from database and build report
         ReportBuilder reportBuilder = new ReportBuilder();
-        didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
 
         try {
             PdfDocument pdf = reportBuilder.createPdf("test.pdf");
-
-            //Document document = reportBuilder.createAnnualReport(pdf, reportData);
-            Document document = reportBuilder.createDetailReport(pdf, reportData);
+            Document document = reportBuilder.createAnnualReport(pdf, reportData);
+            //Document document = reportBuilder.createDetailReport(pdf, reportData);
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,6 +85,7 @@ public class ApplicationViewModel implements Initializable {
         dbConnector = new DatabaseConnector();
         didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
         userRepository = new UserRepository(dbConnector.getUserDataSource());
+        templateRepository = new TemplateRepository(dbConnector.getUserDataSource());
 
         FXCollections.observableArrayList();
         professionList = didaktRepository.getProfessions();

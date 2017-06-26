@@ -5,7 +5,7 @@ package models;
  */
 public class Template {
     private long id;
-    private String  templateName;
+    private String templateName;
     private boolean scenario;
     private boolean competences;
     private boolean materials;
@@ -13,15 +13,17 @@ public class Template {
     private boolean results;
     private boolean contents;
     private boolean notes;
-    private boolean achievments;
+    private boolean achievements;
+    private User user;
 
     public Template(){
-
+        // Nothing to do here
     }
 
-    public Template(boolean scenario, boolean competences, boolean materials, boolean technics,
-                    boolean results, boolean contents, boolean notes, boolean achievments) {
+    public Template(String templateName, boolean scenario, boolean competences, boolean materials, boolean technics,
+                    boolean results, boolean contents, boolean notes, boolean achievements, User user) {
 
+        this.templateName = templateName;
         this.scenario = scenario;
         this.competences = competences;
         this.materials = materials;
@@ -29,7 +31,8 @@ public class Template {
         this.results = results;
         this.contents = contents;
         this.notes = notes;
-        this.achievments = achievments;
+        this.achievements = achievements;
+        this.user = user;
     }
 
     public String getTemplateName() {
@@ -96,12 +99,12 @@ public class Template {
         this.notes = notes;
     }
 
-    public boolean isAchievments() {
-        return achievments;
+    public boolean isAchievements() {
+        return achievements;
     }
 
-    public void setAchievments(boolean achievments) {
-        this.achievments = achievments;
+    public void setAchievements(boolean achievements) {
+        this.achievements = achievements;
     }
 
     public long getId() {

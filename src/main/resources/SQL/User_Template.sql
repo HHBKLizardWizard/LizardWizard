@@ -27,14 +27,14 @@ CREATE TABLE users
 CREATE TABLE templates
 (
   pk_id int AUTO_INCREMENT,
-  scenario boolean,
-  competences boolean,
-  materials boolean,
-  technics boolean,
-  results boolean,
-  contents boolean,
-  notes boolean,
-  achievments boolean,
+  scenario boolean NOT NULL,
+  competences boolean NOT NULL,
+  materials boolean NOT NULL,
+  technics boolean NOT NULL,
+  results boolean NOT NULL,
+  contents boolean NOT NULL,
+  notes boolean NOT NULL,
+  achievements boolean NOT NULL,
   PRIMARY KEY (PK_ID)
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE user_templates
 (
   fk_userid int,
   fk_templateid int,
-  templatename varchar(30),
+  templatename varchar(30) NOT NULL,
   FOREIGN KEY (fk_userid) REFERENCES users(pk_id),
   FOREIGN KEY (fk_templateid) REFERENCES templates(pk_id)
 );

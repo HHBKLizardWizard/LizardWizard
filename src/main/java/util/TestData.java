@@ -44,7 +44,7 @@ public class TestData {
         learningSituationList.add(this.getLearningSituationExample("LS 1.6: Lorem Ipsum", 5, 8, 6));
 
         FieldOfLearning fieldOfLearning = new FieldOfLearning();
-        fieldOfLearning.setLfNmr(1);
+        fieldOfLearning.setLfNr(1);
         fieldOfLearning.setName(name);
         fieldOfLearning.setLessonHours(60);
         fieldOfLearning.setLearningSituationList(learningSituationList);
