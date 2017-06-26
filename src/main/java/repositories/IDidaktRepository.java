@@ -1,11 +1,11 @@
 package repositories;
 
-import java.util.List;
+import javafx.collections.ObservableList;
 
 /**
  * Created by walde on 25.06.2017.
  */
 public interface IDidaktRepository {
-    List<String> getProfessions();
+    ObservableList<String> getProfessions();
 }
 

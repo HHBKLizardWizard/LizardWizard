@@ -5,7 +5,7 @@ created by Sil van Vliet
 -->
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -46,11 +46,11 @@ created by Sil van Vliet
       <TextField fx:id="txtLastName" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <TextField fx:id="txtFirstName" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
       <TextField fx:id="txtUsername" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <ChoiceBox fx:id="cbRole" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
       <Button fx:id="btnSave" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveUserAction" text="Speichern" GridPane.rowIndex="9" />
       <Button fx:id="btnBack" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#closeButtonAction" text="Züruck" GridPane.columnIndex="2" GridPane.rowIndex="9" />
       <PasswordField maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
       <TextField fx:id="txtUserId" visible="false" GridPane.columnIndex="1" />
       <Label fx:id="lblPwInfo" text="Only to be used to update the existing password. Otherwise leave empty." visible="false" GridPane.columnSpan="3" GridPane.rowIndex="4" />
+      <ComboBox fx:id="cbRole" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
    </children>
 </GridPane>

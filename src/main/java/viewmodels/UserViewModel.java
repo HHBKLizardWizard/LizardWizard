@@ -16,6 +16,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.User;
 import models.UserRights;
+import repositories.IUserRepository;
+import repositories.UserRepository;
+import util.DatabaseConnector;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,6 +44,8 @@ public class UserViewModel implements Initializable {
     // Beschreibung : Füllt die benutzer tablle mit alle benutzer vom DatenBank
     public void initialize(URL location, ResourceBundle resources) {
         //todo: instead of what is below, get all users from DB
+        IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
+        //ObservableList<User> = userRepository.getAllUSers????
         userList.add(new User("Sil123","Sil","van Vliet", UserRights.ADMIN, "qwe"));
         userList.add(new User("Ingo123","Ingo","Hotischeck", UserRights.ADMIN, "qwe"));
 

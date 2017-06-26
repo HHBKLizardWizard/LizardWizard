@@ -1,5 +1,7 @@
 package repositories;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.ui_util.Department;
 import models.ui_util.Teacher;
 import models.ui_util.WayOfTeachingProfession;
@@ -10,8 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by walde on 25.06.2017.
@@ -29,9 +29,9 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     @Override
-    public List<String> getProfessions() {
+    public ObservableList<String> getProfessions() {
         String sql = "SELECT Berufname FROM tbl_beruf";
-        List<String> professionList = new ArrayList<>();
+        ObservableList<String> professionList = FXCollections.observableArrayList();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
