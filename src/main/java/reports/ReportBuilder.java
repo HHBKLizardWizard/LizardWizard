@@ -100,8 +100,7 @@ public class ReportBuilder {
         table.setFixedLayout();
 
         this.createPdfHeader(document, reportData.getReportHeader());
-        annualReport.createAnnualReportHeader();
-        annualReport.createAnnualReportBody(reportData);
+        annualReport.createAnnualReport(reportData);
 
         document.add(new Paragraph(""));
         document.add(table);

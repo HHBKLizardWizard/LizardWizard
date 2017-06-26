@@ -36,8 +36,10 @@ public class UserEditViewModel implements Initializable {
     @FXML
     private Label lblPwInfo;
 
-    // Class        : initialize
-    // Beschreibung : Füllt die ChoiceBoxes mit allen Rechten.
+    /**
+     *   Class        : initialize
+     *   Beschreibung : Füllt die ChoiceBoxes mit allen Rechten.
+     */
     public void initialize(URL location, ResourceBundle resources) {
         ObservableList<UserRights> rightsList = FXCollections.observableArrayList();
         rightsList.addAll(UserRights.ADMIN, UserRights.LEHRER, UserRights.AZUBI);
@@ -45,16 +47,18 @@ public class UserEditViewModel implements Initializable {
         cbRole.getSelectionModel().select(0);
     }
 
-    // Class        : setUserData
-    // Beschreibung : Wird im UserViewModel benutzt (deswegen public).
-    //                Füllt alle Felder mit den selektierten Benutzerdaten.
+    /**
+     *   Class        : setUserData
+     *   Beschreibung : Wird im UserViewModel benutzt (deswegen public).
+     *                  Füllt alle Felder mit den selektierten Benutzerdaten.
+     */
     public void setUserData(String txtUserId) {
         IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
         lblPwInfo.setVisible(true);
 
         //todo: get user by userID
         //User user = userRepository.getUserById(Integer.valueOf(txtUserId));
-        User user = new User("Sil123","Sil","van Vliet", UserRights.AZUBI, "qwe");
+        User user = new User("Sil123","Sil","van Vliet", "qwe", UserRights.AZUBI);
 
         txtFirstName.setText(user.getFirstname());
         txtLastName.setText(user.getLastname());
@@ -66,20 +70,22 @@ public class UserEditViewModel implements Initializable {
         //otherwise he should leave it blank and only user info will be update.
     }
 
-
-    //needs to be public due to being used in UserViewModel
-    // Class        : setUserId
-    // Beschreibung : Wird im UserViewModel benutzt (deswegen public). Setzt die UserID in ein
-    //                "hidden" Feld, so dass in dieser View die (wenn ausgewählt) ausgewählten
-    //                Benutzerdaten angezeigt und aktualisiert werden können.
+    /**
+     *   Class        : setUserId
+     *   Beschreibung : Wird im UserViewModel benutzt (deswegen public). Setzt die UserID in ein
+     *                  "hidden" Feld, so dass in dieser View die (wenn ausgewählt) ausgewählten
+     *                  Benutzerdaten angezeigt und aktualisiert werden können.
+     */
     public void setUserId(Integer userId) {
         txtUserId.setText(String.valueOf(userId));
     }
 
-    // Class        : saveUserAction
-    // Beschreibung : Nach der Überprüfung, ob alle Felder richtig gefüllt sind, wird überprüft,
-    //                ob es sich um eine Benutzeraktualisierung oder um das Anlegen eines neuen Benutzers
-    //                handelt und so entprechend die richtige Aktion ausführt
+    /**
+     *   Class        : saveUserAction
+     *   Beschreibung : Nach der Überprüfung, ob alle Felder richtig gefüllt sind, wird überprüft,
+     *                  ob es sich um eine Benutzeraktualisierung oder um das Anlegen eines neuen Benutzers
+     *                  handelt und so entprechend die richtige Aktion ausführt.
+     */
     public void saveUserAction() {
         UserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
 
@@ -99,25 +105,29 @@ public class UserEditViewModel implements Initializable {
             if(userId > 0){
                 //User was found
                 User user = userRepository.getUserById(userId);
-                user.setFirstname(fName);
-                user.setLastname(lName);
-                user.setUsername(userName);
-                user.setRights(uRight);
 
-                //check if password field was filled, if so, update
-                if(!password.equals("")){
-                    String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-                    user.setPassword(hashed);
+                //making sure the User was really found
+                if(user != null){
+                    user.setFirstname(fName);
+                    user.setLastname(lName);
+                    user.setUsername(userName);
+                    user.setRights(uRight);
+
+                    //check if password field was filled, if so, update
+                    if(!password.equals("")){
+                        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+                        user.setPassword(hashed);
+                    }
+
+                    //update the User
+                    userRepository.updateUser(user);
+
+                    msgText = "The User was successfully created.";
+                    msgTitle = "User created";
                 }
-
-                //update the User
-                userRepository.updateUser(user);
-
-                msgText = "The User was successfully created.";
-                msgTitle = "User created";
             }else{
                 //No id found => creating new User
-                userRepository.registerUser(new User(userName,fName,lName,uRight,password));
+                userRepository.registerUser(new User(userName,fName,lName,password, uRight));
             }
 
             //success message
@@ -129,11 +139,14 @@ public class UserEditViewModel implements Initializable {
         }
     }
 
-    // Class        : checkFieldsAction
-    // Beschreibung : Überprüft, ob alle Felder gefüllt sind
-    // Extra info   : Passwortfeld bei der Benutzeraktualisierung muss nicht
-    //                gefüllt sein. Wenn es leer bleibt, blebt das vorherige Passwort
-    //                bestehen.
+    /**
+     *   Class        : checkFieldsAction
+     *   Beschreibung : Überprüft, ob alle Felder gefüllt sind.
+     *   Extra info   : Passwortfeld bei der Benutzeraktualisierung muss nicht
+     *                  handelt und so entprechend die richtige Aktion ausführt.
+     *                  gefüllt sein. Wenn es leer bleibt, blebt das vorherige Passwort
+     *                  bestehen.
+     */
     private boolean checkFieldsAction() {
         Integer userId = Integer.parseInt(txtUserId.getText());
         Boolean allGood = true;
@@ -154,15 +167,10 @@ public class UserEditViewModel implements Initializable {
             emptyFields = emptyFields.concat("\nName");
         }
 
-        if(cbRole.getSelectionModel().getSelectedIndex() < 1) {
-            allGood = false;
-            emptyFields = emptyFields.concat("\nRolle");
-        }
-
         if(userId == 0) {
             if(txtPassword.getText().equals("")){
                 allGood = false;
-                emptyFields = emptyFields.concat("\nPaswort");
+                emptyFields = emptyFields.concat("\nPasswort");
             }
         }
 
@@ -173,12 +181,13 @@ public class UserEditViewModel implements Initializable {
             alert.setContentText(emptyFields);
             alert.showAndWait();
         }
-
         return allGood;
     }
 
-    // Class        : closeButtonAction
-    // Beschreibung : Schließt die User Edit Übersicht
+    /**
+     *   Class        : closeButtonAction
+     *   Beschreibung : Schließt die User Edit Übersicht.
+     */
     public void closeButtonAction(){
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();

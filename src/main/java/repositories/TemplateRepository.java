@@ -1,6 +1,9 @@
 package repositories;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.Template;
+import models.User;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -24,6 +27,46 @@ public class TemplateRepository implements ITemplateRepository
         }
     }
 
+    public ObservableList<Template> getTemplatesByUser(User user) {
+        ObservableList<Template> templateList = FXCollections.observableArrayList();
+
+        String fields = "ut.templatename, t.achievements, t.competences, t.contents," +
+                " t.materials, t.notes, t.results, t.scenario, t.technics";
+
+        String sql = "SELECT " + fields +
+                " FROM templates as t " +
+                "LEFT JOIN user_templates as ut " +
+                "ON ut.fk_userid = ? " +
+                "AND ut.fk_templateid = t.pk_id";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, user.getId());
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                Template template = new Template(
+                        rs.getString("templatename"),
+                        rs.getBoolean("scenario"),
+                        rs.getBoolean("competences"),
+                        rs.getBoolean("materials"),
+                        rs.getBoolean("technics"),
+                        rs.getBoolean("results"),
+                        rs.getBoolean("contents"),
+                        rs.getBoolean("notes"),
+                        rs.getBoolean("achievements"),
+                        user
+                );
+
+                templateList.add(template);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return templateList;
+    }
+
     public Template getTemplate()
     {
 
@@ -37,14 +80,14 @@ public class TemplateRepository implements ITemplateRepository
 
 
             template = new Template(
-                    rs.getBoolean("scenario"),
+                  /*  rs.getBoolean("scenario"),
                     rs.getBoolean("competences"),
                     rs.getBoolean("materials"),
                     rs.getBoolean("technics"),
                     rs.getBoolean("results"),
                     rs.getBoolean("contents"),
                     rs.getBoolean("notes"),
-                    rs.getBoolean("achievments")
+                    rs.getBoolean("achievements")*/
             );
         }
         catch (Exception e)
@@ -59,7 +102,7 @@ public class TemplateRepository implements ITemplateRepository
     {
         String sql = "INSERT INTO templates (scenario, competences, materials, " +
                         "technics, results, contents, " +
-                        "notes, achievments) VALUES (?,?,?,?,?,?,?,?)";
+                        "notes, achievements) VALUES (?,?,?,?,?,?,?,?)";
         Template template = null;
         try
         {
@@ -71,7 +114,7 @@ public class TemplateRepository implements ITemplateRepository
             ps.setString(5, String.valueOf(template.isResults()));
             ps.setString(6, String.valueOf(template.isContents()));
             ps.setString(7, String.valueOf(template.isNotes()));
-            ps.setString(8, String.valueOf(template.isAchievments()));
+            ps.setString(8, String.valueOf(template.isAchievements()));
 
 
             ps.executeQuery();
@@ -95,7 +138,7 @@ public class TemplateRepository implements ITemplateRepository
                         "results      = ?" +
                         "contents     = ?" +
                         "notes        = ?" +
-                        "achievments  = ?";
+                        "achievements  = ?";
 
         Template template = null;
 
@@ -108,7 +151,7 @@ public class TemplateRepository implements ITemplateRepository
             ps.setString(5, String.valueOf(template.isResults()));
             ps.setString(6, String.valueOf(template.isContents()));
             ps.setString(7, String.valueOf(template.isNotes()));
-            ps.setString(8, String.valueOf(template.isAchievments()));
+            ps.setString(8, String.valueOf(template.isAchievements()));
 
             ResultSet rs = ps.executeQuery();
 

@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import models.User;
 import models.UserRights;
 import repositories.IUserRepository;
+import repositories.UserRepository;
+import util.DatabaseConnector;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,7 +22,7 @@ import java.util.ResourceBundle;
  */
 public class LoginViewModel implements Initializable {
 
-    private IUserRepository userRepository;
+    private IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
 
     @FXML
     private TextField txtLogin;
@@ -35,12 +37,12 @@ public class LoginViewModel implements Initializable {
     private Label lblLoginFailed;
 
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
-
-    // Class        : LoginAction
-    // Beschreibung : Benutzer Login Überprüfung
+    /**
+     *   Class        : LoginAction
+     *   Beschreibung : Benutzer Login Überprüfung
+     */
     public void loginAction(){
         lblLoginFailed.setVisible(false);
 
@@ -53,20 +55,22 @@ public class LoginViewModel implements Initializable {
 
             //todo wenn das obere gefxed ist, untere: 1. zeile comment weg nehmen, 2. zeile löschen
             //User user = userRepository.getUserByUsername(checkUser);
-            User user = new User(1, "root","root","root", UserRights.ADMIN, "root");
+            User user = new User(1, "root","root","root", "root", UserRights.ADMIN);
 
             if (user == null || !checkPw.equals(user.getPassword())) {
                 //user not found error or incorrect password
                 lblLoginFailed.setVisible(true);
             } else {
                 //open templates window
-                showApplication(user.getId());
+                showApplication(user);
             }
         }
     }
 
-    // Class        : checkLoginFields
-    // Beschreibung : Überprüfung, ob Benutzername- und Passwortfeld gefüllt sind
+    /**
+     *   Class        : checkLoginFields
+     *   Beschreibung : Überprüfung, ob Benutzername- und Passwortfeld gefüllt sind
+     */
     private boolean checkLoginFields() {
         if(!txtLogin.getText().equals("") && (txtPassword != null && !txtPassword.getText().equals(""))){
             return true;
@@ -80,9 +84,11 @@ public class LoginViewModel implements Initializable {
         }
     }
 
-    // Class        : showApplication
-    // Beschreibung : Login Fenster schließen und Application Fenster öffnen
-    private void showApplication(Integer userId) {
+    /**
+     *   Class        : showApplication
+     *   Beschreibung : Login Fenster schließen und Application Fenster öffnen
+     */
+    private void showApplication(User user) {
         try{
             FXMLLoader loader = new FXMLLoader();
 
@@ -90,7 +96,7 @@ public class LoginViewModel implements Initializable {
             loader.load();
 
             ApplicationViewModel applicationViewModel = loader.getController();
-            applicationViewModel.setUserId(userId);
+            applicationViewModel.setUser(user);
 
             //Open new Window with correct title
             Parent p = loader.getRoot();

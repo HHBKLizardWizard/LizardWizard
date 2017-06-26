@@ -24,14 +24,25 @@ import java.util.stream.Collectors;
 public class AnnualReport {
 
     private Table table;
+    private List<LearningSituationTableElement> learningSituationList = null;
 
     public AnnualReport(Table table) {
         this.table = table;
     }
 
+    public List<LearningSituationTableElement> getLearningSituationList() {
+        return this.learningSituationList;
+    }
+
+    public void createAnnualReport(ReportData reportData) {
+        this.learningSituationList = new ArrayList<>();
+        this.createAnnualReportHeader();
+        this.createAnnualReportBody(reportData);
+    }
+
     /**
-     * creates the first two rows of an annual report containing the weeks of the school block
-     * @return returns a this.table with two this.table rows containing the weeks of the school block
+     * creates the first two rows of an annual report containing the 12 weeks of the school block
+     * @return returns a table with two rows containing the weeks of the school block
      */
     public void createAnnualReportHeader() {
         Paragraph weeks = new Paragraph("Unterrichtswochen")
@@ -100,6 +111,7 @@ public class AnnualReport {
                     fieldOfLearning.getLearningSituationList());*/
             List<LearningSituation> sortedList = this.sortLearningSituationsByLsnr(fieldOfLearning.getLearningSituationList());
             List<LearningSituationTableElement> filledList = this.fillWithPlaceholders(sortedList);
+            this.learningSituationList.addAll(filledList);
 
             for (LearningSituationTableElement learningSituation : filledList) {
                 this.insertLearningSituation(learningSituation);
