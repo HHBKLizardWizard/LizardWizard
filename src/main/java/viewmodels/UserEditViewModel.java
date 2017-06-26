@@ -28,7 +28,7 @@ public class UserEditViewModel implements Initializable {
     private PasswordField txtPassword;
 
     @FXML
-    private ChoiceBox<UserRights> cbRole; //@todo define what type it is.
+    private ComboBox<UserRights> cbRole;
 
     @FXML
     private Button btnSave, btnBack;
@@ -42,6 +42,7 @@ public class UserEditViewModel implements Initializable {
         ObservableList<UserRights> rightsList = FXCollections.observableArrayList();
         rightsList.addAll(UserRights.ADMIN, UserRights.LEHRER, UserRights.AZUBI);
         cbRole.setItems(rightsList);
+        cbRole.getSelectionModel().select(0);
     }
 
     // Class        : setUserData
@@ -58,9 +59,10 @@ public class UserEditViewModel implements Initializable {
         txtFirstName.setText(user.getFirstname());
         txtLastName.setText(user.getLastname());
         txtUsername.setText(user.getUsername());
+
         cbRole.getSelectionModel().select(user.getRights());
 
-        //password is never shown. if passwaord needs to be updated then Admin fills this field
+        //password is never shown. if password needs to be updated then Admin fills this field
         //otherwise he should leave it blank and only user info will be update.
     }
 

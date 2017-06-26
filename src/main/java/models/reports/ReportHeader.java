@@ -10,6 +10,22 @@ public class ReportHeader {
     private String classForm;
     private String educationalSupervisor;
 
+    public ReportHeader() {
+        // Nothing to do here
+    }
+
+    public ReportHeader(String department,
+                        String job,
+                        int yearOfTraining,
+                        String classForm, String educationalSupervisor)
+    {
+        this.department = department;
+        this.job = job;
+        this.yearOfTraining = yearOfTraining;
+        this.classForm = classForm;
+        this.educationalSupervisor = educationalSupervisor;
+    }
+
     public String getEducationalSupervisor() {
         return educationalSupervisor;
     }

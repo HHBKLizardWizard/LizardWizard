@@ -18,7 +18,6 @@ import models.Template;
 import models.User;
 import models.UserRights;
 import models.reports.ReportData;
-import models.ui_util.Profession;
 import reports.ReportBuilder;
 import repositories.DidaktRepository;
 import repositories.IDidaktRepository;
@@ -28,7 +27,6 @@ import util.DatabaseConnector;
 import util.TestData;
 
 import java.net.URL;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -39,13 +37,13 @@ import java.util.ResourceBundle;
 public class ApplicationViewModel implements Initializable {
 
     @FXML
-    private ChoiceBox<String> cbSector; //@todo define what type it is?
+    private ComboBox<String> cbSector;
 
     @FXML
-    private ChoiceBox<Integer> cbYear;
+    private ComboBox<Integer> cbYear;
 
     @FXML
-    private ChoiceBox<Template> cbTemplate;
+    private ComboBox<Template> cbTemplate;
 
     @FXML
     private Button btnExport;
@@ -56,14 +54,13 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private SeparatorMenuItem smiLine;
 
-    public ObservableList<String> professions;
-    private List<String> professionList;
+    @FXML
+    private TextField txtUserId;
+
+    private ObservableList<String> professionList;
     private IDidaktRepository didaktRepository;
     private IUserRepository userRepository;
     private DatabaseConnector dbConnector;
-
-    @FXML
-    private TextField txtUserId;
 
     // Class        : createAnnualReport
     // Beschreibung : Generiert das pdf
@@ -72,6 +69,7 @@ public class ApplicationViewModel implements Initializable {
 
         // get data from database and build report
         ReportBuilder reportBuilder = new ReportBuilder();
+        didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
 
         try {
             PdfDocument pdf = reportBuilder.createPdf("test.pdf");
@@ -91,8 +89,9 @@ public class ApplicationViewModel implements Initializable {
 
         FXCollections.observableArrayList();
         professionList = didaktRepository.getProfessions();
+        cbSector.setItems(professionList);
+        cbSector.getSelectionModel().select(0);
     }
-
 
     // Class        : closeButtonAction
     // Beschreibung : Schließt das Programm

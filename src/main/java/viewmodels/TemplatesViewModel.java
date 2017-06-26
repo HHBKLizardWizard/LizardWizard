@@ -2,10 +2,7 @@ package viewmodels;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,10 +17,10 @@ public class TemplatesViewModel implements Initializable {
                      chk_produkt, chk_inhalte, chk_hinweis, chk_leistung;
 
     @FXML
-    private ChoiceBox cbTemplate;
+    private ComboBox cbTemplate;
 
     @FXML
-    private ChoiceBox cbGroup;
+    private ComboBox cbGroup;
 
     @FXML
     private TextField txtTempName;
