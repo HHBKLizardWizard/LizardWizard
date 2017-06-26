@@ -1,5 +1,6 @@
 package models.reports;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,6 +10,16 @@ public class AreaOfEducation {
 
     private String name;
     private List<Subject> subjectList;
+
+    public AreaOfEducation()
+    {
+    }
+
+    public AreaOfEducation(String name)
+    {
+        this.name = name;
+        subjectList = new ArrayList<>();
+    }
 
     public String getName() {
         return name;
