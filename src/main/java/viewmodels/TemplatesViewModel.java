@@ -35,4 +35,8 @@ public class TemplatesViewModel implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
     }
+
+    // Class        :
+    // Beschreibung :
+
 }
