@@ -205,29 +205,4 @@ public class TemplateRepository implements ITemplateRepository
         return template;
 
     }
-
-    public boolean deleteTemplate()
-    {
-        String sql = "DELETE FROM templates WHERE pk_id = ?";
-
-        Template template = null;
-
-        try
-        {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, String.valueOf(template.getId()));
-
-            ps.executeQuery();
-
-        }
-        catch (Exception e)
-        {
-            System.out.println(e);
-            return false;
-        }
-
-        return true;
-    }
-
-
 }

@@ -103,17 +103,10 @@ public class ApplicationViewModel implements Initializable {
         ReportData reportData = new TestData().getReportDataExample();
         
         // get data from database and build report
-        ReportBuilder reportBuilder = new ReportBuilder();
+
         didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
 
-        try {
-            PdfDocument pdf = reportBuilder.createPdf("test.pdf");
-            Document document = reportBuilder.createAnnualReport(pdf, reportData);
-            //Document document = reportBuilder.createDetailReport(pdf, reportData);
-            document.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport();
     }
 
     /**

@@ -9,7 +9,7 @@ import javax.sql.DataSource;
  */
 public class DatabaseConnector {
 
-    private final String driverClassName = "com.mysql.jdbc.Driver";
+    private final String driverClassName = "com.mysql.cj.jdbc.Driver";
 
     public DatabaseConnector() {
 
