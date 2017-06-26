@@ -22,7 +22,9 @@ import models.reports.ReportData;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import reports.ReportBuilder;
 import repositories.DidaktRepository;
+import repositories.IDidaktRepository;
 import repositories.IUserRepository;
+import repositories.UserRepository;
 import util.DatabaseConnector;
 import util.TestData;
 
@@ -37,8 +39,6 @@ import java.util.ResourceBundle;
  * Created by iho on 20.06.2017.
  */
 public class ApplicationViewModel implements Initializable {
-
-    private IUserRepository userRepository;
 
     @FXML
     private ChoiceBox<String> cbSector; //@todo define what type it is?
@@ -56,8 +56,10 @@ public class ApplicationViewModel implements Initializable {
     private MenuItem menuUser, menuTemplate, menuLogout, menuExit;
 
     public ObservableList<String> professions;
-    private List<Profession> professionList;
-    private DidaktRepository didaktRepository;
+    private List<String> professionList;
+    private IDidaktRepository didaktRepository;
+    private IUserRepository userRepository;
+    private DatabaseConnector dbConnector;
 
     @FXML
     private TextField txtUserId;
@@ -70,8 +72,6 @@ public class ApplicationViewModel implements Initializable {
 
         try {
 
-            DatabaseConnector dbConnector = new DatabaseConnector();
-            DidaktRepository didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
             List<String> professionList = didaktRepository.getProfessions();
 
             for (String string : professionList) {
@@ -91,7 +91,11 @@ public class ApplicationViewModel implements Initializable {
     }
 
     public void initialize(URL location, ResourceBundle resources){
+        dbConnector = new DatabaseConnector();
+        didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
+        userRepository = new UserRepository(dbConnector.getUserDataSource());
 
+        professionList = didaktRepository.getProfessions();
     }
 
 

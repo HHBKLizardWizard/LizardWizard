@@ -40,7 +40,7 @@ public class DidaktRepository implements IDidaktRepository {
             while (rs.next()) {
                 professionList.add(rs.getString("Berufname"));
             }
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
         return professionList;
