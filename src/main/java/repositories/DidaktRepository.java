@@ -26,12 +26,13 @@ public class DidaktRepository implements IDidaktRepository {
             Integer chiefID = null;
             Integer depID = null;
             do{
-
+/*
                 professionList.add(new Profession(rs.getInt("Bid"),
                                                 rs.getString("Berufname"),
                                                 rs.getInt("ID_Abteilung"),
                                                 rs.getInt("ID_BLeitung"),
                                                 rs.getInt("ID_Schema")));
+                                                */
             }while(rs.next());
         }catch (Exception e){
             System.out.println(e);

@@ -10,10 +10,12 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 
+import models.reports.LearningSituation;
 import models.reports.ReportData;
 import models.reports.ReportHeader;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by iho on 22.06.2017.
@@ -95,6 +97,7 @@ public class ReportBuilder {
         AnnualReport annualReport = new AnnualReport(table);
 
         table.setWidthPercent(100);
+        table.setFixedLayout();
 
         this.createPdfHeader(document, reportData.getReportHeader());
         annualReport.createAnnualReportHeader();
@@ -108,11 +111,18 @@ public class ReportBuilder {
 
     public Document createDetailReport(PdfDocument pdfDocument, ReportData reportData) {
         Document document = this.createDocument(pdfDocument, false);
-        Table table = new Table(new float[]{1 ,1, 1, 1});
+        Table table = new Table(new float[]{6 ,2, 1, 1});
         DetailReport detailReport = new DetailReport(table);
 
         table.setWidthPercent(100);
 
+        for (LearningSituation learningSituation : reportData.getLearningSituations()) {
+            this.createPdfHeader(document, reportData.getReportHeader());
+            detailReport.createDetailReport(reportData);
+        }
+
+        document.add(new Paragraph(""));
+        document.add(table);
 
         return document;
     }

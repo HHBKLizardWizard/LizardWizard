@@ -24,6 +24,18 @@ public class User {
         this.password = password;
     }
 
+
+    /*testtesttesttest*/
+    public User(Integer id, String username, String firstname, String lastname, UserRights rights, String password){
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.rights   = rights;
+        this.password = password;
+        this.id = id;
+    }
+    /*testtesttesttest*/
+
     public Integer getId() {
         return id;
     }

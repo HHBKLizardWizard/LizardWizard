@@ -30,7 +30,7 @@ created by Sil van Vliet
                 <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
             </GridPane.margin>
         </Button>
-        <Button fx:id="btnChange" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Bearbeiten" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Button fx:id="btnChange" mnemonicParsing="false" onAction="#updateUserAction" prefHeight="25.0" prefWidth="200.0" text="Bearbeiten" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
                 <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
             </GridPane.margin>
@@ -40,7 +40,7 @@ created by Sil van Vliet
                 <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
             </GridPane.margin>
         </Button>
-        <Button fx:id="btnNew" mnemonicParsing="false" onAction="#addUserAction" prefHeight="25.0" prefWidth="164.0" text="Neu Anlegen" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <Button fx:id="btnNew" mnemonicParsing="false" onAction="#createUserAction" prefHeight="25.0" prefWidth="164.0" text="Neu Anlegen" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
             </GridPane.margin>

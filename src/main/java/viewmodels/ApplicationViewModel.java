@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.ui_util.Profession;
@@ -55,6 +56,9 @@ public class ApplicationViewModel implements Initializable {
     private List<Profession> professionList;
     private DidaktRepository didaktRepository;
 
+    @FXML
+    private TextField txtUserId;
+
     public void createAnnualReport() {
         ReportData reportData = new TestData().getReportDataExample();
 
@@ -68,6 +72,7 @@ public class ApplicationViewModel implements Initializable {
             PdfDocument pdf = reportBuilder.createPdf("test.pdf");
 
             Document document = reportBuilder.createAnnualReport(pdf, reportData);
+            //Document document = reportBuilder.createDetailReport(pdf, reportData);
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,4 +157,8 @@ public class ApplicationViewModel implements Initializable {
         userRepository.registerUser(user);*/
     }
 
+    //needs to be public due to being used in UserViewModel
+    public void setUserId(Integer userId) {
+        txtUserId.setText(String.valueOf(userId));
+    }
 }

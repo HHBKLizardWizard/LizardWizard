@@ -41,6 +41,11 @@ public class UserViewModel implements Initializable {
         userList.add(new User("Sil123","Sil","van Vliet", UserRights.ADMIN, "qwe"));
         userList.add(new User("Ingo123","Ingo","Hotischeck", UserRights.ADMIN, "qwe"));
 
+        userList.get(0).setId(1);
+        userList.get(1).setId(2);
+
+
+        //fill table
         colName.setCellValueFactory(new PropertyValueFactory<User, String>("lastname"));
         colFirstName.setCellValueFactory(new PropertyValueFactory<User, String>("firstname"));
         colRights.setCellValueFactory(new PropertyValueFactory<User, UserRights>("rights"));
@@ -49,13 +54,20 @@ public class UserViewModel implements Initializable {
     }
 
     public void deleteUserAction(){
-        User selectedUser = (User) tblUsers.getSelectionModel().getSelectedItem();
+        User selectedUser = getSelectedUser();
 
         if(selectedUser != null){
-            System.out.println(selectedUser);
             userList.remove(selectedUser);
             tblUsers.getItems().clear();
             tblUsers.getItems().addAll(userList);
+        }
+    }
+
+    public User getSelectedUser(){
+        User selectedUser = (User) tblUsers.getSelectionModel().getSelectedItem();
+
+        if(selectedUser != null){
+            return selectedUser;
         }else{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("");
@@ -63,6 +75,7 @@ public class UserViewModel implements Initializable {
             alert.setContentText("There was no element found to modify. " +
                     "Please make sure that you select an item before trying to make changes.");
             alert.showAndWait();
+            return null;
         }
     }
 
@@ -71,14 +84,36 @@ public class UserViewModel implements Initializable {
         stage.close();
     }
 
-    public void addUserAction(){
+    public void createUserAction(){
+        creatUpdateUser(0);
+    }
+
+    public void updateUserAction(){
+        User selectedUser = getSelectedUser();
+        if(selectedUser != null){
+            creatUpdateUser(selectedUser.getId());
+        }
+    }
+
+    private void creatUpdateUser(Integer userId){
         try{
-            Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("user_edit.fxml"));
+
+            FXMLLoader loader = new FXMLLoader();
+
+            loader.setLocation(getClass().getClassLoader().getResource("user_edit.fxml"));
+            loader.load();
+
+            UserEditViewModel userEditViewModel = loader.getController();
+            userEditViewModel.setUserId(userId);
+            if(userId>0){
+                userEditViewModel.setUserData(userId.toString());
+            }
 
             //Open new Window with correct title
+            Parent p = loader.getRoot();
             Stage stage = new Stage();
             stage.setTitle("Benutzer bearbeiten");
-            stage.setScene(new Scene(root2, 600, 400));
+            stage.setScene(new Scene(p, 600, 400));
             stage.setResizable(false);
 
             //disable Primary Stage
@@ -89,6 +124,4 @@ public class UserViewModel implements Initializable {
             e.printStackTrace(); //@todo create appropriate error message for user to contact administrator
         }
     }
-
-
 }

@@ -11,6 +11,7 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import models.reports.*;
+import util.HtmlParser;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,8 +45,8 @@ public class AnnualReport {
 
             Paragraph blockWeek = new Paragraph((i < 9 ? "0" + (i + 1) : i + 1).toString())
                     .setTextAlignment(TextAlignment.CENTER)
-                    .setFontSize(8)
-                    .setWidth(50); //TODO hier gehts weiter //alternativ fixed width an table .. margin? strings größer machen?
+                    .setFontSize(8);
+                    //.setWidth(50); //TODO hier gehts weiter //alternativ fixed width an table .. margin? strings größer machen?
 
             Cell cell = new Cell()
                     .add(blockWeek);
@@ -95,10 +96,10 @@ public class AnnualReport {
             this.table.addCell(new Cell(1, 12)
                     .add(paragraph));
 
-            List<LearningSituation> sortedList = this.sortLearningSituationsByStartWeek(
-                    fieldOfLearning.getLearningSituationList());
+            /*List<LearningSituation> sortedList = this.sortLearningSituationsByStartWeek(
+                    fieldOfLearning.getLearningSituationList());*/
+            List<LearningSituation> sortedList = this.sortLearningSituationsByLsnr(fieldOfLearning.getLearningSituationList());
             List<LearningSituationTableElement> filledList = this.fillWithPlaceholders(sortedList);
-
 
             for (LearningSituationTableElement learningSituation : filledList) {
                 this.insertLearningSituation(learningSituation);
@@ -120,12 +121,26 @@ public class AnnualReport {
 
             /*  Adds a placeholder to the end if the last LearningSituation is not ending on week 12.
                 Fills the report with placeholders ending before the next LearningSituation in the list      */
-            if (12 == current.getEndWeek()) {
-                return filledList;
-            } else if (sortedList.size() - 1 == i && current.getEndWeek() < 12) {
-                filledList.add(i + 1, new LearningSituationTableElement(current.getEndWeek() + 1, 12));
+            if (sortedList.size() - 1 == i) {
+              if (current.getEndWeek() < 12) {
+                  filledList.add(filledList.size(), new LearningSituationTableElement(current.getEndWeek() + 1, 12));
+              } else {
+                  continue;
+              }
+            } else if (sortedList.get(i + 1).getStartWeek() <= current.getEndWeek()) {
+                // if next element starts in next block fill with placeholder
+                if (current.getEndWeek() < 12) {
+                    filledList.add(filledList.size(), new LearningSituationTableElement(
+                            current.getEndWeek() + 1, 12));
+                }
+
+                if (sortedList.get(i + 1).getStartWeek() > 1) {
+                    filledList.add(filledList.size(), new LearningSituationTableElement(
+                        1, sortedList.get(i + 1).getStartWeek() - 1));
+                }
+
             } else if (current.getEndWeek() + 1 < sortedList.get(i + 1).getStartWeek()) {
-                filledList.add(i + 1, new LearningSituationTableElement(
+                filledList.add(filledList.size(), new LearningSituationTableElement(
                         current.getEndWeek() + 1, sortedList.get(i + 1).getStartWeek() - 1));
             }
         }
@@ -137,6 +152,13 @@ public class AnnualReport {
                 ls1.getStartWeek(), ls2.getStartWeek());
 
         return learningSituationList.stream().sorted(byStartWeek).collect(Collectors.toList());
+    }
+
+    private List<LearningSituation> sortLearningSituationsByLsnr(List<LearningSituation> learningSituationList) {
+        Comparator<LearningSituation> byLsnr = (ls1, ls2) -> Integer.compare(
+                ls1.getLsnr(), ls2.getLsnr());
+
+        return learningSituationList.stream().sorted(byLsnr).collect(Collectors.toList());
     }
 
     private void insertLearningSituation(LearningSituationTableElement learningSituation) {
