@@ -6,7 +6,9 @@ import java.util.List;
  * Created by iho on 23.06.2017.
  */
 public class Subject {
+    private Integer id;
     private String name;
+    private AreaOfEducation areaOfEducation;
     private List<FieldOfLearning> fieldOfLearningList;
 
     public String getName() {
@@ -25,5 +27,23 @@ public class Subject {
         this.fieldOfLearningList = fieldOfLearningList;
     }
 
+    public Integer getId()
+    {
+        return id;
+    }
 
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+
+    public AreaOfEducation getAreaOfEducation()
+    {
+        return areaOfEducation;
+    }
+
+    public void setAreaOfEducation(AreaOfEducation areaOfEducation)
+    {
+        this.areaOfEducation = areaOfEducation;
+    }
 }

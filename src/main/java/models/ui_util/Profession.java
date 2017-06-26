@@ -1,4 +1,4 @@
-package models;
+package models.ui_util;
 
 /**
  * Created by Administrator on 22.06.2017.

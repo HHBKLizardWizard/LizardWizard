@@ -11,7 +11,8 @@ import java.sql.Connection;
 public class DatabaseConnector {
     public Connection con = null;
     private static final String driverClassName = "com.mysql.jdbc.Driver";
-    private static final String url = "jdbc:mysql://localhost:3306/user_template_db?serverTimezone=UTC";
+    private static final String url =
+            "jdbc:mysql://localhost:3306/db_didakt?serverTimezone=UTC";
     private static final String dbUsername = "root";
     private static final String dbPassword = "";
 

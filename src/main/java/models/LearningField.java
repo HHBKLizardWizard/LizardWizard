@@ -1,5 +1,7 @@
 package models;
 
+import models.ui_util.ProfessionSubject;
+
 /**
  * Created by Administrator on 23.06.2017.
  */

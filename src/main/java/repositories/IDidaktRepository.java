@@ -1,6 +1,6 @@
 package repositories;
 
-import models.Profession;
+import models.ui_util.Profession;
 
 import java.util.List;
 
