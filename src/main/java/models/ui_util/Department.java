@@ -26,6 +26,8 @@ public class Department
         this.description = description;
         this.chief = chief;
         this.repChief = repChief;
+        this.chief.setDepartment(this);
+        this.repChief.setDepartment(this);
     }
 
     public Integer getId()

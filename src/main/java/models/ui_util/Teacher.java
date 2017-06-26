@@ -7,23 +7,16 @@ public class Teacher
 {
     private Integer id;
     private String name;
-    private String firstName;
-    private String abrv;
-    private Character sex;
+    private String sex;
     private Department department;
 
     public Teacher(Integer id,
                    String name,
-                   String firstName,
-                   String abrv,
-                   Character sex, Department department)
+                   String sex)
     {
         this.id = id;
         this.name = name;
-        this.firstName = firstName;
-        this.abrv = abrv;
         this.sex = sex;
-        this.department = department;
     }
 
     public Integer getId()
@@ -46,32 +39,12 @@ public class Teacher
         this.name = name;
     }
 
-    public String getFirstName()
-    {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName)
-    {
-        this.firstName = firstName;
-    }
-
-    public String getAbrv()
-    {
-        return abrv;
-    }
-
-    public void setAbrv(String abrv)
-    {
-        this.abrv = abrv;
-    }
-
-    public Character getSex()
+    public String getSex()
     {
         return sex;
     }
 
-    public void setSex(Character sex)
+    public void setSex(String sex)
     {
         this.sex = sex;
     }

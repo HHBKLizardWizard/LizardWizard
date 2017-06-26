@@ -10,12 +10,11 @@ public class Profession
     private Department department;
     private Teacher departmentChief;
 
-    public Profession(Integer bid, String professionName, Department depID,
-                      Teacher depChief){
+    public Profession(Integer bid, String professionName, Department dep){
         this.id = bid;
         this.name = professionName;
-        this.department = depID;
-        this.departmentChief = depChief;
+        this.department = dep;
+        this.departmentChief = dep.getChief();
     }
 
     public Integer getId()
