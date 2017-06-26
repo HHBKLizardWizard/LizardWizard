@@ -5,9 +5,12 @@ import models.ui_util.Teacher;
 import models.ui_util.WayOfTeachingProfession;
 import util.DatabaseConnector;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,28 +19,35 @@ import java.util.List;
 public class DidaktRepository implements IDidaktRepository {
     Connection con = null;
     DatabaseConnector databaseConnector = new DatabaseConnector();
+
+    public DidaktRepository(DataSource dataSource) {
+        try {
+            this.con = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public List<String> getProfessions() {
-        con = databaseConnector.getConnection();
-        String sql = "SELECT Berufname from tbl_beruf";
-        List<String> professionList = null;
+        String sql = "SELECT Berufname FROM tbl_beruf";
+        List<String> professionList = new ArrayList<>();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             Integer chiefID = null;
             Integer depID = null;
-            do{
+            while (rs.next()) {
                 professionList.add(rs.getString("Berufname"));
-            }while(rs.next());
+            }
         }catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return professionList;
     }
 
     public Department getDepartment(Integer bid)
     {
-        con = databaseConnector.getConnection();
         String sql = "SELECT * FROM tbl_abteilung WHERE Aid = ?";
         Department dep;
         try{
@@ -59,7 +69,6 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     public Teacher getTeacher(Integer id){
-        con = databaseConnector.getConnection();
         String sql = "SELECT * FROM tbl_lehrer WHERE LId = ?";
         Teacher teacher = null;
         try{
@@ -78,7 +87,6 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     public WayOfTeachingProfession getWayOfTeachingProfession(Integer id){
-        con = databaseConnector.getConnection();
         String sql = "SELECT";
 
         return null;

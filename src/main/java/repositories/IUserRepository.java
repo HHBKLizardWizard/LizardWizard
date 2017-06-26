@@ -7,9 +7,9 @@ import models.User;
  */
 public interface IUserRepository{
     public boolean registerUser(User user);
-    public boolean deleteUserbyId(Integer userId);
-    public User getUserbyId(Integer userId);
-    public User getUserbyUsername(String userName);
+    public boolean deleteUserById(Integer userId);
+    public User getUserById(Integer userId);
+    public User getUserByUsername(String userName);
     public String getPasswordByUserId(Integer userId);
     public boolean updateUser(User user);
 }

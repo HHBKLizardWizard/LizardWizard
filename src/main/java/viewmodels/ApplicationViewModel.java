@@ -19,12 +19,15 @@ import javafx.stage.Stage;
 import models.ui_util.Profession;
 import models.Template;
 import models.reports.ReportData;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import reports.ReportBuilder;
 import repositories.DidaktRepository;
 import repositories.IUserRepository;
+import util.DatabaseConnector;
 import util.TestData;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -66,11 +69,22 @@ public class ApplicationViewModel implements Initializable {
         ReportBuilder reportBuilder = new ReportBuilder();
 
         try {
+
+            DatabaseConnector dbConnector = new DatabaseConnector();
+            DidaktRepository didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
+            List<String> professionList = didaktRepository.getProfessions();
+
+            for (String string : professionList) {
+                System.out.println(string);
+            }
+
+
+            /*
             PdfDocument pdf = reportBuilder.createPdf("test.pdf");
 
-            Document document = reportBuilder.createAnnualReport(pdf, reportData);
-            //Document document = reportBuilder.createDetailReport(pdf, reportData);
-            document.close();
+            //Document document = reportBuilder.createAnnualReport(pdf, reportData);
+            Document document = reportBuilder.createDetailReport(pdf, reportData);
+            document.close();*/
         } catch (Exception e) {
             e.printStackTrace();
         }

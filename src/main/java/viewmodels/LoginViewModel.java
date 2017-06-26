@@ -50,7 +50,7 @@ public class LoginViewModel implements Initializable {
 
         String checkPw = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
 
-        User user = userRepository.getUserbyUsername(checkUser);
+        User user = userRepository.getUserByUsername(checkUser);
         user = new User("root", "root", "root", UserRights.ADMIN,BCrypt.hashpw("root", BCrypt.gensalt()));
 
         System.out.println(user.getPassword());

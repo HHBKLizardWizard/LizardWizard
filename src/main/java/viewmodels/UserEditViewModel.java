@@ -11,6 +11,7 @@ import models.UserRights;
 import org.mindrot.jbcrypt.BCrypt;
 import repositories.IUserRepository;
 import repositories.UserRepository;
+import util.DatabaseConnector;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -47,9 +48,9 @@ public class UserEditViewModel implements Initializable {
         }
     }
 
-    //needs to be public due to being used in UserViewModel
+    // needs to be public due to being used in UserViewModel
     public void setUserData(String txtUserId) {
-        IUserRepository userRepository = new UserRepository();
+        IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
         lblPwInfo.setVisible(true);
 
         //todo: get user by userID
@@ -72,7 +73,7 @@ public class UserEditViewModel implements Initializable {
     }
 
     public void saveUserAction() {
-        UserRepository userRepository = new UserRepository();
+        UserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
 
         //check if all form fields are good to go
         boolean allGood = checkFieldsAction();
@@ -87,7 +88,7 @@ public class UserEditViewModel implements Initializable {
 
             if(userId > 0){
                 //User was found
-                    User user = userRepository.getUserbyId(userId);
+                    User user = userRepository.getUserById(userId);
                     user.setFirstname(fName);
                     user.setLastname(lName);
                     user.setUsername(userName);

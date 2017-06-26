@@ -5,9 +5,11 @@ import models.UserRights;
 import org.mindrot.jbcrypt.BCrypt;
 import util.DatabaseConnector;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by iho on 22.06.2017.
@@ -34,8 +36,12 @@ import java.sql.ResultSet;
 public class UserRepository implements IUserRepository{
     Connection con = null;
 
-    public UserRepository() {
-        con = new DatabaseConnector().getConnection();
+    public UserRepository(DataSource dataSource) {
+        try {
+            con = dataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean registerUser(User user){
@@ -64,7 +70,7 @@ public class UserRepository implements IUserRepository{
         return true;
     }
 
-    public boolean deleteUserbyId(Integer userId){
+    public boolean deleteUserById(Integer userId){
         String sql = "DELETE FROM users WHERE PK_ID = ?";
 
         try{
@@ -81,16 +87,16 @@ public class UserRepository implements IUserRepository{
         return true;
     }
 
-    public User getUserbyId(Integer userId){
+    public User getUserById(Integer userId){
         String sql = "SELECT * FROM users WHERE PK_ID = ?";
-        User newUser = null;
+        User user = null;
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, userId.toString());
 
             ResultSet rs = ps.executeQuery();
 
-            newUser = new User(
+            user = new User(
                     rs.getString("Username"),
                     rs.getString("Vorname"),
                     rs.getString("Nachname"),
@@ -101,10 +107,10 @@ public class UserRepository implements IUserRepository{
             System.out.println(e);
         }
 
-        return newUser;
+        return user;
     }
 
-    public User getUserbyUsername(String userName){
+    public User getUserByUsername(String userName){
         String sql = "SELECT * FROM users WHERE Username = ?";
         User newUser = null;
         try{
