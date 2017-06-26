@@ -4,7 +4,7 @@ package models;
  * Created by iho on 22.06.2017.
  */
 public class Template {
-    private long id;
+    private Integer id;
     private String templateName;
     private boolean scenario;
     private boolean competences;
@@ -107,11 +107,11 @@ public class Template {
         this.achievements = achievements;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }

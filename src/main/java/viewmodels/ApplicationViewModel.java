@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -78,9 +79,9 @@ public class ApplicationViewModel implements Initializable {
     }
 
     /**
-     *   Class        : createAnnualReport
-     *   Beschreibung : Generiert das pdf
-     */
+    *   Class        : createAnnualReport
+    *   Beschreibung : Generiert das pdf
+    */
     public void createAnnualReport() {
         ReportData reportData = new TestData().getReportDataExample();
         

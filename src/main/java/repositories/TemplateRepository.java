@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.Template;
 import models.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -98,30 +99,39 @@ public class TemplateRepository implements ITemplateRepository
         return template;
     }
 
-    public Template saveTemplate()
-    {
-        String sql = "INSERT INTO templates (scenario, competences, materials, " +
-                        "technics, results, contents, " +
-                        "notes, achievements) VALUES (?,?,?,?,?,?,?,?)";
-        Template template = null;
-        try
-        {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, String.valueOf(template.isScenario()));
-            ps.setString(2, String.valueOf(template.isCompetences()));
-            ps.setString(3, String.valueOf(template.isMaterials()));
-            ps.setString(4, String.valueOf(template.isTechnics()));
-            ps.setString(5, String.valueOf(template.isResults()));
-            ps.setString(6, String.valueOf(template.isContents()));
-            ps.setString(7, String.valueOf(template.isNotes()));
-            ps.setString(8, String.valueOf(template.isAchievements()));
+    @Transactional
+    public Template createTemplate(Template template, User user) {
+        String sqlTemplates = "INSERT INTO templates (scenario, competences, materials, technics," +
+                " results, contents, notes, achievements) VALUES (?,?,?,?,?,?,?,?)";
 
+        String sqlUserTemplates = "INSERT INTO user_templates (fk_templateid, fk_userid, templatename)" +
+                " VALUES (?, ?, ?)";
 
-            ps.executeQuery();
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlTemplates);
+            ps.setBoolean(1, template.isScenario());
+            ps.setBoolean(2, template.isCompetences());
+            ps.setBoolean(3, template.isMaterials());
+            ps.setBoolean(4, template.isTechnics());
+            ps.setBoolean(5, template.isResults());
+            ps.setBoolean(6, template.isContents());
+            ps.setBoolean(7, template.isNotes());
+            ps.setBoolean(8, template.isAchievements());
 
+            ps.execute();
+
+            ResultSet rs = con.prepareStatement("SELECT LAST_INSERT_ID()").executeQuery();
+            rs.next();
+            template.setId(rs.getInt(1));
+
+            ps = con.prepareStatement(sqlUserTemplates);
+            ps.setInt(1, template.getId());
+            ps.setInt(2, user.getId());
+            ps.setString(3, template.getTemplateName());
+
+            ps.execute();
         }
-        catch (Exception e)
-        {
+        catch (SQLException e) {
             System.out.println(e);
         }
 
