@@ -21,7 +21,9 @@ import models.Template;
 import models.reports.ReportData;
 import reports.ReportBuilder;
 import repositories.DidaktRepository;
+import repositories.IDidaktRepository;
 import repositories.IUserRepository;
+import util.DatabaseConnector;
 import util.TestData;
 
 import java.net.URL;
@@ -54,7 +56,7 @@ public class ApplicationViewModel implements Initializable {
 
     public ObservableList<String> professions;
     private List<Profession> professionList;
-    private DidaktRepository didaktRepository;
+    private IDidaktRepository didaktRepository;
 
     @FXML
     private TextField txtUserId;
@@ -64,13 +66,18 @@ public class ApplicationViewModel implements Initializable {
 
         // get data from database and build report
         ReportBuilder reportBuilder = new ReportBuilder();
+        didaktRepository = new DidaktRepository(new DatabaseConnector().getConnection());
 
         try {
-            PdfDocument pdf = reportBuilder.createPdf("test.pdf");
+            /*PdfDocument pdf = reportBuilder.createPdf("test.pdf");
 
-            Document document = reportBuilder.createAnnualReport(pdf, reportData);
+            Document document = reportBuilder.createAnnualReport(pdf,
+            reportData);*/
+            for (String string : didaktRepository.getProfessions()){
+                System.out.println(string);
+            }
             //Document document = reportBuilder.createDetailReport(pdf, reportData);
-            document.close();
+            //document.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
