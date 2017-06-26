@@ -83,7 +83,7 @@ created by Sil van Vliet
                 <Label text="Lernsituation" GridPane.rowIndex="8" />
                 <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" />
         -->
-        <ComboBox fx:id="cbSector" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+        <ComboBox fx:id="cbProfession" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="3" GridPane.rowIndex="3" />
         <ComboBox fx:id="cbYear" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
         <ComboBox fx:id="cbTemplate" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
         <Button fx:id="btnExport" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createAnnualReport" text="PDF Export" GridPane.columnIndex="3" GridPane.rowIndex="10" />
