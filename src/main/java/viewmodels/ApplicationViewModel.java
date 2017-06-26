@@ -75,9 +75,6 @@ public class ApplicationViewModel implements Initializable {
         cbSector.setItems(professionList);
         cbSector.getSelectionModel().select(0);
 
-        templateList = templateRepository.getTemplatesByUser(loggedUser);
-        cbTemplate.setItems(templateList);
-        cbTemplate.getSelectionModel().select(0);
     }
 
     /**
@@ -164,7 +161,10 @@ public class ApplicationViewModel implements Initializable {
      *   Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
      */
     public void setUser(User user) {
-        loggedUser = loggedUser;
+        loggedUser = user;
+        templateList = templateRepository.getTemplatesByUser(loggedUser);
+        cbTemplate.setItems(templateList);
+        cbTemplate.getSelectionModel().select(0);
         checkViewRights(user);
     }
 

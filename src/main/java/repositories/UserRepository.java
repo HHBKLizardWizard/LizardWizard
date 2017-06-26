@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import models.User;
 import models.UserRights;
 import org.mindrot.jbcrypt.BCrypt;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
