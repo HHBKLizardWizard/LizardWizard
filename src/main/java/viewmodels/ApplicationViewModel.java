@@ -1,6 +1,9 @@
 package viewmodels;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,16 +72,11 @@ public class ApplicationViewModel implements Initializable {
         didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
 
         try {
-            /*PdfDocument pdf = reportBuilder.createPdf("test.pdf");
+            PdfDocument pdf = reportBuilder.createPdf("test.pdf");
 
-            Document document = reportBuilder.createAnnualReport(pdf,
-            reportData);*/
-            for (String string : didaktRepository.getProfessions()){
-                System.out.println(string);
-            }
-            //Document document = reportBuilder.createDetailReport(pdf, reportData);
-            //document.close();
-
+            //Document document = reportBuilder.createAnnualReport(pdf, reportData);
+            Document document = reportBuilder.createDetailReport(pdf, reportData);
+            document.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,6 +87,7 @@ public class ApplicationViewModel implements Initializable {
         didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
         userRepository = new UserRepository(dbConnector.getUserDataSource());
 
+        FXCollections.observableArrayList();
         professionList = didaktRepository.getProfessions();
         cbSector.setItems(professionList);
         cbSector.getSelectionModel().select(0);

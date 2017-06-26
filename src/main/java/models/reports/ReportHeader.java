@@ -10,6 +10,10 @@ public class ReportHeader {
     private String classForm;
     private String educationalSupervisor;
 
+    public ReportHeader() {
+        // Nothing to do here
+    }
+
     public ReportHeader(String department,
                         String job,
                         int yearOfTraining,
