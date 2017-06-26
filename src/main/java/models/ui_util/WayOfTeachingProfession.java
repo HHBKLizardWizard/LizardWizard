@@ -1,5 +1,7 @@
 package models.ui_util;
 
+import models.reports.Profession;
+
 /**
  * Created by Administrator on 26.06.2017.
  */

@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +51,25 @@ public class DidaktRepository implements IDidaktRepository {
         }
         return professionList;
     }
+
+    @Override
+    public List<Profession> getProfessionList() {
+        String sql = "SELECT * FROM tbl_beruf";
+        List<Profession> professionList = new ArrayList<>();
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                professionList.add(new Profession(rs.getInt("BId"), rs.getString("Berufname")));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return professionList;
+    }
+
     @Override
     public ReportData getReportData(String profName, Integer year){
         String sql = "SELECT * FROM tbl_fach\n" +
