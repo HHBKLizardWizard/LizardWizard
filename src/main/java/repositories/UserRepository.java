@@ -21,6 +21,10 @@ public class UserRepository implements IUserRepository{
     Connection con = null;
     public ObservableList<User> userList = FXCollections.observableArrayList();
 
+    /**
+     *
+     * @param dataSource
+     */
     public UserRepository(DataSource dataSource) {
         try {
             con = dataSource.getConnection();
@@ -29,6 +33,11 @@ public class UserRepository implements IUserRepository{
         }
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     public User registerUser(User user){
 
         String sql = "INSERT INTO users(username, firstname, lastname, password, rights) " +
@@ -61,44 +70,22 @@ public class UserRepository implements IUserRepository{
         return user;
     }
 
-    public boolean deleteUserById(Integer userId){
+    /**
+     *
+     * @param user
+     */
+    public void deleteUser(User user) {
         String sql = "DELETE FROM users WHERE PK_ID = ?";
 
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, userId.toString());
+            ps.setInt(1, user.getId());
 
-            ResultSet rs = ps.executeQuery();
+            ps.execute();
 
         }catch (Exception e){
-            System.out.println(e);
-            return false;
+            e.printStackTrace();
         }
-
-        return true;
-    }
-
-    public User getUserById(Integer userId){
-        String sql = "SELECT * FROM users WHERE PK_ID = ?";
-        User newUser = null;
-        try{
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, userId.toString());
-
-            ResultSet rs = ps.executeQuery();
-
-            newUser = new User(
-                    rs.getString("username"),
-                    rs.getString("firstname"),
-                    rs.getString("lastname"),
-                    rs.getString("password"),
-                    UserRights.valueOf(rs.getString("rights"))
-            );
-        }catch (Exception e){
-            System.out.println(e);
-        }
-
-        return newUser;
     }
 
     /**

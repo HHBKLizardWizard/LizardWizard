@@ -28,6 +28,11 @@ public class TemplateRepository implements ITemplateRepository
         }
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     public ObservableList<Template> getTemplatesByUser(User user) {
         ObservableList<Template> templateList = FXCollections.observableArrayList();
 
@@ -144,12 +149,16 @@ public class TemplateRepository implements ITemplateRepository
         return template;
     }
 
-    public void deleteTemplateById(Integer id) {
+    /**
+     *
+     * @param template
+     */
+    public void deleteTemplate(Template template) {
         String sql = "DELETE FROM templates WHERE pk_id = ?";
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, template.getId());
 
             ps.execute();
 

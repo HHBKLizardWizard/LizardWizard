@@ -104,7 +104,8 @@ public class UserEditViewModel implements Initializable {
 
             if(userId > 0){
                 //User was found
-                User user = userRepository.getUserById(userId);
+                //TODO hey, hab ich dir hier mal reingesetzt...wo kommt die userId her? -iho
+                User user = userRepository.getUserByUsername(fName);
 
                 //making sure the User was really found
                 if(user != null){
