@@ -101,6 +101,11 @@ public class UserRepository implements IUserRepository{
         return newUser;
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     public User getUserByUsername(String username){
         String sql = "SELECT * FROM users WHERE username = ?";
         User user = null;

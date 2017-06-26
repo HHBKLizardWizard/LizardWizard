@@ -99,6 +99,12 @@ public class TemplateRepository implements ITemplateRepository
         return template;
     }
 
+    /**
+     *
+     * @param template
+     * @param user
+     * @return
+     */
     @Transactional
     public Template createTemplate(Template template, User user) {
         String sqlTemplates = "INSERT INTO templates (scenario, competences, materials, technics," +
@@ -132,10 +138,24 @@ public class TemplateRepository implements ITemplateRepository
             ps.execute();
         }
         catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         return template;
+    }
+
+    public void deleteTemplateById(Integer id) {
+        String sql = "DELETE FROM templates WHERE pk_id = ?";
+
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ps.execute();
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Template updateTemplate()
