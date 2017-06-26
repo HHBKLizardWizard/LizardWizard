@@ -1,7 +1,5 @@
 package viewmodels;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.layout.Document;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,16 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import models.ui_util.Profession;
 import models.Template;
+import models.User;
+import models.UserRights;
 import models.reports.ReportData;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import models.ui_util.Profession;
 import reports.ReportBuilder;
 import repositories.DidaktRepository;
 import repositories.IDidaktRepository;
@@ -29,7 +25,6 @@ import util.DatabaseConnector;
 import util.TestData;
 
 import java.net.URL;
-import java.sql.Connection;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -55,6 +50,9 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private MenuItem menuUser, menuTemplate, menuLogout, menuExit;
 
+    @FXML
+    private SeparatorMenuItem smiLine;
+
     public ObservableList<String> professions;
     private List<String> professionList;
     private IDidaktRepository didaktRepository;
@@ -64,6 +62,8 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private TextField txtUserId;
 
+    // Class        : createAnnualReport
+    // Beschreibung : Generiert das pdf
     public void createAnnualReport() {
         ReportData reportData = new TestData().getReportDataExample();
 
@@ -99,19 +99,20 @@ public class ApplicationViewModel implements Initializable {
     }
 
 
+    // Class        : closeButtonAction
+    // Beschreibung : Schließt das Programm
     public void closeButtonAction() {
         Platform.exit();
     }
 
-    public void logoutAction() {
-        //@todo well ... everything is to do !! get a move on!!
-    }
-
+    // Class        : openTargetWindowAction
+    // Beschreibung : Öffnet das fenster abhängig von welche Menu Item ausgewählt war.
     public void openTargetWindowAction(ActionEvent event) {
         try {
-            Object eventSource = event.getSource();
-            Parent root2;
             String menuItemClickedId = "", stageTitle = "";
+            Object eventSource = event.getSource();
+            Stage stage = new Stage();
+            Parent root2;
 
             if (eventSource instanceof MenuItem) {
                 MenuItem menuItemClicked = (MenuItem) eventSource;
@@ -121,18 +122,26 @@ public class ApplicationViewModel implements Initializable {
             //check what button was pressed to be able to determine what fxml file to open
             if (Objects.equals(menuItemClickedId, menuTemplate.getId())) {
                 root2 = FXMLLoader.load(getClass().getClassLoader().getResource("templates.fxml"));
+                stage.setScene(new Scene(root2, 600, 400));
                 stageTitle = "Templates";
             } else if (Objects.equals(menuItemClickedId, menuUser.getId())) {
                 root2 = FXMLLoader.load(getClass().getClassLoader().getResource("users.fxml"));
+                stage.setScene(new Scene(root2, 600, 400));
                 stageTitle = "Benutzer";
-            } else {
+            } else if(Objects.equals(menuItemClickedId, menuLogout.getId())){
+                root2 = FXMLLoader.load(getClass().getClassLoader().getResource("login.fxml"));
+                stage.setScene(new Scene(root2, 350, 200));
+                stageTitle = "Login";
+
+                //with logout the current window has to be closed
+                Stage st = (Stage) btnExport.getScene().getWindow();
+                st.close();
+            }else{
                 throw new Exception(); //@todo create own exception? is it worth it?
             }
 
             //Open new Window with correct title
-            Stage stage = new Stage();
             stage.setTitle(stageTitle);
-            stage.setScene(new Scene(root2, 600, 400));
             stage.setResizable(false);
             //disable Primary Stage
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -143,36 +152,30 @@ public class ApplicationViewModel implements Initializable {
         }
     }
 
-    public void test() {
-
-        String user = "root";
-        String pw = "test";
-
-
-        //we can not do anything with true or false .. if need to get the user by ID or
-        //by username, we need the data of that person back. not true or false...
-
-
-/*        if ((userRepository.getUserbyUsername(user)))
-            System.out.println("Looks good!");
-        else
-            System.out.println("Something went wrong;");
-
-        if ((userRepository.get(pw)))
-            System.out.println("Looks good!");
-        else
-            System.out.println("Something went wrong;");*/
-
-
-
-
-        /*
-        User user = new User("Admin", "admin", "root", UserRights.ADMIN,"test");
-        userRepository.registerUser(user);*/
-    }
-
-    //needs to be public due to being used in UserViewModel
+    // Class        : setUserId
+    // Beschreibung : Setzt UserId so das es im nächste view wieder verwendet werden kann
+    // Extra Info   : muss Public sein weil es im UserViewModel aufgerüfen würd
     public void setUserId(Integer userId) {
         txtUserId.setText(String.valueOf(userId));
+        checkViewRights(userId);
+    }
+
+    // Class        : checkViewRights
+    // Beschreibung : Setzt bestimmte Felder hidden im nächste view abhängig von Benutzer Rechten
+    // Extra Info   : muss Public sein weil es im UserViewModel aufgerüfen würd
+    public void checkViewRights(Integer userId) {
+        IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
+        //User loggedUser = userRepository.getUserbyId(userId);
+        User loggedUser = new User(1, "root","root","root", UserRights.ADMIN, "root");
+
+        UserRights loggedUserRights = loggedUser.getRights();
+
+        if(loggedUserRights.equals(UserRights.AZUBI)){
+            menuUser.setVisible(false);
+            menuTemplate.setVisible(false);
+            smiLine.setVisible(false);
+        }else if(loggedUserRights.equals(UserRights.LEHRER)){
+            menuUser.setVisible(false);
+        }
     }
 }

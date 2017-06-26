@@ -6,15 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.stage.Modality;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.User;
 import models.UserRights;
-import org.mindrot.jbcrypt.BCrypt;
 import repositories.IUserRepository;
 
 import java.net.URL;
@@ -43,61 +38,75 @@ public class LoginViewModel implements Initializable {
 
     }
 
+
+    // Class        : LoginAction
+    // Beschreibung : Benutzer Login Uberprüfung
     public void loginAction(){
         lblLoginFailed.setVisible(false);
 
-        String checkUser = txtLogin.getText();
+        if(checkLoginFields()) {
+            String checkUser = txtLogin.getText();
 
-        String checkPw = BCrypt.hashpw(txtPassword.getText(), BCrypt.gensalt());
+            //todo verschlusselung von password
+            //String checkPw = BCrypt.hashpw(txtPassword.getText(), "Hund");
+            String checkPw = txtPassword.getText();
 
-        User user = userRepository.getUserByUsername(checkUser);
-        user = new User("root", "root", "root", UserRights.ADMIN,BCrypt.hashpw("root", BCrypt.gensalt()));
+            //todo wenn das obere gefxed ist, untere: 1. zeile comment weg nehmen, 2. zeile löschen
+            //User user = userRepository.getUserbyUsername(checkUser);
+            User user = new User(1, "root","root","root", UserRights.ADMIN, "root");
 
-        System.out.println(user.getPassword());
-
-        if(user == null || !checkPw.equals(user.getPassword())){
-            //user not found error or incorrect password
-            lblLoginFailed.setVisible(true);
-        }else{
-            //open templates window
-            showApplication(user.getId());
+            if (user == null || !checkPw.equals(user.getPassword())) {
+                //user not found error or incorrect password
+                lblLoginFailed.setVisible(true);
+            } else {
+                //open templates window
+                showApplication(user.getId());
+            }
         }
     }
 
+    // Class        : checkLoginFields
+    // Beschreibung : Uberprüfung ob Benutzername und Passwort feld gefüllt sind
+    private boolean checkLoginFields() {
+        if(!txtLogin.getText().equals("") && (txtPassword != null && !txtPassword.getText().equals(""))){
+            return true;
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("");
+            alert.setHeaderText("Empty field");
+            alert.setContentText("Either Login or Password is empty. Please make sure to fill both fields!");
+            alert.showAndWait();
+            return false;
+        }
+    }
 
-    private void showApplication(Integer userId){
+    // Class        : showApplication
+    // Beschreibung : Login Fenster schließen und Application Fenster öffnen
+    private void showApplication(Integer userId) {
         try{
-
             FXMLLoader loader = new FXMLLoader();
 
-            loader.setLocation(getClass().getClassLoader().getResource("user_edit.fxml"));
+            loader.setLocation(getClass().getClassLoader().getResource("application.fxml"));
             loader.load();
 
-            UserEditViewModel userEditViewModel = loader.getController();
-            userEditViewModel.setUserId(userId);
-            if(userId>0){
-                userEditViewModel.setUserData(userId.toString());
-            }
+            ApplicationViewModel applicationViewModel = loader.getController();
+            applicationViewModel.setUserId(userId);
 
             //Open new Window with correct title
             Parent p = loader.getRoot();
             Stage stage = new Stage();
             stage.setTitle("Benutzer bearbeiten");
             stage.setScene(new Scene(p, 600, 400));
+            stage.sizeToScene();
             stage.setResizable(false);
 
-            //hide login window
+            //close login window and show new Stage
             Stage st = (Stage) btnLogin.getScene().getWindow();
-            st.hide();
-
-            //and disable Primary Stage
-            stage.initModality(Modality.APPLICATION_MODAL);
+            st.close();
             stage.show();
 
         } catch (Exception e) {
             e.printStackTrace(); //@todo create appropriate error message for user to contact administrator
         }
     }
-
-
 }
