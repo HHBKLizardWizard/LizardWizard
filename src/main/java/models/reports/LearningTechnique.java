@@ -7,15 +7,17 @@ public class LearningTechnique
 {
     private Integer id;
     private String technique;
-    private Expertise expertise;
-
+    private String expertise;
+    private LearningSituation learningSituation;
     public LearningTechnique(Integer id,
                              String technique,
-                             Expertise expertise)
+                             String expertise,
+                             LearningSituation ls)
     {
         this.id = id;
         this.technique = technique;
         this.expertise = expertise;
+        this.learningSituation = ls;
     }
 
     public Integer getId()
@@ -38,13 +40,21 @@ public class LearningTechnique
         this.technique = technique;
     }
 
-    public Expertise getExpertise()
+    public String  getExpertise()
     {
         return expertise;
     }
 
-    public void setExpertise(Expertise expertise)
+    public void setExpertise(String expertise)
     {
         this.expertise = expertise;
+    }
+
+    public LearningSituation getLearningSituation() {
+        return learningSituation;
+    }
+
+    public void setLearningSituation(LearningSituation learningSituation) {
+        this.learningSituation = learningSituation;
     }
 }

@@ -59,7 +59,9 @@ public class DidaktRepository implements IDidaktRepository {
                      "INNER JOIN tbl_abteilung " +
                      "ON tbl_beruf.ID_abteilung = tbl_abteilung.AId " +
                      "INNER JOIN tbl_lehrer " +
-                     "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId";;
+                     "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId " +
+                     "INNER JOIN tbl_uformberuf " +
+                     "ON BId = ID_Beruf JOIN tbl_uform ON ID_UForm = UID;";;
         ObservableList<Profession> professionList = FXCollections.observableArrayList();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -73,7 +75,7 @@ public class DidaktRepository implements IDidaktRepository {
                                                 teach);
                 Profession foo = new Profession(rs.getInt("BId"),
                                                 rs.getString("Berufname"),
-                                                dep);
+                                                dep, rs.getString("UFormname"));
                 foo.setDurationList(getDuration(foo));
                 professionList.add(foo);
             }
@@ -175,29 +177,53 @@ public class DidaktRepository implements IDidaktRepository {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return learningSituationList;
     }
 
     public List<PerformanceRecord> getPerformanceRecordList(LearningSituation foo)
     {
-        return null;
+        String sql = "SELECT LNID, Art from tbl_leistungsnachweis " +
+                     "JOIN tbl_lernsituationleistungsnachweis " +
+                     "ON LNID = ID_Leistungsnachweis " +
+                     "WHERE ID_lernsituation = ?";
+        List<PerformanceRecord> performanceRecordList = new ArrayList<>();
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1,foo.getId());
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                PerformanceRecord performanceRecord = new PerformanceRecord(rs.getInt("LNID"), rs.getString("Art"));
+                performanceRecordList.add(performanceRecord);
+            }
+        }
+        catch (Exception e){
+
+        }
+        return performanceRecordList;
     }
 
     @Override
-    public List<Expertise> getLearningTechniqueList(LearningSituation situation)
+    public List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
     {
-        String sql = "SELECT Technik FROM tbl_lerntechnik " +
+        String sql = "SELECT * FROM tbl_lerntechnik " +
                      "JOIN tbl_lernsituationlerntechnik " +
                      "ON LATID = ID_lerntechnik " +
-                     "JOIN tbl_lernsituation " +
-                     "ON ID_Lernsituation = LSID";
-        List<Expertise> learningTechniques = new ArrayList<>();
+                     "JOIN tbl_kompetenz " +
+                     "ON ID_Kompetenz = KId " +
+                     "WHERE ID_Lernsituation = ?";
+        List<LearningTechnique> learningTechniques = new ArrayList<>();
         try
         {
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, situation.getId());
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-
+                LearningTechnique lt = new LearningTechnique(rs.getInt("LATID"),
+                                                             rs.getString("Technik"),
+                                                             rs.getString("Text"),
+                                                             situation);
+                learningTechniques.add(lt);
             }
         }
         catch (Exception e){
@@ -207,15 +233,17 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     @Override
-    public ReportData getReportData(Profession profession){
-        ReportData dataSet = null;
-
+    public ReportData getReportData(Profession profession, Integer year){
+        ReportData dataSet = new ReportData();
         try{
-            /*for (Subject subject : profession.getSubjectList()) {
-                subject.setAreaOfEducation(dataSet.getAreaOfEducationList().get(subject.getAoeID()-1));
-                dataSet.getAreaOfEducationList().get(subject.getAoeID()-1).getSubjectList().add(subject);
-            }*/
-
+            dataSet.setProfession(profession);
+            String foo = profession.getDepartment().getTeacher().getSex() + profession.getDepartment().getTeacher().getSex();
+            dataSet.setReportHeader(new ReportHeader(profession.getDepartment().getName(),
+                                                     profession.getName(),
+                                                     year,
+                                                     profession.getFormOfTeaching(),
+                                                     foo));
+            dataSet.getProfession().setSubjects(getSubjectList(dataSet.getProfession()));
         }
         catch(Exception e){
             System.out.println(e);
@@ -246,31 +274,6 @@ public class DidaktRepository implements IDidaktRepository {
         return duration;
     }
 
-
-    private ReportHeader getReportHeader(){
-        String sql = "SELECTä";
-        ReportHeader rh = null;
-        try
-        {
-       /*     String teacher = null;
-            if (rs.getString("Geschlecht") == "W"){
-                teacher = ("Frau" + rs.getString("Lehrername"));
-            }
-            else{
-                teacher = ("Herr" + rs.getString("Lehrername"));
-            }
-            rh = new ReportHeader(rs.getString("Abteilungsname"),
-                                               rs.getString("Berufname"),
-                                               rs.getInt("Jahr"),
-                                               rs.getString("UFormname"),
-                                               teacher);*/
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return  rh;
-    }
 
    /* private Subject getSubject(ResultSet rs, AreaOfEducation area){
         Subject foo = null;
