@@ -45,7 +45,7 @@ public class LearningSituation extends LearningSituationTableElement {
         return id;
     }
 
-    public void set(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

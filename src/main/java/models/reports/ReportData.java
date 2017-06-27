@@ -11,6 +11,10 @@ public class ReportData {
     private Profession profession;
     private ReportHeader reportHeader;
 
+    public ReportData()
+    {
+    }
+
     public ReportData(Profession prof) {
         this.profession = prof;
         this.profession.getAoeList().add(new AreaOfEducation

@@ -17,7 +17,7 @@ public interface IDidaktRepository {
     List<LearningTechnique> getLearningTechniqueList(LearningSituation situation);
     ReportData getReportData(Profession profession);
 
-    List<Integer> getDuration(Integer id);
+    List<Integer>getDuration(Profession profession);
 
     ObservableList<String> getProfessions();
 

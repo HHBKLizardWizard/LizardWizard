@@ -50,3 +50,4 @@ CREATE TABLE user_templates
   ON DELETE CASCADE
 );
 
+INSERT INTO users (username, firstname, lastname, password, rights) VALUES ("root", "root", "root", "root", "admin");

@@ -144,7 +144,7 @@ public class DidaktRepository implements IDidaktRepository {
         String sql = "SELECT * FROM tbl_lernsituation WHERE LF_NR = ?";
         List<LearningSituation> learningSituationList = new ArrayList<>();
         try{
-            PreparedStatement
+            PreparedStatement ps = con.prepareStatement(sql);
             LearningSituation foo = new LearningSituation();
         }catch (Exception e){
             e.printStackTrace();
@@ -153,14 +153,20 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     @Override
+    public List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
+    {
+        return null;
+    }
+
+    @Override
     public ReportData getReportData(Profession profession){
-        ReportData dataSet = new ReportData();
+        ReportData dataSet = null;
 
         try{
-            for (Subject subject : profession.getSubjectList()) {
+            /*for (Subject subject : profession.getSubjectList()) {
                 subject.setAreaOfEducation(dataSet.getAreaOfEducationList().get(subject.getAoeID()-1));
                 dataSet.getAreaOfEducationList().get(subject.getAoeID()-1).getSubjectList().add(subject);
-            }
+            }*/
 
         }
         catch(Exception e){
@@ -170,9 +176,7 @@ public class DidaktRepository implements IDidaktRepository {
         return null;
     }
 
-    @Override
-
-    public List<Integer> getDuration(Profession profession)
+    public List<Integer>getDuration(Profession profession)
     {
         String sql = "SELECT DISTINCT Jahr from tbl_beruffach\n" +
                      "LEFT JOIN tbl_uformberuf\n" +

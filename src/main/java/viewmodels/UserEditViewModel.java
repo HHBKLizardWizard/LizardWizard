@@ -3,13 +3,14 @@ package viewmodels;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.User;
 import models.UserRights;
-import org.mindrot.jbcrypt.BCrypt;
-import repositories.IUserRepository;
 import repositories.UserRepository;
 import util.DatabaseConnector;
 
@@ -36,6 +37,8 @@ public class UserEditViewModel implements Initializable {
     @FXML
     private Label lblPwInfo;
 
+    User updateUser;
+
     /**
      *   Class        : initialize
      *   Beschreibung : Füllt die ChoiceBoxes mit allen Rechten.
@@ -52,32 +55,18 @@ public class UserEditViewModel implements Initializable {
      *   Beschreibung : Wird im UserViewModel benutzt (deswegen public).
      *                  Füllt alle Felder mit den selektierten Benutzerdaten.
      */
-    public void setUserData(String txtUserId) {
-        IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
-        lblPwInfo.setVisible(true);
+    public void setUserData(User user) {
 
-        //todo: get user by userID
-        //User user = userRepository.getUserById(Integer.valueOf(txtUserId));
-        User user = new User("Sil123","Sil","van Vliet", "qwe", UserRights.AZUBI);
+        //setze hinweis wegen password wenn man ein Benutzer aktualiesieren will
+        lblPwInfo.setVisible(true);
 
         txtFirstName.setText(user.getFirstname());
         txtLastName.setText(user.getLastname());
         txtUsername.setText(user.getUsername());
-
         cbRole.getSelectionModel().select(user.getRights());
 
         //password is never shown. if password needs to be updated then Admin fills this field
         //otherwise he should leave it blank and only user info will be update.
-    }
-
-    /**
-     *   Class        : setUserId
-     *   Beschreibung : Wird im UserViewModel benutzt (deswegen public). Setzt die UserID in ein
-     *                  "hidden" Feld, so dass in dieser View die (wenn ausgewählt) ausgewählten
-     *                  Benutzerdaten angezeigt und aktualisiert werden können.
-     */
-    public void setUserId(Integer userId) {
-        txtUserId.setText(String.valueOf(userId));
     }
 
     /**
@@ -88,55 +77,62 @@ public class UserEditViewModel implements Initializable {
      */
     public void saveUserAction() {
         UserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
-
         String msgTitle = "", msgText = "";
+        Alert.AlertType alerType = Alert.AlertType.CONFIRMATION;
 
         //check if all form fields are good to go
         boolean allGood = checkFieldsAction();
 
         if(allGood){
-            Integer userId = Integer.parseInt(txtUserId.getText());
             UserRights uRight = cbRole.getSelectionModel().getSelectedItem();
             String  lName = txtLastName.getText(),
                     fName = txtFirstName.getText(),
                     userName = txtUsername.getText(),
                     password = txtPassword.getText();
 
-            if(userId > 0){
-                //User was found
-                //TODO hey, hab ich dir hier mal reingesetzt...wo kommt die userId her? -iho
-                User user = userRepository.getUserByUsername(fName);
+            if(updateUser != null){
+                updateUser.setFirstname(fName);
+                updateUser.setLastname(lName);
+                updateUser.setUsername(userName);
+                updateUser.setRights(uRight);
 
-                //making sure the User was really found
-                if(user != null){
-                    user.setFirstname(fName);
-                    user.setLastname(lName);
-                    user.setUsername(userName);
-                    user.setRights(uRight);
-
-                    //check if password field was filled, if so, update
-                    if(!password.equals("")){
-                        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
-                        user.setPassword(hashed);
-                    }
-
-                    //update the User
-                    userRepository.updateUser(user);
-
-                    msgText = "The User was successfully created.";
-                    msgTitle = "User created";
+                //check if password field was filled, if so, update
+                if(!password.equals("")){
+                    //todo encrypt fixen
+                    //String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+                    updateUser.setPassword(password);
                 }
+                //update the User
+                userRepository.updateUser(updateUser);
+
+                msgTitle = "User updated";
+                msgText = "The User was successfully updated.";
             }else{
                 //No id found => creating new User
-                userRepository.registerUser(new User(userName,fName,lName,password, uRight));
+                User user = userRepository.registerUser(new User(userName,fName,lName,password, uRight));
+
+                if(user != null){
+                    msgTitle = "User created";
+                    msgText = "The User was successfully created.";
+                }else{
+                    alerType = Alert.AlertType.ERROR;
+                    msgTitle = "An error has occured";
+                    msgText = "An error has occured while creating the User in the Database, please contact" +
+                            "your administrator to solve the issue (issue: error with Insert statement";
+                }
             }
 
             //success message
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("");
+            Alert alert = new Alert(alerType);
+            alert.setTitle("Success");
             alert.setHeaderText(msgTitle);
             alert.setContentText(msgText);
             alert.showAndWait();
+
+            //autom
+            if(alerType.equals(Alert.AlertType.CONFIRMATION)) {
+                closeButtonAction();
+            }
         }
     }
 
@@ -149,7 +145,6 @@ public class UserEditViewModel implements Initializable {
      *                  bestehen.
      */
     private boolean checkFieldsAction() {
-        Integer userId = Integer.parseInt(txtUserId.getText());
         Boolean allGood = true;
         String emptyFields = "The following Data is missing:";
 
@@ -168,7 +163,8 @@ public class UserEditViewModel implements Initializable {
             emptyFields = emptyFields.concat("\nName");
         }
 
-        if(userId == 0) {
+        //ist kein muss wenn benutzer schon existiert
+        if(updateUser == null) {
             if(txtPassword.getText().equals("")){
                 allGood = false;
                 emptyFields = emptyFields.concat("\nPasswort");
@@ -190,7 +186,39 @@ public class UserEditViewModel implements Initializable {
      *   Beschreibung : Schließt die User Edit Übersicht.
      */
     public void closeButtonAction(){
-        Stage stage = (Stage) btnBack.getScene().getWindow();
-        stage.close();
+
+        try{
+            FXMLLoader loader = new FXMLLoader();
+
+            loader.setLocation(getClass().getClassLoader().getResource("users.fxml"));
+            loader.load();
+
+            //Open new Window with correct title
+            Parent p = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setTitle("Benutzer");
+            stage.setScene(new Scene(p, 600, 400));
+            stage.setResizable(false);
+            stage.sizeToScene();
+
+            //close login window and show new Stage
+            Stage st = (Stage) btnBack.getScene().getWindow();
+            st.close();
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace(); //@todo create appropriate error message for user to contact administrator
+        }
+    }
+
+    /**
+     *   Class        : setUserId
+     *   Beschreibung : Setzt UserId so, dass die richtige Templates aus dem Datenbank gehölt werden kann
+     */
+    public void setUser(User user) {
+        updateUser = user;
+        if (updateUser != null){
+            setUserData(user);
+        }
     }
 }

@@ -39,6 +39,8 @@ public class UserRepository implements IUserRepository{
      * @return
      */
     public User registerUser(User user){
+        //TODO encryption fixen
+        String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
         String sql = "INSERT INTO users(username, firstname, lastname, password, rights) " +
                 "VALUES (?,?,?,?,?)";
@@ -48,10 +50,6 @@ public class UserRepository implements IUserRepository{
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getFirstname());
             ps.setString(3, user.getLastname());
-
-            //TODO encryption fixen
-            String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getRights().toString());
 
@@ -140,6 +138,11 @@ public class UserRepository implements IUserRepository{
         return password;
     }
 
+    /**
+     *
+     * @param user
+     * @return
+     */
     public boolean updateUser (User user){
         String sql = "UPDATE users SET firstname = ?, " +
                                         "lastname = ?, " +
@@ -154,43 +157,43 @@ public class UserRepository implements IUserRepository{
             ps.setString(2, user.getLastname());
             ps.setString(3, user.getUsername());
             ps.setString(4, user.getPassword());
-            ps.setString(5, user.getId().toString());
-            ps.setString(6, user.getRights().toString());
+            ps.setString(5, user.getRights().toString());
+            ps.setString(6, user.getId().toString());
 
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next() ){
-                System.out.println(rs.getString("name"));
-            }
-
+            ps.executeUpdate();
+            System.out.println(ps);
         }catch (Exception e){
             System.out.println(e);
             return false;
         }
-
         return true;
     }
 
+    /**
+     *
+     *
+     * @return
+     */
     public ObservableList<User> getAllUsers()
     {
         String sql = "SELECT * FROM users";
 
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-
             ResultSet rs = ps.executeQuery();
 
-            User user = new User(
-                    rs.getString("username"),
-                    rs.getString("firstname"),
-                    rs.getString("lastname"),
-                    rs.getString("password"),
-                    UserRights.valueOf(rs.getString("rights"))
-            );
-            userList.add(user);
-
+            while(rs.next()) {
+                userList.add(new User(
+                        rs.getInt("pk_id"),
+                        rs.getString("username"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getString("password"),
+                        UserRights.valueOf(rs.getString("rights").toUpperCase()))
+                );
+            }
         }catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         return userList;
