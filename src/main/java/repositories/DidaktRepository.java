@@ -145,7 +145,7 @@ public class DidaktRepository implements IDidaktRepository {
                 learningSituation.setScenario(rs.getString("Szenario"));
                 learningSituation.setFieldOfLearning(field);
                 learningSituation.setSubject(field.getSubject().getName());
-                //learningSituation.setSubjectArea(field.getSubject().getAreaOfEducation().getName());
+                //learningSituation.setSubjectArea((AreaOfEducation.valueOf()[field.getSubject().getAoeID()]));
                 learningSituation.setStartWeek(rs.getInt("Von"));
                 learningSituation.setEndWeek(rs.getInt("Bis"));
                 learningSituation.setExpertiseList(getLearningTechniqueList(learningSituation));

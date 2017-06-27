@@ -12,7 +12,7 @@ public class LearningSituation extends LearningSituationTableElement {
     private Integer lessonHours;
     private String name;
     private String subject;
-    private String subjectArea;
+    private AreaOfEducation subjectArea;
     private String contents;
     private String essentialSkills;
     private String learningResult;
@@ -74,12 +74,16 @@ public class LearningSituation extends LearningSituationTableElement {
         this.subject = subject;
     }
 
-    public String getSubjectArea() {
+    public AreaOfEducation getSubjectArea() {
         return subjectArea;
     }
 
-    public void setSubjectArea(String subjectArea) {
+    public void setSubjectArea(AreaOfEducation subjectArea) {
         this.subjectArea = subjectArea;
+    }
+
+    public void setLearningTechniqueList(List<LearningTechnique> learningTechniqueList) {
+        this.learningTechniqueList = learningTechniqueList;
     }
 
     public String getContents() {
