@@ -34,26 +34,6 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     @Override
-    public ObservableList<String> getProfessions() {
-        String sql = "SELECT * FROM tbl_beruf " +
-                     "INNER JOIN tbl_abteilung " +
-                     "ON tbl_beruf.ID_Abteilung = tbl_abteilung.AId " +
-                     "INNER JOIN tbl_lehrer " +
-                     "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId";
-        ObservableList<String> professionList = FXCollections.observableArrayList();
-        try{
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                professionList.add(rs.getString("Berufname"));
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return professionList;
-    }
-
-    @Override
     public ObservableList<Profession> getProfessionList() {
         String sql = "SELECT * FROM tbl_beruf " +
                      "INNER JOIN tbl_abteilung " +
@@ -107,7 +87,6 @@ public class DidaktRepository implements IDidaktRepository {
                                           rs.getInt("Lernbereich"),
                                           rs.getString("Bezeichnung"));
                 subject.setFieldOfLearningList(getFieldList(subject));
-                profession.getAoeList().get(subject.getAoeID()-1).getSubjectList().add(subject);
                 subjects.add(subject);
             }
         }
@@ -166,7 +145,7 @@ public class DidaktRepository implements IDidaktRepository {
                 learningSituation.setScenario(rs.getString("Szenario"));
                 learningSituation.setFieldOfLearning(field);
                 learningSituation.setSubject(field.getSubject().getName());
-                learningSituation.setSubjectArea(field.getSubject().getAreaOfEducation().getName());
+                //learningSituation.setSubjectArea(field.getSubject().getAreaOfEducation().getName());
                 learningSituation.setStartWeek(rs.getInt("Von"));
                 learningSituation.setEndWeek(rs.getInt("Bis"));
                 learningSituation.setExpertiseList(getLearningTechniqueList(learningSituation));

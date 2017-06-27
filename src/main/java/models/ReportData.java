@@ -31,16 +31,6 @@ public class ReportData {
         this.reportHeader = reportHeader;
     }
 
-    public List<AreaOfEducation> getAreaOfEducationList() {
-        return profession.getAoeList();
-    }
-
-    public void setAreaOfEducationList(List<AreaOfEducation> areaOfEducationList) {
-        if(profession!=null){
-            this.profession.setAoeList(areaOfEducationList);
-        }
-    }
-
     public Profession getProfession() {
         return profession;
     }

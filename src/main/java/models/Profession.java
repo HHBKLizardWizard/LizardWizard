@@ -15,16 +15,12 @@ public class Profession
     private String name;
     private String formOfTeaching;
     private Department department;
-    private List<AreaOfEducation> aoeList = new ArrayList<>();
     private List<Subject> subjects = new ArrayList<>();
     private ObservableList<Integer> durationList = FXCollections.observableArrayList();
 
     public Profession(Integer bid, String professionName){
         this.id = bid;
         this.name = professionName;
-        this.aoeList.add(new AreaOfEducation("Berufsbezogerner Lernbereich"));
-        this.aoeList.add(new AreaOfEducation("Berufsübergreifender Lernbereich"));
-        this.aoeList.add(new AreaOfEducation("Differenzierungsbereich"));
     }
 
     public Profession(Integer id, String name, Department department, String formOfTeaching)
@@ -33,14 +29,6 @@ public class Profession
         this.name = name;
         this.department = department;
         this.formOfTeaching = formOfTeaching;
-        this.getAoeList().add(new AreaOfEducation
-                                                 ("Berufsbezogerner " +
-                                                          "Lernbereich"));
-        this.getAoeList().add(new AreaOfEducation
-                                                 ("Berufsübergreifender" +
-                                                          "Lernbereich"));
-        this.getAoeList().add(new AreaOfEducation
-                                                 ("Differenzierungsbereich"));
     }
 
     public Integer getId()
@@ -99,13 +87,5 @@ public class Profession
         this.subjects = subjects;
     }
 
-    public List<AreaOfEducation> getAoeList()
-    {
-        return aoeList;
-    }
 
-    public void setAoeList(List<AreaOfEducation> aoeList)
-    {
-        this.aoeList = aoeList;
-    }
 }

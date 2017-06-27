@@ -19,12 +19,5 @@ public interface IDidaktRepository {
     ReportData getReportData(Profession profession, Integer year);
     List<PerformanceRecord>getPerformanceRecordList(LearningSituation situation);
     List<Integer> getDuration(Profession profession);
-
-    ObservableList<String> getProfessions();
-
-
-
-
-
 }
 
