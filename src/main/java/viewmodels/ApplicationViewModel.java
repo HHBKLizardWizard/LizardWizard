@@ -149,8 +149,6 @@ public class ApplicationViewModel implements Initializable {
         }
     }
 
-    // TODO remove
-
     /**
      *   Class        : closeButtonAction
      *   Beschreibung : Schließt das Programm

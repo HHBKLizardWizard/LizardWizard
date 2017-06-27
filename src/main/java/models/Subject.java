@@ -12,6 +12,7 @@ public class Subject {
     private Integer aoeID;
     private String name;
     private List<FieldOfLearning> fieldOfLearningList;
+    private AreaOfEducation areaOfEducation;
 
     public Subject()
     {
@@ -32,6 +33,15 @@ public class Subject {
         this.id = id;
         this.name = name;
         this.fieldOfLearningList = fieldOfLearningList;
+    }
+
+
+    public AreaOfEducation getAreaOfEducation() {
+        return areaOfEducation;
+    }
+
+    public void setAreaOfEducation(AreaOfEducation areaOfEducation) {
+        this.areaOfEducation = areaOfEducation;
     }
 
     public Integer getYear() {
