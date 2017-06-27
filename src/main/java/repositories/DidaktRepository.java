@@ -138,7 +138,7 @@ public class DidaktRepository implements IDidaktRepository {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            Integer foo = rs.getInt("Dauer")
+            Integer foo = rs.getInt("Dauer");
         } catch (SQLException e) {
             e.printStackTrace();
         }
