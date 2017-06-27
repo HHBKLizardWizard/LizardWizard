@@ -9,10 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -59,6 +56,8 @@ public class ApplicationViewModel implements Initializable {
     private ITemplateRepository templateRepository;
     private DatabaseConnector dbConnector;
     private User loggedUser;
+    private Template selectedTemplate;
+    private Profession selectedProfession;
 
     /**
      *   Class        : initialize
@@ -72,6 +71,7 @@ public class ApplicationViewModel implements Initializable {
         templateRepository = new TemplateRepository(dbConnector.getUserDataSource());
 
         cbProfession.setItems(didaktRepository.getProfessionList());
+        selectedProfession = didaktRepository.getProfessionList().get(0);
 
         //convert professionList to only show name instead of object
         cbProfession.setConverter(new StringConverter<Profession>() {
@@ -92,6 +92,18 @@ public class ApplicationViewModel implements Initializable {
 
         //eigentlich für onChangeAction aber es muss hier auch gefüllt werden
         handleProfessionComboBoxAction();
+
+        /* store selected Template on change*/
+        cbTemplate.valueProperty().addListener((obs, oldval, newval) -> {
+            if(newval != null)
+                selectedTemplate = newval;
+        });
+
+        /* store selected Template on change*/
+        cbProfession.valueProperty().addListener((obs, oldval, newval) -> {
+            if(newval != null)
+                selectedProfession = newval;
+        });
     }
 
     /**
@@ -111,22 +123,31 @@ public class ApplicationViewModel implements Initializable {
     */
     public void createAnnualReport() {
         // Erstelle Profession Object aus Comboboxen Auswahl
-        Profession profession = new Profession(1, "IT-Systemelektroniker/in");
+        Profession profession = selectedProfession;
 
         // Hole Template Object aus Combobox Auswahl
-        Template template = new Template();
+        Template template = selectedTemplate;
 
         // Hole Jahr aus Combobox
-        int year = 1;
+        int year = cbYear.getSelectionModel().getSelectedItem();
 
         // get data from database and build report
 
         didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
         ReportData reportData = didaktRepository.getReportData(profession, year);
 
-        new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport(template);
+        if(template != null){
+            //todo ABER ICH WIIIIILLLLL !!!! xD
+            new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport(template);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("");
+            alert.setHeaderText("no template selected");
+            alert.setContentText("No template was selected, in case you do not have any templates and you are " +
+                    "unable to make them due to not have the permissions to then please contact your administrator");
+            alert.showAndWait();
+        }
     }
-
 
     // TODO remove
 
@@ -206,6 +227,7 @@ public class ApplicationViewModel implements Initializable {
         templateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
         cbTemplate.setItems(templateList);
+        selectedTemplate = templateList.get(0);
 
         //convert template to only show name instead of object
         cbTemplate.setConverter(new StringConverter<Template>() {
@@ -221,15 +243,6 @@ public class ApplicationViewModel implements Initializable {
                         ap.getTemplateName().equals(string)).findFirst().orElse(null);
             }
         });
-
-        /* back to id when exporting to pdf
-        combo.valueProperty().addListener((obs, oldval, newval) -> {
-            if(newval != null)
-                System.out.println("Selected airport: " + newval.getName()
-                        + ". ID: " + newval.getID());
-        });*/
-
-
 
 
 
