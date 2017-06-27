@@ -8,12 +8,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import models.AreaOfEducation;
 import models.User;
 import org.mindrot.jbcrypt.BCrypt;
 import repositories.IUserRepository;
 import repositories.UserRepository;
 import util.DatabaseConnector;
 
+import java.awt.geom.Area;
 import java.net.URL;
 import java.util.ResourceBundle;
 
