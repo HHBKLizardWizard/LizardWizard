@@ -196,7 +196,7 @@ public class DidaktRepository implements IDidaktRepository {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, situation.getId());
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 LearningTechnique lt = new LearningTechnique(rs.getInt("LATID"),
                                                              rs.getString("Technik"),
                                                              rs.getString("Text"),

@@ -73,7 +73,7 @@ public class AnnualReport {
                 .setMarginLeft(4)
                 .setFontSize(8)
                 .setBold();
-
+/*
         for (AreaOfEducation areaOfEducation : reportData.getAreaOfEducationList()) {
             Paragraph aoeParagraph = new Paragraph(areaOfEducation.getName())
                     .addStyle(paragraphStyle);
@@ -93,7 +93,7 @@ public class AnnualReport {
 
                 this.insertSubjectData(subject);
             }
-        }
+        }*/
     }
 
     private void insertSubjectData(Subject subject) {

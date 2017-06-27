@@ -78,26 +78,4 @@ public class TestData {
         return subject;
     }
 
-    public AreaOfEducation getAreaOfEducationExample(String name) {
-        List<Subject> subjectList = new ArrayList<>();
-        subjectList.add(this.getSubjectExample("Wirtschafts- und Geschäftsprozesse"));//TODO subject
-
-        AreaOfEducation areaOfEducation = new AreaOfEducation();
-        areaOfEducation.setName(name);
-        areaOfEducation.setSubjectList(subjectList);
-        return areaOfEducation;
-    }
-
-/*    public ReportData getReportDataExample() {
-        List<AreaOfEducation> areaOfEducationList = new ArrayList<>();
-        areaOfEducationList.add(this.getAreaOfEducationExample("Berufsbezogener Lernbereich"));
-
-        ReportData reportData = new ReportData();
-
-        reportData.setReportHeader(this.getReportHeaderExample());
-
-        reportData.setAreaOfEducationList(areaOfEducationList);
-
-        return reportData;
-    }*/
 }
