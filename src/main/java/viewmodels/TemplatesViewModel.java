@@ -161,7 +161,7 @@ public class TemplatesViewModel implements Initializable {
 
 
                 msgHeader = "Template Erstell";
-                msgText = "";
+                msgText = "Die neue Template " + txtTempName.getText() + "war erforgleich erstellt";
             }else{
                 //Error message
                 msgTitle = "ERROR";
@@ -170,7 +170,19 @@ public class TemplatesViewModel implements Initializable {
                 alertType = Alert.AlertType.ERROR;
             }
         }else{
-            //todo update the selected Template
+            selectedTemplate.setTemplateName(txtTempName.getText());
+            selectedTemplate.setScenario(chk_scenario.isSelected());
+            selectedTemplate.setCompetences(chk_kompetenzen.isSelected());
+            selectedTemplate.setMaterials(chk_material.isSelected());
+            selectedTemplate.setTechnics(chk_technik.isSelected());
+            selectedTemplate.setResults(chk_ergebnis.isSelected());
+            selectedTemplate.setContents(chk_inhalte.isSelected());
+            selectedTemplate.setNotes(chk_hinweis.isSelected());
+            selectedTemplate.setAchievements(chk_leistung.isSelected());
+
+            templateRepository.updateTemplate(selectedTemplate);
+            msgHeader = "Template Erstell";
+            msgText = "Die Template " + txtTempName.getText() + "war erforgleich aktualiesiert";
 
         }
 

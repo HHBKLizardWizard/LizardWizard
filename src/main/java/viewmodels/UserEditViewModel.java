@@ -1,5 +1,7 @@
 package viewmodels;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -38,6 +40,7 @@ public class UserEditViewModel implements Initializable {
     private Label lblPwInfo;
 
     User updateUser;
+    private Integer maxTxtLength = 40;
 
     /**
      *   Class        : initialize
@@ -48,6 +51,12 @@ public class UserEditViewModel implements Initializable {
         rightsList.addAll(UserRights.ADMIN, UserRights.LEHRER, UserRights.AZUBI);
         cbRole.setItems(rightsList);
         cbRole.getSelectionModel().select(0);
+
+        //max größe für text felder
+        addListener(txtUsername);
+        addListener(txtFirstName);
+        addListener(txtLastName);
+        addListener(txtPassword);
     }
 
     /**
@@ -221,4 +230,17 @@ public class UserEditViewModel implements Initializable {
             setUserData(user);
         }
     }
+
+    private void addListener(TextField txtField){
+        txtField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (txtField.getText().length() > maxTxtLength) {
+                    String s = txtField.getText().substring(0, maxTxtLength);
+                    txtField.setText(s);
+                }
+            }
+        });
+    }
+
 }

@@ -7,10 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.User;
@@ -20,6 +17,7 @@ import repositories.UserRepository;
 import util.DatabaseConnector;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -42,6 +40,7 @@ public class UserViewModel implements Initializable {
 
     /**
      *   Class        : initialize
+     *   Class        : initializer
      *   Beschreibung : Füllt die Benutzertablle mit allen Benutzern aus der Datenbank.
      */
     public void initialize(URL location, ResourceBundle resources) {
@@ -65,8 +64,22 @@ public class UserViewModel implements Initializable {
         User selectedUser = getSelectedUser();
         if(selectedUser != null){
             if(selectedUser.getId() != 1){
-                userRepository.deleteUser(selectedUser);
-                userList.remove(selectedUser);
+                //Confirmation if the User should really be deleted.
+                ButtonType yes = new ButtonType("Ja", ButtonBar.ButtonData.OK_DONE);
+                ButtonType no = new ButtonType("Nein", ButtonBar.ButtonData.CANCEL_CLOSE);
+                Alert alert = new Alert(Alert.AlertType.WARNING,
+                        "Sind Sie sicher das Sie der/die Benutzer " + selectedUser.getFirstname() + " "
+                        + selectedUser.getLastname() + " löschen willen?",
+                        yes,
+                        no);
+                alert.setTitle("Benutzer löschen");
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if(result.get().getButtonData().isDefaultButton()){
+                    userRepository.deleteUser(selectedUser);
+                    userList.remove(selectedUser);
+                    tblUsers.getItems().remove(tblUsers.getSelectionModel().getSelectedItem());
+                }
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("nope!! ");

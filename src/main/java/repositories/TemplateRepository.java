@@ -17,7 +17,6 @@ import java.sql.SQLException;
  */
 public class TemplateRepository implements ITemplateRepository
 {
-
     Connection con = null;
 
     public TemplateRepository(DataSource dataSource) {
@@ -77,35 +76,22 @@ public class TemplateRepository implements ITemplateRepository
         return templateList;
     }
 
-    public Template getTemplate()
-    {
+    /**
+     *
+     * @param template
+     */
+    public void deleteTemplate(Template template) {
+        String sql = "DELETE FROM templates WHERE pk_id = ?";
 
-        String sql = "SELECT * FROM templates";
-        Template template = null;
-        try
-        {
+        try {
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, template.getId());
 
-            ResultSet rs = ps.executeQuery();
+            ps.execute();
 
-
-            template = new Template(
-                  /*  rs.getBoolean("scenario"),
-                    rs.getBoolean("competences"),
-                    rs.getBoolean("materials"),
-                    rs.getBoolean("technics"),
-                    rs.getBoolean("results"),
-                    rs.getBoolean("contents"),
-                    rs.getBoolean("notes"),
-                    rs.getBoolean("achievements")*/
-            );
+        } catch(SQLException e) {
+            e.printStackTrace();
         }
-        catch (Exception e)
-        {
-            System.out.println(e);
-        }
-
-        return template;
     }
 
     /**
@@ -156,23 +142,9 @@ public class TemplateRepository implements ITemplateRepository
     /**
      *
      * @param template
+     * @return template
      */
-    public void deleteTemplate(Template template) {
-        String sql = "DELETE FROM templates WHERE pk_id = ?";
-
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, template.getId());
-
-            ps.execute();
-
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Template updateTemplate()
-    {
+    public void updateTemplate(Template template) {
         String sql = "UPDATE templates SET " +
                         "scenario     = ?" +
                         "competences  = ?" +
@@ -181,9 +153,8 @@ public class TemplateRepository implements ITemplateRepository
                         "results      = ?" +
                         "contents     = ?" +
                         "notes        = ?" +
-                        "achievements  = ?";
-
-        Template template = null;
+                        "achievements  = ? " +
+                "WHERE pk_id = ?";
 
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -195,20 +166,12 @@ public class TemplateRepository implements ITemplateRepository
             ps.setString(6, String.valueOf(template.isContents()));
             ps.setString(7, String.valueOf(template.isNotes()));
             ps.setString(8, String.valueOf(template.isAchievements()));
+            ps.setString(9, String.valueOf(template.getId()));
 
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next() ){
-
-                //todo .... warum name?
-                System.out.println(rs.getString("name"));
-            }
+            ps.executeUpdate();
 
         }catch (Exception e){
             System.out.println(e);
         }
-
-        return template;
-
     }
 }
