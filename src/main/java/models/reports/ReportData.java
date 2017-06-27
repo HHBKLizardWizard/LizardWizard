@@ -11,19 +11,8 @@ public class ReportData {
     private Profession profession;
     private ReportHeader reportHeader;
 
-    public ReportData() {
-    }
-
     public ReportData(Profession prof) {
         this.profession = prof;
-        this.profession.getAoeList().add(new AreaOfEducation
-                ("Berufsbezogerner " +
-                        "Lernbereich"));
-        this.profession.getAoeList().add(new AreaOfEducation
-                ("Berufsübergreifender" +
-                        "Lernbereich"));
-        this.profession.getAoeList().add(new AreaOfEducation
-                ("Differenzierungsbereich"));
     }
 
     public List<LearningSituation> getLearningSituations() {
@@ -54,9 +43,5 @@ public class ReportData {
 
     public Profession getProfession() {
         return profession;
-    }
-
-    public void setProfession(Profession profession) {
-        this.profession = profession;
     }
 }

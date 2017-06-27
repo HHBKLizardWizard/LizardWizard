@@ -73,11 +73,11 @@ public class DidaktRepository implements IDidaktRepository {
                 Department dep = new Department(rs.getInt("AId"),
                                                 rs.getString("Abteilungsname"),
                                                 teach);
-                Profession foo = new Profession(rs.getInt("BId"),
+                Profession prof = new Profession(rs.getInt("BId"),
                                                 rs.getString("Berufname"),
                                                 dep, rs.getString("UFormname"));
-                foo.setDurationList(getDuration(foo));
-                professionList.add(foo);
+                prof.setDurationList(getDuration(prof));
+                professionList.add(prof);
             }
         }
         catch (Exception e){
@@ -101,14 +101,14 @@ public class DidaktRepository implements IDidaktRepository {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()){
-                Subject foo = new Subject(rs.getInt("FID"),
+                Subject subject = new Subject(rs.getInt("FID"),
                                           rs.getInt("Jahr"),
                                           rs.getInt("Position"),
                                           rs.getInt("Lernbereich"),
                                           rs.getString("Bezeichnung"));
-                foo.setFieldOfLearningList(getFieldList(foo));
-                profession.getAoeList().get(foo.getAoeID()-1).getSubjectList().add(foo);
-                subjects.add(foo);
+                subject.setFieldOfLearningList(getFieldList(subject));
+                profession.getAoeList().get(subject.getAoeID()-1).getSubjectList().add(subject);
+                subjects.add(subject);
             }
         }
         catch (Exception e){
@@ -130,11 +130,11 @@ public class DidaktRepository implements IDidaktRepository {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                FieldOfLearning foo = new FieldOfLearning(rs.getInt("LFDauer"),
+                FieldOfLearning fieldOfLearning = new FieldOfLearning(rs.getInt("LFDauer"),
                                                           rs.getString("Bezeichnung"),
                                                           rs.getInt("LFNR"));
-                foo.setLearningSituationList(getLearningSituationList(foo));
-                fieldOfLearningList.add(foo);
+                fieldOfLearning.setLearningSituationList(getLearningSituationList(fieldOfLearning));
+                fieldOfLearningList.add(fieldOfLearning);
             }
         }
         catch (Exception e)
@@ -153,25 +153,25 @@ public class DidaktRepository implements IDidaktRepository {
             ps.setInt(1,field.getLfNr());
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                LearningSituation foo = new LearningSituation();
-                foo.setId(rs.getInt("LSID"));
-                foo.setLsnr(rs.getInt("LSNR"));
-                foo.setLessonHours(rs.getInt("UStunden"));
-                foo.setName(rs.getString("Name"));
-                foo.setContents(rs.getString("Inhalte"));
-                foo.setEssentialSkills(rs.getString("Kompetenzen"));
-                foo.setLearningResult(rs.getString("Handlungsprodukt"));
-                foo.setOrganisationalDetails(rs.getString("Organisation"));
-                foo.setClassMaterial(rs.getString("Umaterial"));
-                foo.setScenario(rs.getString("Szenario"));
-                foo.setFieldOfLearning(field);
-                foo.setSubject(field.getSubject().getName());
-                foo.setSubjectArea(field.getSubject().getAreaOfEducation().getName());
-                foo.setStartWeek(rs.getInt("Von"));
-                foo.setEndWeek(rs.getInt("Bis"));
-                foo.setExpertiseList(getLearningTechniqueList(foo));
-                foo.setPerformanceRecordList(getPerformanceRecordList(foo));
-                learningSituationList.add(foo);
+                LearningSituation learningSituation = new LearningSituation();
+                learningSituation.setId(rs.getInt("LSID"));
+                learningSituation.setLsnr(rs.getInt("LSNR"));
+                learningSituation.setLessonHours(rs.getInt("UStunden"));
+                learningSituation.setName(rs.getString("Name"));
+                learningSituation.setContents(rs.getString("Inhalte"));
+                learningSituation.setEssentialSkills(rs.getString("Kompetenzen"));
+                learningSituation.setLearningResult(rs.getString("Handlungsprodukt"));
+                learningSituation.setOrganisationalDetails(rs.getString("Organisation"));
+                learningSituation.setClassMaterial(rs.getString("Umaterial"));
+                learningSituation.setScenario(rs.getString("Szenario"));
+                learningSituation.setFieldOfLearning(field);
+                learningSituation.setSubject(field.getSubject().getName());
+                learningSituation.setSubjectArea(field.getSubject().getAreaOfEducation().getName());
+                learningSituation.setStartWeek(rs.getInt("Von"));
+                learningSituation.setEndWeek(rs.getInt("Bis"));
+                learningSituation.setExpertiseList(getLearningTechniqueList(learningSituation));
+                learningSituation.setPerformanceRecordList(getPerformanceRecordList(learningSituation));
+                learningSituationList.add(learningSituation);
             }
 
         }catch (Exception e){
@@ -234,27 +234,28 @@ public class DidaktRepository implements IDidaktRepository {
 
     @Override
     public ReportData getReportData(Profession profession, Integer year){
-        ReportData dataSet = new ReportData();
+        ReportData reportData = new ReportData(profession);
         try{
-            dataSet.setProfession(profession);
-            String foo = profession.getDepartment().getTeacher().getSex() + profession.getDepartment().getTeacher().getSex();
-            dataSet.setReportHeader(new ReportHeader(profession.getDepartment().getName(),
+            String supervisor = profession.getDepartment().getTeacher().getSex() + " " +
+                    profession.getDepartment().getTeacher();
+
+            reportData.setReportHeader(new ReportHeader(profession.getDepartment().getName(),
                                                      profession.getName(),
                                                      year,
                                                      profession.getFormOfTeaching(),
-                                                     foo));
-            dataSet.getProfession().setSubjects(getSubjectList(dataSet.getProfession()));
+                                                     supervisor));
+            reportData.getProfession().setSubjects(getSubjectList(reportData.getProfession()));
         }
         catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
-        return null;
+        return reportData;
     }
 
     public ObservableList<Integer> getDuration(Profession profession)
     {
-        String sql = "SELECT DISTINCT Jahr from tbl_beruffach\n" +
+        String sql = "SELECT DISTINCT Jahr FROM tbl_beruffach\n" +
                      "LEFT JOIN tbl_uformberuf\n" +
                      "ON tbl_beruffach.ID_UFormBeruf = tbl_uFormBeruf.UBID\n" +
                      "WHERE tbl_UFormBeruf.ID_Beruf = ?";

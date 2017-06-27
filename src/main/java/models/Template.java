@@ -20,30 +20,23 @@ public class Template {
         // Nothing to do here
     }
 
-    public Template(String templateName){
-        this.templateName = templateName;
-    }
-
     public Template(Integer id, String templateName, boolean scenario, boolean competences, boolean materials, boolean technics,
                     boolean results, boolean contents, boolean notes, boolean achievements, User user) {
 
+        this(scenario, competences, materials, technics, results, contents, notes, achievements, user);
         this.id = id;
-        this.templateName = templateName;
-        this.scenario = scenario;
-        this.competences = competences;
-        this.materials = materials;
-        this.technics = technics;
-        this.results = results;
-        this.contents = contents;
-        this.notes = notes;
-        this.achievements = achievements;
-        this.user = user;
     }
 
     public Template(String templateName, boolean scenario, boolean competences, boolean materials, boolean technics,
                     boolean results, boolean contents, boolean notes, boolean achievements, User user) {
 
+        this(scenario, competences, materials, technics, results, contents, notes, achievements, user);
         this.templateName = templateName;
+    }
+
+    private Template(boolean scenario, boolean competences, boolean materials, boolean technics,
+                    boolean results, boolean contents, boolean notes, boolean achievements, User user) {
+
         this.scenario = scenario;
         this.competences = competences;
         this.materials = materials;

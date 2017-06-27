@@ -111,13 +111,21 @@ public class ApplicationViewModel implements Initializable {
     *   Beschreibung : Generiert das pdf
     */
     public void createAnnualReport() {
-        ReportData reportData = new TestData().getReportDataExample();
-        
+        // Erstelle Profession Object aus Comboboxen Auswahl
+        Profession profession = new Profession(1, "IT-Systemelektroniker/in");
+
+        // Hole Template Object aus Combobox Auswahl
+        Template template = new Template();
+
+        // Hole Jahr aus Combobox
+        int year = 1;
+
         // get data from database and build report
 
         didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
+        ReportData reportData = didaktRepository.getReportData(profession, year);
 
-        new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport();
+        new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport(template);
     }
 
     /**
