@@ -87,7 +87,7 @@ public class UserEditViewModel implements Initializable {
     public void saveUserAction() {
         UserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
         String msgTitle = "", msgText = "";
-        Alert.AlertType alerType = Alert.AlertType.CONFIRMATION;
+        Alert.AlertType alerType = Alert.AlertType.INFORMATION;
 
         //check if all form fields are good to go
         boolean allGood = checkFieldsAction();

@@ -10,6 +10,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import models.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,21 +69,42 @@ public class AnnualReport {
         this.createSections(reportData);
     }
 
+    private List<List<Subject>> getSubjectsOrderedByAreaOfEducation(ReportData reportData) {
+        List<List<Subject>> subjectListList = new ArrayList<>();
+        List<Subject> subjectList = reportData.getProfession().getSubjects();
+        List<Subject> subjectListBerufsbezogen = subjectList.stream().filter((subject) ->
+                subject.getAreaOfEducation().equals(AreaOfEducation.BERUFSBEZOGEN)).collect(Collectors.toList());
+
+        List<Subject> subjectListBerufsübergreifend = subjectList.stream().filter((subject) ->
+                subject.getAreaOfEducation().equals(AreaOfEducation.BERUFSÜBERGREIFEND)).collect(Collectors.toList());
+
+        List<Subject> subjectListDifferenzierung = subjectList.stream().filter((subject) ->
+                subject.getAreaOfEducation().equals(AreaOfEducation.DIFFERENZIERUNG)).collect(Collectors.toList());
+
+        subjectListList.add(subjectListBerufsbezogen);
+        subjectListList.add(subjectListBerufsübergreifend);
+        subjectListList.add(subjectListDifferenzierung);
+        return subjectListList;
+    }
+
+
     private void createSections(ReportData reportData) {
         Style paragraphStyle = new Style()
                 .setMarginLeft(4)
                 .setFontSize(8)
                 .setBold();
-/*
-        for (AreaOfEducation areaOfEducation : reportData.getAreaOfEducationList()) {
-            Paragraph aoeParagraph = new Paragraph(areaOfEducation.getName())
+
+        List<List<Subject>> areaOfEducationList = this.getSubjectsOrderedByAreaOfEducation(reportData);
+
+        for (List<Subject> areaOfEducations : areaOfEducationList) {
+            Paragraph aoeParagraph = new Paragraph(areaOfEducations.get(0).getAreaOfEducation().getValue())
                     .addStyle(paragraphStyle);
 
             this.table.addHeaderCell(new Cell(1, 12)
                     .add(aoeParagraph)
                     .setBackgroundColor(new DeviceRgb(100, 149, 237)));
 
-            for (Subject subject : areaOfEducation.getSubjectList()) {
+            for (Subject subject : areaOfEducations) {
                 Paragraph subjectParagraph = new Paragraph(subject.getName())
                         .addStyle(paragraphStyle)
                         .setFontColor(Color.WHITE);
@@ -93,7 +115,7 @@ public class AnnualReport {
 
                 this.insertSubjectData(subject);
             }
-        }*/
+        }
     }
 
     private void insertSubjectData(Subject subject) {
