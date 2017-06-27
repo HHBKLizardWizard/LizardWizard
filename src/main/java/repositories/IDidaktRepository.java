@@ -14,10 +14,10 @@ public interface IDidaktRepository {
     List<Subject> getSubjectList(Profession profession);
     List<FieldOfLearning> getFieldList(Subject subject);
     List<LearningSituation> getLearningSituationList(FieldOfLearning field);
-    List<LearningTechnique> getLearningTechniqueList(LearningSituation situation);
+    List<Expertise> getLearningTechniqueList(LearningSituation situation);
     ReportData getReportData(Profession profession);
-
-    List<Integer>getDuration(Profession profession);
+    List<PerformanceRecord>getPerformanceRecordList(LearningSituation situation);
+    List<Integer> getDuration(Profession profession);
 
     ObservableList<String> getProfessions();
 

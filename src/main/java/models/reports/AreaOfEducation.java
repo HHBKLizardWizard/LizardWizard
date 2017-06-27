@@ -10,7 +10,7 @@ public class AreaOfEducation {
 
     private String name;
     private Profession profession;
-    private List<Subject> subjectList;
+    private List<Subject> subjectList = new ArrayList<>();
 
     public AreaOfEducation()
     {

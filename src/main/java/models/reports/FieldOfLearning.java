@@ -7,33 +7,60 @@ import java.util.List;
  */
 public class FieldOfLearning {
 
-    private int lessonHours;
-    private List<LearningSituation> learningSituationList;
+    private Integer lessonHours;
     private String name;
-    private int lfNr;
+    private Integer lfNr;
+    private Subject subject;
+    private List<LearningSituation> learningSituationList;
 
-    public int getLfNr() {
-        return lfNr;
+    public FieldOfLearning()
+    {
     }
 
-    public void setLfNr(int lfNr) {
+    public FieldOfLearning(Integer lessonHours, String name, Integer lfNr)
+    {
+        this.lessonHours = lessonHours;
+        this.name = name;
         this.lfNr = lfNr;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getLessonHours() {
+    public Integer getLessonHours()
+    {
         return lessonHours;
     }
 
-    public void setLessonHours(int lessonHours) {
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public Integer getLfNr() {
+        return lfNr;
+    }
+
+    public void setLessonHours(Integer lessonHours)
+    {
         this.lessonHours = lessonHours;
+    }
+
+    public void setLfNr(Integer lfNr)
+    {
+        this.lfNr = lfNr;
+    }
+
+    public Subject getSubject()
+    {
+        return subject;
+    }
+
+    public void setSubject(Subject subject)
+    {
+        this.subject = subject;
     }
 
     public List<LearningSituation> getLearningSituationList() {

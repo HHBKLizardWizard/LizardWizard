@@ -37,7 +37,7 @@ public class DidaktRepository implements IDidaktRepository {
     public ObservableList<String> getProfessions() {
         String sql = "SELECT * FROM tbl_beruf " +
                      "INNER JOIN tbl_abteilung " +
-                     "ON tbl_beruf.ID = tbl_abteilung.AId " +
+                     "ON tbl_beruf.ID_Abteilung = tbl_abteilung.AId " +
                      "INNER JOIN tbl_lehrer " +
                      "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId";
         ObservableList<String> professionList = FXCollections.observableArrayList();
@@ -104,7 +104,8 @@ public class DidaktRepository implements IDidaktRepository {
                                           rs.getInt("Position"),
                                           rs.getInt("Lernbereich"),
                                           rs.getString("Bezeichnung"));
-                ;
+                foo.setFieldOfLearningList(getFieldList(foo));
+                profession.getAoeList().get(foo.getAoeID()-1).getSubjectList().add(foo);
                 subjects.add(foo);
             }
         }
@@ -127,7 +128,9 @@ public class DidaktRepository implements IDidaktRepository {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                FieldOfLearning foo = new FieldOfLearning();
+                FieldOfLearning foo = new FieldOfLearning(rs.getInt("LFDauer"),
+                                                          rs.getString("Bezeichnung"),
+                                                          rs.getInt("LFNR"));
                 foo.setLearningSituationList(getLearningSituationList(foo));
                 fieldOfLearningList.add(foo);
             }
@@ -145,17 +148,62 @@ public class DidaktRepository implements IDidaktRepository {
         List<LearningSituation> learningSituationList = new ArrayList<>();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            LearningSituation foo = new LearningSituation();
+            ps.setInt(1,field.getLfNr());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                LearningSituation foo = new LearningSituation();
+                foo.setId(rs.getInt("LSID"));
+                foo.setLsnr(rs.getInt("LSNR"));
+                foo.setLessonHours(rs.getInt("UStunden"));
+                foo.setName(rs.getString("Name"));
+                foo.setContents(rs.getString("Inhalte"));
+                foo.setEssentialSkills(rs.getString("Kompetenzen"));
+                foo.setLearningResult(rs.getString("Handlungsprodukt"));
+                foo.setOrganisationalDetails(rs.getString("Organisation"));
+                foo.setClassMaterial(rs.getString("Umaterial"));
+                foo.setScenario(rs.getString("Szenario"));
+                foo.setFieldOfLearning(field);
+                foo.setSubject(field.getSubject().getName());
+                foo.setSubjectArea(field.getSubject().getAreaOfEducation().getName());
+                foo.setStartWeek(rs.getInt("Von"));
+                foo.setEndWeek(rs.getInt("Bis"));
+                foo.setExpertiseList(getLearningTechniqueList(foo));
+                foo.setPerformanceRecordList(getPerformanceRecordList(foo));
+                learningSituationList.add(foo);
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }
         return null;
     }
 
-    @Override
-    public List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
+    public List<PerformanceRecord> getPerformanceRecordList(LearningSituation foo)
     {
         return null;
+    }
+
+    @Override
+    public List<Expertise> getLearningTechniqueList(LearningSituation situation)
+    {
+        String sql = "SELECT Technik FROM tbl_lerntechnik " +
+                     "JOIN tbl_lernsituationlerntechnik " +
+                     "ON LATID = ID_lerntechnik " +
+                     "JOIN tbl_lernsituation " +
+                     "ON ID_Lernsituation = LSID";
+        List<Expertise> learningTechniques = new ArrayList<>();
+        try
+        {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return learningTechniques;
     }
 
     @Override
