@@ -3,6 +3,7 @@ package viewmodels;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import models.User;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -28,14 +29,25 @@ public class TemplatesViewModel implements Initializable {
     @FXML
     private Button btnNewTemplate, btnDelete, btnSave, btnBack;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
+    private User loggedUser;
 
     /**
      *   Class        :
      *   Beschreibung :
      */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+
+    /**
+     *   Class        : setUserId
+     *   Beschreibung : Setzt UserId so, dass die richtige Templates aus dem Datenbank gehölt werden kann
+     */
+    public void setUser(User user) {
+        loggedUser = user;
+    }
+
 
 }

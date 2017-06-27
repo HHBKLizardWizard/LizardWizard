@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.User;
 import models.UserRights;
@@ -39,6 +38,7 @@ public class UserViewModel implements Initializable {
     private Button btnNew, btnDelete, btnChange, btnBack;
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
+    private IUserRepository userRepository;
 
     /**
      *   Class        : initialize
@@ -46,13 +46,8 @@ public class UserViewModel implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
         //todo: instead of what is below, get all users from DB
-        IUserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
-        //ObservableList<User> = userRepository.getAllUSers????
-        userList.add(new User("Sil123","Sil","van Vliet", "qwe", UserRights.ADMIN));
-        userList.add(new User("Ingo123","Ingo","Hotischeck", "qwe", UserRights.ADMIN));
-
-        userList.get(0).setId(1);
-        userList.get(1).setId(2);
+        userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
+        userList.addAll(userRepository.getAllUsers());
 
         //fill table
         colName.setCellValueFactory(new PropertyValueFactory<User, String>("lastname"));
@@ -68,12 +63,17 @@ public class UserViewModel implements Initializable {
      */
     public void deleteUserAction(){
         User selectedUser = getSelectedUser();
-
         if(selectedUser != null){
-            //todo not only remove from list but also from DB!!
-            userList.remove(selectedUser);
-            tblUsers.getItems().clear();
-            tblUsers.getItems().addAll(userList);
+            if(selectedUser.getId() != 1){
+                userRepository.deleteUser(selectedUser);
+                userList.remove(selectedUser);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("nope!! ");
+                alert.setHeaderText("Admin kann nicht gelöscht werden");
+                alert.setContentText("Es ist keine gute idee um die Admin benutzer zu löschen!");
+                alert.showAndWait();
+            }
         }
     }
 
@@ -109,10 +109,10 @@ public class UserViewModel implements Initializable {
 
     /**
      *   Class        : createUserAction
-     *   Beschreibung : Ruft die creatUpdateUser Methode mit 0 auf, so dass ein neuer Benutzer erstellt wird.
+     *   Beschreibung : Ruft die creatUpdateUser Methode mit NULL auf, so dass ein neuer Benutzer erstellt wird.
      */
     public void createUserAction(){
-        creatUpdateUser(0);
+        creatUpdateUser(null);
     }
 
     /**
@@ -123,7 +123,7 @@ public class UserViewModel implements Initializable {
     public void updateUserAction(){
         User selectedUser = getSelectedUser();
         if(selectedUser != null){
-            creatUpdateUser(selectedUser.getId());
+            creatUpdateUser(selectedUser);
         }
     }
 
@@ -133,7 +133,7 @@ public class UserViewModel implements Initializable {
      *   Extra Info   : wenn userId = 0 => erstellt einen neuen Benutzer
      *                  wenn userId > 0 => aktualisiert einen Benutzer
      */
-    private void creatUpdateUser(Integer userId){
+    private void creatUpdateUser(User user){
         try{
 
             FXMLLoader loader = new FXMLLoader();
@@ -142,10 +142,7 @@ public class UserViewModel implements Initializable {
             loader.load();
 
             UserEditViewModel userEditViewModel = loader.getController();
-            userEditViewModel.setUserId(userId);
-            if(userId>0){
-                userEditViewModel.setUserData(userId.toString());
-            }
+            userEditViewModel.setUser(user);
 
             //Open new Window with correct title
             Parent p = loader.getRoot();
@@ -153,9 +150,11 @@ public class UserViewModel implements Initializable {
             stage.setTitle("Benutzer bearbeiten");
             stage.setScene(new Scene(p, 600, 400));
             stage.setResizable(false);
+            stage.sizeToScene();
 
-            //disable Primary Stage
-            stage.initModality(Modality.APPLICATION_MODAL);
+            //close login window and show new Stage
+            Stage st = (Stage) btnBack.getScene().getWindow();
+            st.close();
             stage.show();
 
         } catch (Exception e) {

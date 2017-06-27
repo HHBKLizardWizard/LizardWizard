@@ -135,9 +135,16 @@ public class ApplicationViewModel implements Initializable {
 
             //check what button was pressed to be able to determine what fxml file to open
             if (Objects.equals(menuItemClickedId, menuTemplate.getId())) {
-                root2 = FXMLLoader.load(getClass().getClassLoader().getResource("templates.fxml"));
-                stage.setScene(new Scene(root2, 600, 400));
+
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getClassLoader().getResource("templates.fxml"));
+                loader.load();
+
+                Parent p = loader.getRoot();
+                stage.setScene(new Scene(p, 600, 400));
                 stageTitle = "Templates";
+                TemplatesViewModel templatesViewModel = loader.getController();
+                templatesViewModel.setUser(loggedUser);
             } else if (Objects.equals(menuItemClickedId, menuUser.getId())) {
                 root2 = FXMLLoader.load(getClass().getClassLoader().getResource("users.fxml"));
                 stage.setScene(new Scene(root2, 600, 400));
