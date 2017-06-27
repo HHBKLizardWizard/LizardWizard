@@ -1,5 +1,8 @@
 package models.reports;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +15,7 @@ public class Profession
     private String name;
     private Department department;
     private List<AreaOfEducation> aoeList = new ArrayList<>();
-    private List<Integer> durationList = new ArrayList<>();
+    private ObservableList<Integer> durationList = FXCollections.observableArrayList();
 
     public Profession(){
 
@@ -56,12 +59,12 @@ public class Profession
         this.id = id;
     }
 
-    public List<Integer> getDurationList()
+    public ObservableList<Integer> getDurationList()
     {
         return durationList;
     }
 
-    public void setDurationList(List<Integer> durationList)
+    public void setDurationList(ObservableList<Integer> durationList)
     {
         this.durationList = durationList;
     }

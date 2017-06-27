@@ -161,7 +161,6 @@ public class UserRepository implements IUserRepository{
             ps.setString(6, user.getId().toString());
 
             ps.executeUpdate();
-            System.out.println(ps);
         }catch (Exception e){
             System.out.println(e);
             return false;

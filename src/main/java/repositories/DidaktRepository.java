@@ -57,7 +57,7 @@ public class DidaktRepository implements IDidaktRepository {
     public ObservableList<Profession> getProfessionList() {
         String sql = "SELECT * FROM tbl_beruf " +
                      "INNER JOIN tbl_abteilung " +
-                     "ON tbl_beruf.ID = tbl_abteilung.AId " +
+                     "ON tbl_beruf.ID_abteilung = tbl_abteilung.AId " +
                      "INNER JOIN tbl_lehrer " +
                      "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId";;
         ObservableList<Profession> professionList = FXCollections.observableArrayList();
@@ -224,13 +224,14 @@ public class DidaktRepository implements IDidaktRepository {
         return null;
     }
 
-    public List<Integer>getDuration(Profession profession)
+    public ObservableList<Integer> getDuration(Profession profession)
     {
         String sql = "SELECT DISTINCT Jahr from tbl_beruffach\n" +
                      "LEFT JOIN tbl_uformberuf\n" +
                      "ON tbl_beruffach.ID_UFormBeruf = tbl_uFormBeruf.UBID\n" +
                      "WHERE tbl_UFormBeruf.ID_Beruf = ?";
-        List<Integer> duration = new ArrayList<>();
+
+        ObservableList<Integer> duration = FXCollections.observableArrayList();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, profession.getId());

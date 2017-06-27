@@ -1,7 +1,5 @@
 package viewmodels;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.layout.Document;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -93,6 +91,19 @@ public class ApplicationViewModel implements Initializable {
 
         cbProfession.getSelectionModel().select(0);
 
+        //eigentlich für onChangeAction aber es muss hier auch gefüllt werden
+        handleProfessionComboBoxAction();
+    }
+
+    /**
+     *   Class        : handleProfessionComboBoxAction
+     *   Beschreibung : hollt sich die Jahre vom ausgewählte Profession Objekt
+     */
+    @FXML
+    private void handleProfessionComboBoxAction() {
+        Profession profession = cbProfession.getSelectionModel().getSelectedItem();
+        cbYear.setItems(profession.getDurationList());
+        cbYear.getSelectionModel().select(0);
     }
 
     /**
@@ -141,7 +152,7 @@ public class ApplicationViewModel implements Initializable {
                 loader.load();
 
                 Parent p = loader.getRoot();
-                stage.setScene(new Scene(p, 600, 400));
+                stage.setScene(new Scene(p, 600, 328));
                 stageTitle = "Templates";
                 TemplatesViewModel templatesViewModel = loader.getController();
                 templatesViewModel.setUser(loggedUser);
@@ -182,7 +193,7 @@ public class ApplicationViewModel implements Initializable {
         loggedUser = user;
 
         //templates mussen vor Initialize gefüllt werden weil variable loggedUser im Initialize noch null ist.
-        templateList = templateRepository.getTemplatesByUser(loggedUser);
+        templateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
         cbTemplate.setItems(templateList);
 

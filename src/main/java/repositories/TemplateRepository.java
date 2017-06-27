@@ -33,10 +33,13 @@ public class TemplateRepository implements ITemplateRepository
      * @param user
      * @return
      */
-    public ObservableList<Template> getTemplatesByUser(User user) {
+    public ObservableList<Template> getTemplatesByUser(User user, boolean forManagement) {
         ObservableList<Template> templateList = FXCollections.observableArrayList();
+        if(forManagement){
+            templateList.add(new Template("Neue Template anlegen"));
+        }
 
-        String fields = "ut.templatename, t.achievements, t.competences, t.contents," +
+        String fields = "t.pk_id, ut.templatename, t.achievements, t.competences, t.contents," +
                 " t.materials, t.notes, t.results, t.scenario, t.technics";
 
         String sql = "SELECT " + fields +
@@ -53,6 +56,7 @@ public class TemplateRepository implements ITemplateRepository
 
             while(rs.next()) {
                 Template template = new Template(
+                        rs.getInt("t.pk_id"),
                         rs.getString("templatename"),
                         rs.getBoolean("scenario"),
                         rs.getBoolean("competences"),
@@ -195,6 +199,8 @@ public class TemplateRepository implements ITemplateRepository
             ResultSet rs = ps.executeQuery();
 
             while(rs.next() ){
+
+                //todo .... warum name?
                 System.out.println(rs.getString("name"));
             }
 

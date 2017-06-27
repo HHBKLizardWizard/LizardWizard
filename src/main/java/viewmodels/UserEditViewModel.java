@@ -122,7 +122,7 @@ public class UserEditViewModel implements Initializable {
                 }
             }
 
-            //success message
+            //Feedback Nachricht
             Alert alert = new Alert(alerType);
             alert.setTitle("Success");
             alert.setHeaderText(msgTitle);

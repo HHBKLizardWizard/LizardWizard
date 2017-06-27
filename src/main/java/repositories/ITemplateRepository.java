@@ -13,5 +13,5 @@ public interface ITemplateRepository
     public Template createTemplate(Template template, User user);
     public Template updateTemplate();
     public void deleteTemplate(Template template);
-    public ObservableList<Template> getTemplatesByUser(User user);
+    public ObservableList<Template> getTemplatesByUser(User user, boolean forManagement);
 }
