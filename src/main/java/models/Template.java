@@ -21,7 +21,7 @@ public class Template {
     }
 
     public Template(String templateName) {
-        // Nothing to do here
+        this.templateName = templateName;
     }
 
     public Template(Integer id, String templateName, boolean scenario, boolean competences, boolean materials, boolean technics,
