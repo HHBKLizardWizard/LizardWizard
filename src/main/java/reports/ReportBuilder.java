@@ -11,6 +11,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 
+import models.Template;
 import models.reports.LearningSituation;
 import models.reports.LearningSituationTableElement;
 import models.reports.ReportData;
@@ -27,6 +28,7 @@ public class ReportBuilder {
     private List<LearningSituationTableElement> learningSituationList;
     private PdfDocument pdf;
     private ReportData reportData;
+    private Template template;
 
     public ReportBuilder(String fileName, ReportData reportData) {
         try {
@@ -101,12 +103,15 @@ public class ReportBuilder {
     /**
      *
      */
-    public void createReport() {
+    public void createReport(Template template) {
         try {
+            this.template = template;
             PdfWriter writer = new PdfWriter("annualReport.pdf");
-            this.pdf = new PdfDocument(writer);
-            this.createAnnualReport();
 
+            this.pdf = new PdfDocument(writer);
+
+
+            //this.createAnnualReport();
             this.createDetailReports();
 
         } catch(Exception e) {
@@ -139,7 +144,7 @@ public class ReportBuilder {
      *
      */
     private void createDetailReports() {
-       for (LearningSituationTableElement learningSituation : this.learningSituationList) {
+        for (LearningSituationTableElement learningSituation : this.learningSituationList) {
            if (learningSituation instanceof LearningSituation) {
                this.createDetailReport((LearningSituation) learningSituation);
                break; //entfernen
@@ -160,12 +165,13 @@ public class ReportBuilder {
 
         Document document = this.createDocument(false);
         Table table = new Table(new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
-        DetailReport detailReport = new DetailReport(table, learningSituation);
+        DetailReport detailReport = new DetailReport(table, learningSituation, template);
 
         table.setWidthPercent(100);
         table.setFixedLayout();
 
         this.createPdfHeader(document, this.reportData.getReportHeader());
+
         detailReport.createDetailReportHeader();
         detailReport.createDetailReportBody();
 

@@ -18,7 +18,7 @@ CREATE TABLE users
   username varchar(40) UNIQUE NOT NULL,
   firstname varchar(40) NOT NULL,
   lastname varchar(40) NOT NULL,
-  password varchar(40) NOT NULL,
+  password varchar(60) NOT NULL,
   rights varchar(6) NOT NULL,
   PRIMARY KEY (pk_id)
 );
@@ -50,4 +50,4 @@ CREATE TABLE user_templates
   ON DELETE CASCADE
 );
 
-INSERT INTO users (username, firstname, lastname, password, rights) VALUES ("root", "root", "root", "root", "admin");
+INSERT INTO users (username, firstname, lastname, password, rights) VALUES ("root", "root", "root", "$2a$10$hpCiGuXnxnjdtx.W9UjPJ.rQCMxtmtiTyywNcfu33AWUBO8JOQ0tm", "admin");

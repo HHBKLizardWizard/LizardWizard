@@ -14,8 +14,8 @@ public interface IDidaktRepository {
     List<Subject> getSubjectList(Profession profession);
     List<FieldOfLearning> getFieldList(Subject subject);
     List<LearningSituation> getLearningSituationList(FieldOfLearning field);
-    List<Expertise> getLearningTechniqueList(LearningSituation situation);
-    ReportData getReportData(Profession profession);
+    List<LearningTechnique> getLearningTechniqueList(LearningSituation situation);
+    ReportData getReportData(Profession profession, Integer year);
     List<PerformanceRecord>getPerformanceRecordList(LearningSituation situation);
     List<Integer> getDuration(Profession profession);
 

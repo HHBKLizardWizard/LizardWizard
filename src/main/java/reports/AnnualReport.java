@@ -2,16 +2,12 @@ package reports;
 
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.color.DeviceRgb;
-import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import models.reports.*;
-import util.HtmlParser;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -42,6 +38,7 @@ public class AnnualReport {
 
     /**
      * creates the first two rows of an annual report containing the 12 weeks of the school block
+     *
      * @return returns a table with two rows containing the weeks of the school block
      */
     public void createAnnualReportHeader() {
@@ -57,7 +54,7 @@ public class AnnualReport {
             Paragraph blockWeek = new Paragraph((i < 9 ? "0" + (i + 1) : i + 1).toString())
                     .setTextAlignment(TextAlignment.CENTER)
                     .setFontSize(8);
-                    //.setWidth(50); //TODO hier gehts weiter //alternativ fixed width an table .. margin? strings größer machen?
+            //.setWidth(50); //TODO hier gehts weiter //alternativ fixed width an table .. margin? strings größer machen?
 
             Cell cell = new Cell()
                     .add(blockWeek);
@@ -67,7 +64,9 @@ public class AnnualReport {
 
     }
 
-    public void createAnnualReportBody(ReportData reportData) { this.createSections(reportData); }
+    public void createAnnualReportBody(ReportData reportData) {
+        this.createSections(reportData);
+    }
 
     private void createSections(ReportData reportData) {
         Style paragraphStyle = new Style()
@@ -79,21 +78,21 @@ public class AnnualReport {
             Paragraph aoeParagraph = new Paragraph(areaOfEducation.getName())
                     .addStyle(paragraphStyle);
 
-            this.table.addHeaderCell(new Cell(1,12)
+            this.table.addHeaderCell(new Cell(1, 12)
                     .add(aoeParagraph)
-                    .setBackgroundColor(new DeviceRgb(100,149,237)));
+                    .setBackgroundColor(new DeviceRgb(100, 149, 237)));
 
-           for (Subject subject : areaOfEducation.getSubjectList()) {
+            for (Subject subject : areaOfEducation.getSubjectList()) {
                 Paragraph subjectParagraph = new Paragraph(subject.getName())
                         .addStyle(paragraphStyle)
                         .setFontColor(Color.WHITE);
 
                 this.table.addHeaderCell(new Cell(1, 12)
                         .add(subjectParagraph)
-                        .setBackgroundColor(new DeviceRgb(169,169,169)));
+                        .setBackgroundColor(new DeviceRgb(169, 169, 169)));
 
                 this.insertSubjectData(subject);
-           }
+            }
         }
     }
 
@@ -134,11 +133,11 @@ public class AnnualReport {
             /*  Adds a placeholder to the end if the last LearningSituation is not ending on week 12.
                 Fills the report with placeholders ending before the next LearningSituation in the list      */
             if (sortedList.size() - 1 == i) {
-              if (current.getEndWeek() < 12) {
-                  filledList.add(filledList.size(), new LearningSituationTableElement(current.getEndWeek() + 1, 12));
-              } else {
-                  continue;
-              }
+                if (current.getEndWeek() < 12) {
+                    filledList.add(filledList.size(), new LearningSituationTableElement(current.getEndWeek() + 1, 12));
+                } else {
+                    continue;
+                }
             } else if (sortedList.get(i + 1).getStartWeek() <= current.getEndWeek()) {
                 // if next element starts in next block fill with placeholder
                 if (current.getEndWeek() < 12) {
@@ -148,7 +147,7 @@ public class AnnualReport {
 
                 if (sortedList.get(i + 1).getStartWeek() > 1) {
                     filledList.add(filledList.size(), new LearningSituationTableElement(
-                        1, sortedList.get(i + 1).getStartWeek() - 1));
+                            1, sortedList.get(i + 1).getStartWeek() - 1));
                 }
 
             } else if (current.getEndWeek() + 1 < sortedList.get(i + 1).getStartWeek()) {
@@ -181,7 +180,7 @@ public class AnnualReport {
         Cell cell = new Cell(1, learningSituation.getEndWeek() - learningSituation.getStartWeek() + 1)
                 .add(paragraph)
                 .setBackgroundColor(learningSituation instanceof LearningSituation ?
-                        new DeviceRgb(255,255,255) : new DeviceRgb(192,192,192));
+                        new DeviceRgb(255, 255, 255) : new DeviceRgb(192, 192, 192));
 
         this.table.addCell(cell);
     }

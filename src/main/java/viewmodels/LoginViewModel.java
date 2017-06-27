@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import models.User;
+import org.mindrot.jbcrypt.BCrypt;
 import repositories.IUserRepository;
 import repositories.UserRepository;
 import util.DatabaseConnector;
@@ -48,12 +49,8 @@ public class LoginViewModel implements Initializable {
         if(checkLoginFields()) {
             String checkUser = txtLogin.getText();
 
-            //todo verschlusselung von password, machen wir das ?
-            //String checkPw = BCrypt.hashpw(txtPassword.getText(), "Hund");
-            String checkPw = txtPassword.getText();
             User user = userRepository.getUserByUsername(checkUser);
-
-            if (user == null || !checkPw.equals(user.getPassword())) {
+            if (user == null || !BCrypt.checkpw(txtPassword.getText(), user.getPassword())) {
                 //user not found error or incorrect password
                 lblLoginFailed.setVisible(true);
             } else {

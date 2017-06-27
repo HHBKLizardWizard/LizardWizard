@@ -23,7 +23,7 @@ public class LearningSituation extends LearningSituationTableElement {
     private String scenario;
     private String requiredSituation;
     private FieldOfLearning fieldOfLearning;
-    private List<Expertise> expertiseList = new ArrayList<>();
+    private List<LearningTechnique> learningTechniqueList = new ArrayList<>();
     private List<PerformanceRecord> performanceRecordList = new ArrayList<>();
 
     public FieldOfLearning getFieldOfLearning() {
@@ -159,14 +159,14 @@ public class LearningSituation extends LearningSituationTableElement {
         this.lessonHours = lessonHours;
     }
 
-    public List<Expertise> getExpertiseList()
+    public List<LearningTechnique> getLearningTechniqueList()
     {
-        return expertiseList;
+        return learningTechniqueList;
     }
 
-    public void setExpertiseList(List<Expertise> expertiseList)
+    public void setExpertiseList(List<LearningTechnique> expertiseList)
     {
-        this.expertiseList = expertiseList;
+        this.learningTechniqueList = expertiseList;
     }
 
     public List<PerformanceRecord> getPerformanceRecordList()
