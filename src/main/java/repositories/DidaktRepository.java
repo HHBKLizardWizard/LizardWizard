@@ -41,7 +41,7 @@ public class DidaktRepository implements IDidaktRepository {
                      "INNER JOIN tbl_lehrer " +
                      "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId " +
                      "INNER JOIN tbl_uformberuf " +
-                     "ON BId = ID_Beruf JOIN tbl_uform ON ID_UForm = UID;";;
+                     "ON BId = ID_Beruf INNER JOIN tbl_uform ON ID_UForm = UID;";;
         ObservableList<Profession> professionList = FXCollections.observableArrayList();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -145,7 +145,7 @@ public class DidaktRepository implements IDidaktRepository {
                 learningSituation.setScenario(rs.getString("Szenario"));
                 learningSituation.setFieldOfLearning(field);
                 learningSituation.setSubject(field.getSubject().getName());
-                //learningSituation.setSubjectArea((AreaOfEducation.valueOf()[field.getSubject().getAoeID()]));
+                learningSituation.setSubjectArea((field.getSubject().getAoeID()));
                 learningSituation.setStartWeek(rs.getInt("Von"));
                 learningSituation.setEndWeek(rs.getInt("Bis"));
                 learningSituation.setExpertiseList(getLearningTechniqueList(learningSituation));
@@ -223,6 +223,13 @@ public class DidaktRepository implements IDidaktRepository {
                                                      profession.getFormOfTeaching(),
                                                      supervisor));
             reportData.getProfession().setSubjects(getSubjectList(reportData.getProfession()));
+            for (Subject subject : reportData.getProfession().getSubjects()) {
+                for (FieldOfLearning field : subject.getFieldOfLearningList()) {
+                    for (LearningSituation situation : field.getLearningSituationList()) {
+                        reportData.getLearningSituations().add(situation);
+                    }
+                }
+            }
         }
         catch(Exception e){
             e.printStackTrace();

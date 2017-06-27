@@ -12,7 +12,7 @@ public class LearningSituation extends LearningSituationTableElement {
     private Integer lessonHours;
     private String name;
     private String subject;
-    private AreaOfEducation subjectArea;
+    private Enum<AreaOfEducation> subjectArea;
     private String contents;
     private String essentialSkills;
     private String learningResult;
@@ -74,11 +74,11 @@ public class LearningSituation extends LearningSituationTableElement {
         this.subject = subject;
     }
 
-    public AreaOfEducation getSubjectArea() {
+    public Enum<AreaOfEducation> getSubjectArea() {
         return subjectArea;
     }
 
-    public void setSubjectArea(AreaOfEducation subjectArea) {
+    public void setSubjectArea(Enum<AreaOfEducation> subjectArea) {
         this.subjectArea = subjectArea;
     }
 
