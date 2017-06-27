@@ -227,7 +227,11 @@ public class ApplicationViewModel implements Initializable {
         templateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
         cbTemplate.setItems(templateList);
-        selectedTemplate = templateList.get(0);
+        try{
+            selectedTemplate = templateList.get(0);
+        }catch (Exception e){
+            selectedTemplate = null;
+        }
 
         //convert template to only show name instead of object
         cbTemplate.setConverter(new StringConverter<Template>() {
