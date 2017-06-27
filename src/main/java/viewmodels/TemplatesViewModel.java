@@ -3,6 +3,7 @@ package viewmodels;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import models.Template;
 import models.User;
@@ -67,18 +68,9 @@ public class TemplatesViewModel implements Initializable {
             chk_hinweis.setSelected(template.isNotes());
             chk_leistung.setSelected(template.isAchievements());
         }else{
-            txtTempName.setText("");
-            chk_scenario.setSelected(false);
-            chk_kompetenzen.setSelected(false);
-            chk_material.setSelected(false);
-            chk_technik.setSelected(false);
-            chk_ergebnis.setSelected(false);
-            chk_inhalte.setSelected(false);
-            chk_hinweis.setSelected(false);
-            chk_leistung.setSelected(false);
+            clearFields();
         }
     }
-
 
     /**
      *   Class        : setUserId
@@ -135,13 +127,12 @@ public class TemplatesViewModel implements Initializable {
      */
     public void saveTemplate(){
         Template selectedTemplate = cbTemplate.getSelectionModel().getSelectedItem();
-        Alert.AlertType alertType = Alert.AlertType.CONFIRMATION;
+        Alert.AlertType alertType = Alert.AlertType.INFORMATION;
         String msgTitle = "Success",
                msgHeader = "",
                msgText = "";
 
         if(selectedTemplate.getId() == null){
-            //todo in this cause create new Template
             if(!txtTempName.getText().equals("")){
                 Template template = new Template(
                          txtTempName.getText(),
@@ -159,9 +150,10 @@ public class TemplatesViewModel implements Initializable {
                 templateRepository.createTemplate(template, loggedUser);
                 cbTemplate.getItems().add(template);
 
-
                 msgHeader = "Template Erstell";
                 msgText = "Die neue Template " + txtTempName.getText() + "war erforgleich erstellt";
+
+                clearFields();
             }else{
                 //Error message
                 msgTitle = "ERROR";
@@ -193,4 +185,24 @@ public class TemplatesViewModel implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     *   Class        : clearFields
+     *   Beschreibung : Leert template name text feld und setzt alle checkboxen auf false.
+     */
+    private void clearFields() {
+        txtTempName.setText("");
+        chk_scenario.setSelected(false);
+        chk_kompetenzen.setSelected(false);
+        chk_material.setSelected(false);
+        chk_technik.setSelected(false);
+        chk_ergebnis.setSelected(false);
+        chk_inhalte.setSelected(false);
+        chk_hinweis.setSelected(false);
+        chk_leistung.setSelected(false);
+    }
+
+    public void closeWindow(){
+        Stage stage = (Stage) btnBack.getScene().getWindow();
+        stage.close();
+    }
 }

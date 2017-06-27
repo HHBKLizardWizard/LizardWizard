@@ -1,7 +1,6 @@
 package viewmodels;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,11 +12,7 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import models.Template;
-import models.User;
-import models.UserRights;
-import models.Profession;
-import models.ReportData;
+import models.*;
 import reports.ReportBuilder;
 import repositories.*;
 import util.DatabaseConnector;
@@ -49,12 +44,8 @@ public class ApplicationViewModel implements Initializable {
     @FXML
     private SeparatorMenuItem smiLine;
 
-    private ObservableList<Profession> professionList = FXCollections.observableArrayList();
-    private ObservableList<Template> templateList = FXCollections.observableArrayList();
     private IDidaktRepository didaktRepository;
-    private IUserRepository userRepository;
     private ITemplateRepository templateRepository;
-    private DatabaseConnector dbConnector;
     private User loggedUser;
     private Template selectedTemplate;
     private Profession selectedProfession;
@@ -65,9 +56,9 @@ public class ApplicationViewModel implements Initializable {
      *                  füllt die ComboBoxen.
      */
     public void initialize(URL location, ResourceBundle resources){
-        dbConnector = new DatabaseConnector();
+        DatabaseConnector dbConnector = new DatabaseConnector();
         didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
-        userRepository = new UserRepository(dbConnector.getUserDataSource());
+        IUserRepository userRepository = new UserRepository(dbConnector.getUserDataSource());
         templateRepository = new TemplateRepository(dbConnector.getUserDataSource());
 
         cbProfession.setItems(didaktRepository.getProfessionList());
@@ -163,7 +154,7 @@ public class ApplicationViewModel implements Initializable {
      */
     public void openTargetWindowAction(ActionEvent event) {
         try {
-            String menuItemClickedId = "", stageTitle = "";
+            String menuItemClickedId = "", stageTitle;
             Object eventSource = event.getSource();
             Stage stage = new Stage();
             Parent root2;
@@ -222,7 +213,7 @@ public class ApplicationViewModel implements Initializable {
         loggedUser = user;
 
         //templates müssen vor Initialize gefüllt werden weil variable loggedUser im Initialize noch null ist.
-        templateList = templateRepository.getTemplatesByUser(loggedUser, false);
+        ObservableList<Template> templateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
         cbTemplate.setItems(templateList);
         try{
@@ -257,7 +248,7 @@ public class ApplicationViewModel implements Initializable {
      *   Beschreibung : Setzt bestimmte Felder in der nächsten View auf "hidden", abhängig von den Benutzerrechten
      *   Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
      */
-    public void checkViewRights(User user) {
+    private void checkViewRights(User user) {
         UserRights loggedUserRights = user.getRights();
 
         if(loggedUserRights.equals(UserRights.AZUBI)){

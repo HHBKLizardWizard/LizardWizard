@@ -36,28 +36,28 @@ created by Sil van Vliet
         <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" />
     </columnConstraints>
     <children>
-            <Button fx:id="removeTemplate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeTemplate" text="Löschen" GridPane.columnIndex="2" />
-            <Line endX="490.0" startX="-100.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
-         <GridPane.margin>
+        <ComboBox fx:id="cbTemplate" maxWidth="1.7976931348623157E308" onAction="#handleTemplateComboBoxAction" prefWidth="150.0" GridPane.columnSpan="2" />
+        <Button fx:id="removeTemplate" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeTemplate" text="Löschen" GridPane.columnIndex="2" />
+        <Line endX="490.0" startX="-100.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+        <GridPane.margin>
             <Insets />
-         </GridPane.margin></Line>
-            <Label text="Übersicht" underline="true" GridPane.rowIndex="2">
-                <font>
-                    <Font name="System Bold" size="12.0" />
-                </font>
-            </Label>
-            <Label text="Name" GridPane.rowIndex="3" />
-            <TextField fx:id="txtTempName" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-            <CheckBox fx:id="chk_scenario" mnemonicParsing="false" text="Einstiegsszenario" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-            <CheckBox fx:id="chk_kompetenzen" mnemonicParsing="false" text="Wesentliche Kompetenzen" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-            <CheckBox fx:id="chk_ergebnis" mnemonicParsing="false" text="Handlungsprodukt/Lernergebnis" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-            <CheckBox fx:id="chk_inhalte" mnemonicParsing="false" text="Inhalte" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-            <CheckBox fx:id="chk_material" mnemonicParsing="false" text="Unterrichtsmaterialien" GridPane.columnSpan="2" GridPane.rowIndex="6" />
-            <CheckBox fx:id="chk_hinweis" mnemonicParsing="false" text="Organisatorische Hinweise" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6" />
-            <CheckBox fx:id="chk_technik" mnemonicParsing="false" text="Lern- und Arbeitstechniken" GridPane.columnSpan="2" GridPane.rowIndex="7" />
-            <CheckBox fx:id="chk_leistung" mnemonicParsing="false" text="Leistungsnachweis" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+        </GridPane.margin></Line>
+        <Label text="Übersicht" underline="true" GridPane.rowIndex="2">
+            <font>
+                <Font name="System Bold" size="12.0" />
+            </font>
+        </Label>
+        <Label text="Name" GridPane.rowIndex="3" />
+        <TextField fx:id="txtTempName" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+        <CheckBox fx:id="chk_scenario" mnemonicParsing="false" text="Einstiegsszenario" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+        <CheckBox fx:id="chk_kompetenzen" mnemonicParsing="false" text="Wesentliche Kompetenzen" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+        <CheckBox fx:id="chk_material" mnemonicParsing="false" text="Unterrichtsmaterialien" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+        <CheckBox fx:id="chk_technik" mnemonicParsing="false" text="Lern- und Arbeitstechniken" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+        <CheckBox fx:id="chk_ergebnis" mnemonicParsing="false" text="Handlungsprodukt/Lernergebnis" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+        <CheckBox fx:id="chk_inhalte" mnemonicParsing="false" text="Inhalte" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+        <CheckBox fx:id="chk_hinweis" mnemonicParsing="false" text="Organisatorische Hinweise" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+        <CheckBox fx:id="chk_leistung" mnemonicParsing="false" text="Leistungsnachweis" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
         <Button fx:id="btnSave" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveTemplate" text="Speichern" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-        <Button fx:id="btnBack" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Züruck" GridPane.columnIndex="3" GridPane.rowIndex="9" />
-      <ComboBox fx:id="cbTemplate" maxWidth="1.7976931348623157E308" onAction="#handleTemplateComboBoxAction" prefWidth="150.0" GridPane.columnSpan="2" />
+        <Button fx:id="btnBack" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#closeWindow" text="Züruck" GridPane.columnIndex="3" GridPane.rowIndex="9" />
     </children>
 </GridPane>

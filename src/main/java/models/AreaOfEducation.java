@@ -18,3 +18,4 @@ public enum AreaOfEducation {
         return this.value;
     }
 }
+
