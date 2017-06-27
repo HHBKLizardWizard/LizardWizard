@@ -1,5 +1,7 @@
 package viewmodels;
 
+import com.itextpdf.layout.element.Div;
+import com.itextpdf.layout.element.List;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -128,6 +130,9 @@ public class ApplicationViewModel implements Initializable {
         new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport(template);
     }
 
+
+    // TODO remove
+
     /**
      *   Class        : closeButtonAction
      *   Beschreibung : Schließt das Programm
@@ -200,7 +205,7 @@ public class ApplicationViewModel implements Initializable {
     public void setUser(User user) {
         loggedUser = user;
 
-        //templates mussen vor Initialize gefüllt werden weil variable loggedUser im Initialize noch null ist.
+        //templates müssen vor Initialize gefüllt werden weil variable loggedUser im Initialize noch null ist.
         templateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
         cbTemplate.setItems(templateList);

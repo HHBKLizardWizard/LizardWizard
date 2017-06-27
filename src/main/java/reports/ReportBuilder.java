@@ -107,9 +107,12 @@ public class ReportBuilder {
         try {
             this.template = template;
             PdfWriter writer = new PdfWriter("annualReport.pdf");
+
             this.pdf = new PdfDocument(writer);
-            this.createAnnualReport();
-            //this.createDetailReports();
+
+
+            //this.createAnnualReport();
+            this.createDetailReports();
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -141,7 +144,7 @@ public class ReportBuilder {
      *
      */
     private void createDetailReports() {
-       for (LearningSituationTableElement learningSituation : this.learningSituationList) {
+        for (LearningSituationTableElement learningSituation : this.learningSituationList) {
            if (learningSituation instanceof LearningSituation) {
                this.createDetailReport((LearningSituation) learningSituation);
                break; //entfernen
@@ -168,6 +171,7 @@ public class ReportBuilder {
         table.setFixedLayout();
 
         this.createPdfHeader(document, this.reportData.getReportHeader());
+
         detailReport.createDetailReportHeader();
         detailReport.createDetailReportBody();
 

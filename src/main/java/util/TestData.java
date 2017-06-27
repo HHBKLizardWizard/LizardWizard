@@ -88,7 +88,7 @@ public class TestData {
         return areaOfEducation;
     }
 
-    public ReportData getReportDataExample() {
+/*    public ReportData getReportDataExample() {
         List<AreaOfEducation> areaOfEducationList = new ArrayList<>();
         areaOfEducationList.add(this.getAreaOfEducationExample("Berufsbezogener Lernbereich"));
 
@@ -99,5 +99,5 @@ public class TestData {
         reportData.setAreaOfEducationList(areaOfEducationList);
 
         return reportData;
-    }
+    }*/
 }

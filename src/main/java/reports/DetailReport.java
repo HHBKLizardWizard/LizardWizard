@@ -30,7 +30,6 @@ public class DetailReport {
     }
 
     public void createDetailReportBody() {
-
         if (template.isScenario()) {
             this.createTemplateCell(this.learningSituation.getScenario());
         }
@@ -65,12 +64,14 @@ public class DetailReport {
     }
 
     private void createTemplateCell(String text) {
+        Cell cell = new Cell(1, 10);
+        Div div = new Div();
 
+        String preparedString = this.removeUnsupportedHtmlTags(text);
+        this.parseStringToPdf(div, preparedString);
 
-        Div div = new Div()
-                .add(new Cell(1, 10));
-
-        this.table.addCell(div);
+        cell.add(div);
+        this.table.addCell(cell);
     }
 
     public void createDetailReportHeader() {
@@ -113,4 +114,51 @@ public class DetailReport {
         this.table.addCell(new Cell(1, 1)
                 .add(new Paragraph("")));
     }
+
+    private String removeAllHtmlTags(String string) {
+        return string.replaceAll("<[^>]*>", "");
+    }
+
+    public void parseStringToPdf(Div div, String text) {
+        String tmp;
+        String workString = text;
+        final String listTag = "<ul>";
+        final String closingListTag = "</ul>";
+
+        while (workString.contains(listTag)) {
+            tmp = workString.substring(0, workString.indexOf(listTag));
+            div.add(new Paragraph(tmp).addStyle(style));
+
+            tmp = workString.substring(workString.indexOf(listTag) + listTag.length(), workString.indexOf(closingListTag));
+            this.parseListToPdf(div, tmp);
+            workString = workString.substring(workString.indexOf(closingListTag) + closingListTag.length(), workString.length());
+        }
+        div.add(new Paragraph(workString).addStyle(style));
+    }
+
+    private void parseListToPdf(Div div, String text) {
+        String tmp;
+        String workString = text;
+        final String listItemTag = "<li>";
+        final String listItemClosingTag = "</li>";
+
+        com.itextpdf.layout.element.List pdfList = new com.itextpdf.layout.element.List();
+        while (!workString.isEmpty()) {
+            tmp = workString.substring(workString.indexOf(listItemTag) + listItemTag.length(), workString.indexOf(listItemClosingTag));
+            workString = workString.substring(workString.indexOf(listItemClosingTag) + listItemClosingTag.length(), workString.length());
+            pdfList.add(tmp);
+        }
+        div.add(pdfList);
+    }
+
+    private String removeUnsupportedHtmlTags(String string) {
+        String cleanString;
+        cleanString = string.replaceAll("</?p[^>]*>", "");
+        cleanString = cleanString.replaceAll("</?span[^>]*>", "");
+        cleanString = cleanString.replaceAll("</?strong[^>]*>", "");
+        cleanString = cleanString.replaceAll("</?br[^>]*>", "\n");
+
+        return cleanString;
+    }
+
 }

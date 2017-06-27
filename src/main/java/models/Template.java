@@ -20,6 +20,10 @@ public class Template {
         // Nothing to do here
     }
 
+    public Template(String templateName) {
+        // Nothing to do here
+    }
+
     public Template(Integer id, String templateName, boolean scenario, boolean competences, boolean materials, boolean technics,
                     boolean results, boolean contents, boolean notes, boolean achievements, User user) {
 
