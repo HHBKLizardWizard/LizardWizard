@@ -1,4 +1,4 @@
-package models.reports;
+package models;
 
 import org.omg.CORBA.INTERNAL;
 

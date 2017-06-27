@@ -1,6 +1,6 @@
 package util;
 
-import models.reports.*;
+import models.*;
 
 import java.util.ArrayList;
 import java.util.List;

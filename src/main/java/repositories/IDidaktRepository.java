@@ -1,7 +1,8 @@
 package repositories;
 
 import javafx.collections.ObservableList;
-import models.reports.*;
+import models.*;
+
 import java.util.List;
 
 

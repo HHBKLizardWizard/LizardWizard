@@ -1,4 +1,4 @@
-package models.reports;
+package models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -2,7 +2,7 @@ package repositories;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import models.reports.*;
+import models.*;
 import util.DatabaseConnector;
 
 import javax.sql.DataSource;
@@ -180,8 +180,7 @@ public class DidaktRepository implements IDidaktRepository {
         return learningSituationList;
     }
 
-    public List<PerformanceRecord> getPerformanceRecordList(LearningSituation foo)
-    {
+    public List<PerformanceRecord> getPerformanceRecordList(LearningSituation learningSituation) {
         String sql = "SELECT LNID, Art from tbl_leistungsnachweis " +
                      "JOIN tbl_lernsituationleistungsnachweis " +
                      "ON LNID = ID_Leistungsnachweis " +
@@ -189,7 +188,7 @@ public class DidaktRepository implements IDidaktRepository {
         List<PerformanceRecord> performanceRecordList = new ArrayList<>();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1,foo.getId());
+            ps.setInt(1,learningSituation.getId());
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){

@@ -1,7 +1,5 @@
 package viewmodels;
 
-import com.itextpdf.layout.element.Div;
-import com.itextpdf.layout.element.List;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,12 +19,11 @@ import javafx.util.StringConverter;
 import models.Template;
 import models.User;
 import models.UserRights;
-import models.reports.Profession;
-import models.reports.ReportData;
+import models.Profession;
+import models.ReportData;
 import reports.ReportBuilder;
 import repositories.*;
 import util.DatabaseConnector;
-import util.TestData;
 
 import java.net.URL;
 import java.util.Objects;

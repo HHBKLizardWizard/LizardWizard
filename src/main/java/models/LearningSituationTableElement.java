@@ -1,4 +1,4 @@
-package models.reports;
+package models;
 
 /**
  * Created by Slade on 24.06.2017.

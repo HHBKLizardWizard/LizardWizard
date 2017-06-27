@@ -1,7 +1,6 @@
 package reports;
 
 import com.itextpdf.kernel.color.DeviceRgb;
-import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -12,12 +11,11 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 
 import models.Template;
-import models.reports.LearningSituation;
-import models.reports.LearningSituationTableElement;
-import models.reports.ReportData;
-import models.reports.ReportHeader;
+import models.LearningSituation;
+import models.LearningSituationTableElement;
+import models.ReportData;
+import models.ReportHeader;
 
-import java.io.IOException;
 import java.util.List;
 
 /**

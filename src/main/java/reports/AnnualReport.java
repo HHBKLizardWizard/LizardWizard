@@ -7,7 +7,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
-import models.reports.*;
+import models.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;

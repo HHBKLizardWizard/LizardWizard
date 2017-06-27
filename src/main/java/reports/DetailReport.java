@@ -5,8 +5,8 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+import models.LearningSituation;
 import models.Template;
-import models.reports.*;
 
 /**
  * Created by Slade on 24.06.2017.

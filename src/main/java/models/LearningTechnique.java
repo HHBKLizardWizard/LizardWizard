@@ -1,4 +1,4 @@
-package models.reports;
+package models;
 
 /**
  * Created by Administrator on 27.06.2017.
