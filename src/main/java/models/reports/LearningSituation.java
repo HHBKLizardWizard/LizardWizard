@@ -1,12 +1,16 @@
 package models.reports;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by iho on 23.06.2017.
  */
 public class LearningSituation extends LearningSituationTableElement {
-    private long id;
+    private Integer id;
+    private Integer lsnr;
+    private Integer lessonHours;
     private String name;
-    private int lessonHours;
     private String subject;
     private String subjectArea;
     private String contents;
@@ -19,7 +23,7 @@ public class LearningSituation extends LearningSituationTableElement {
     private String scenario;
     private String requiredSituation;
     private FieldOfLearning fieldOfLearning;
-    private Integer lsnr;
+    private List<LearningTechnique> learningTechniqueList = new ArrayList<>();
 
     public FieldOfLearning getFieldOfLearning() {
         return fieldOfLearning;
@@ -37,11 +41,11 @@ public class LearningSituation extends LearningSituationTableElement {
         this.lsnr = lsnr;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void set(Integer id) {
         this.id = id;
     }
 

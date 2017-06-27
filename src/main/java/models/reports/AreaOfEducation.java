@@ -9,6 +9,7 @@ import java.util.List;
 public class AreaOfEducation {
 
     private String name;
+    private Profession profession;
     private List<Subject> subjectList;
 
     public AreaOfEducation()
@@ -20,6 +21,16 @@ public class AreaOfEducation {
     {
         this.name = name;
         subjectList = new ArrayList<>();
+    }
+
+    public Profession getProfession()
+    {
+        return profession;
+    }
+
+    public void setProfession(Profession profession)
+    {
+        this.profession = profession;
     }
 
     public String getName() {

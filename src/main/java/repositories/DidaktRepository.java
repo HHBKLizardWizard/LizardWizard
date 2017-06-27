@@ -35,7 +35,11 @@ public class DidaktRepository implements IDidaktRepository {
 
     @Override
     public ObservableList<String> getProfessions() {
-        String sql = "SELECT Berufname FROM tbl_beruf";
+        String sql = "SELECT * FROM tbl_beruf " +
+                     "INNER JOIN tbl_abteilung " +
+                     "ON tbl_beruf.ID = tbl_abteilung.AId " +
+                     "INNER JOIN tbl_lehrer " +
+                     "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId";
         ObservableList<String> professionList = FXCollections.observableArrayList();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -51,19 +55,32 @@ public class DidaktRepository implements IDidaktRepository {
 
     @Override
     public ObservableList<Profession> getProfessionList() {
-        String sql = "SELECT * FROM tbl_beruf";
+        String sql = "SELECT * FROM tbl_beruf " +
+                     "INNER JOIN tbl_abteilung " +
+                     "ON tbl_beruf.ID = tbl_abteilung.AId " +
+                     "INNER JOIN tbl_lehrer " +
+                     "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId";;
         ObservableList<Profession> professionList = FXCollections.observableArrayList();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                professionList.add(new Profession(rs.getInt("BId"), rs.getString("Berufname")));
+                Teacher teach = new Teacher(rs.getInt("LId"),
+                                            rs.getString("Lehrername"),
+                                            rs.getString("Geschlecht"));
+                Department dep = new Department(rs.getInt("AId"),
+                                                rs.getString("Abteilungsname"),
+                                                teach);
+                Profession foo = new Profession(rs.getInt("BId"),
+                                                rs.getString("Berufname"),
+                                                dep);
+                foo.setDurationList(getDuration(foo));
+                professionList.add(foo);
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
         return professionList;
     }
 
@@ -87,6 +104,7 @@ public class DidaktRepository implements IDidaktRepository {
                                           rs.getInt("Position"),
                                           rs.getInt("Lernbereich"),
                                           rs.getString("Bezeichnung"));
+                ;
                 subjects.add(foo);
             }
         }
@@ -98,11 +116,39 @@ public class DidaktRepository implements IDidaktRepository {
 
     @Override
     public List<FieldOfLearning> getFieldList(Subject subject) {
-        return null;
+        String sql = "SELECT * FROM tbl_lernfeld\n" +
+                     "INNER JOIN tbl_beruffach\n" +
+                     "ON tbl_lernfeld.ID_Beruffach = tbl_beruffach.BFID\n" +
+                     "WHERE tbl_beruffach.ID_Fach = ?";
+        List<FieldOfLearning> fieldOfLearningList = new ArrayList<>();
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1,subject.getId());
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                FieldOfLearning foo = new FieldOfLearning();
+                foo.setLearningSituationList(getLearningSituationList(foo));
+                fieldOfLearningList.add(foo);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return fieldOfLearningList;
     }
 
     @Override
     public List<LearningSituation> getLearningSituationList(FieldOfLearning field) {
+        String sql = "SELECT * FROM tbl_lernsituation WHERE LF_NR = ?";
+        List<LearningSituation> learningSituationList = new ArrayList<>();
+        try{
+            PreparedStatement
+            LearningSituation foo = new LearningSituation();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -126,19 +172,20 @@ public class DidaktRepository implements IDidaktRepository {
 
     @Override
 
-    public List<Integer> getDuration(Integer id)
+    public List<Integer> getDuration(Profession profession)
     {
-        String sql = "SELECT DISTINCT count(Jahr) AS Dauer FROM tbl_beruffach\n" +
-                    "INNER JOIN tbl_uformberuf\n" +
-                    "ON tbl_beruffach.ID_UFormBeruf = tbl_uformberuf.UBID\n" +
-                    "INNER JOIN tbl_beruf ON tbl_uformberuf.ID_Beruf = tbl_beruf.BId\n" +
-                    "WHERE tbl_beruf.Bid = ?";
-        List<Integer> duration = null;
+        String sql = "SELECT DISTINCT Jahr from tbl_beruffach\n" +
+                     "LEFT JOIN tbl_uformberuf\n" +
+                     "ON tbl_beruffach.ID_UFormBeruf = tbl_uFormBeruf.UBID\n" +
+                     "WHERE tbl_UFormBeruf.ID_Beruf = ?";
+        List<Integer> duration = new ArrayList<>();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setInt(1, profession.getId());
             ResultSet rs = ps.executeQuery();
-            Integer foo = rs.getInt("Dauer")
+            while (rs.next()){
+                duration.add(rs.getInt("Jahr"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -8,17 +8,18 @@ import java.util.List;
  */
 public class ReportData {
     private List<LearningSituation> learningSituations = new ArrayList<>();
-    private List<AreaOfEducation> areaOfEducationList = new ArrayList<>();
+    private Profession profession;
     private ReportHeader reportHeader;
 
-    public ReportData() {
-        this.getAreaOfEducationList().add(new AreaOfEducation
+    public ReportData(Profession prof) {
+        this.profession = prof;
+        this.profession.getAoeList().add(new AreaOfEducation
                 ("Berufsbezogerner " +
                         "Lernbereich"));
-        this.getAreaOfEducationList().add(new AreaOfEducation
+        this.profession.getAoeList().add(new AreaOfEducation
                 ("Berufsübergreifender" +
                         "Lernbereich"));
-        this.getAreaOfEducationList().add(new AreaOfEducation
+        this.profession.getAoeList().add(new AreaOfEducation
                 ("Differenzierungsbereich"));
     }
 
@@ -39,10 +40,12 @@ public class ReportData {
     }
 
     public List<AreaOfEducation> getAreaOfEducationList() {
-        return areaOfEducationList;
+        return profession.getAoeList();
     }
 
     public void setAreaOfEducationList(List<AreaOfEducation> areaOfEducationList) {
-        this.areaOfEducationList = areaOfEducationList;
+        if(profession!=null){
+            this.profession.setAoeList(areaOfEducationList);
+        }
     }
 }
