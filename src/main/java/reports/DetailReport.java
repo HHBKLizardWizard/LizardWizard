@@ -29,6 +29,9 @@ public class DetailReport {
         this.template = template;
     }
 
+    /**
+     * creates the detailReport body by calling createTemplateCell()
+     */
     public void createDetailReportBody() {
         if (template.isScenario()) {
             this.createTemplateCell("Einstiegsszenario:", this.learningSituation.getScenario());
@@ -63,6 +66,11 @@ public class DetailReport {
         }
     }
 
+    /**
+     * creates a template cell with preparedStrings for the report body
+     * @param sectionName heading for the section
+     * @param text
+     */
     private void createTemplateCell(String sectionName, String text) {
         Cell cell = new Cell(1, 10);
         Div div = new Div();
@@ -80,15 +88,22 @@ public class DetailReport {
         }
     }
 
+    /**
+     * creates the header section of the report that differs in table layout
+     * inserts data directly to the pdf
+     */
     public void createDetailReportHeader() {
         Paragraph subject = new Paragraph("Fach: " + this.learningSituation.getSubject())
                 .addStyle(boldStyle);
 
-        Paragraph fieldOfLearning = new Paragraph("Lernfeld: " + this.learningSituation.getFieldOfLearning().getName())
+        Paragraph fieldOfLearning = new Paragraph("Lernfeld " +
+                this.learningSituation.getFieldOfLearning().getId() +
+                ": " + this.learningSituation.getFieldOfLearning().getName())
                 .addStyle(boldStyle);
 
         Paragraph requiredSituation = new Paragraph("Anforderungssituation: " +
-                this.learningSituation.getRequiredSituation())
+                this.learningSituation.getFieldOfLearning().getId() +
+                ": " + this.learningSituation.getFieldOfLearning().getName())
                 .addStyle(boldStyle);
 
         Paragraph learningSituation = new Paragraph("Lernsituation: " + this.learningSituation.getName())
@@ -122,14 +137,23 @@ public class DetailReport {
                 .add(new Paragraph("")));
     }
 
+    /**
+     * removes all html tags from the input string
+     * @param string
+     * @return a string without '<' and '>' tags
+     */
     private String removeAllHtmlTags(String string) {
         return string.replaceAll("<[^>]*>", "");
     }
 
+    /**
+     * removes all with '\' escaped characters from the string
+     * @param string
+     * @return a string with no escaped characters
+     */
     private String removeEscapedCharacters(String string) {
         String cleanString;
         cleanString = string.replaceAll("(\\\\[A-Za-z])", "");
         return cleanString;
     }
-
 }
