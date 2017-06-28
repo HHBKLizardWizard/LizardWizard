@@ -107,6 +107,9 @@ public class AnnualReport {
      * @param reportData
      */
     private void createSections(ReportData reportData) {
+        String areaOfEducationText[] = {"Berufsbezogener Lernbereich," +
+                "Berufsübergreifender Lernbereich",
+                "Differenzierungsbereich"};
         Style paragraphStyle = new Style()
                 .setMarginLeft(4)
                 .setFontSize(8)
@@ -114,27 +117,33 @@ public class AnnualReport {
 
         List<List<Subject>> areaOfEducationList = this.getSubjectsOrderedByAreaOfEducation(reportData);
 
-        for (List<Subject> areaOfEducations : areaOfEducationList) {
-            Paragraph aoeParagraph = new Paragraph(areaOfEducations.get(0).getAreaOfEducation().getValue())
-                    .addStyle(paragraphStyle);
-
-            this.table.addHeaderCell(new Cell(1, 12)
-                    .add(aoeParagraph)
-                    .setBackgroundColor(new DeviceRgb(100, 149, 237)));
-
-            for (Subject subject : areaOfEducations) {
-                Paragraph subjectParagraph = new Paragraph(subject.getName())
-                        .addStyle(paragraphStyle)
-                        .setFontColor(Color.WHITE);
+        for (List<Subject> subjectList : areaOfEducationList) {
+            if (!subjectList.isEmpty()) {
+                Paragraph aoeParagraph = new Paragraph(subjectList.get(0).getAreaOfEducation().getValue())
+                        .addStyle(paragraphStyle);
 
                 this.table.addHeaderCell(new Cell(1, 12)
-                        .add(subjectParagraph)
-                        .setBackgroundColor(new DeviceRgb(169, 169, 169)));
+                        .add(aoeParagraph)
+                        .setBackgroundColor(new DeviceRgb(100, 149, 237)));
 
-                this.insertSubjectData(subject);
+                for (Subject subject : subjectList) {
+                    if (!subject.getFieldOfLearningList().isEmpty()) {
+                        Paragraph subjectParagraph = new Paragraph(subject.getName())
+                                .addStyle(paragraphStyle)
+                                .setFontColor(Color.WHITE);
+
+                        this.table.addHeaderCell(new Cell(1, 12)
+                                .add(subjectParagraph)
+                                .setBackgroundColor(new DeviceRgb(169, 169, 169)));
+
+                        this.insertSubjectData(subject);
+                    }
+                }
             }
         }
     }
+
+
 
     /**
      * iterates through a List of fieldOfLearning and inserts data for those to the pdc document
