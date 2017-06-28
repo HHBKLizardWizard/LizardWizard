@@ -17,6 +17,7 @@ import models.ReportData;
 import models.ReportHeader;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -108,6 +109,7 @@ public class ReportBuilder {
             Date date = new Date();
 
             this.folderName = "reports_" + dateFormat.format(date);
+
             new File(folderName).mkdir();
             PdfWriter writer = new PdfWriter(this.folderName + "/annualReport.pdf");
 
