@@ -23,12 +23,11 @@ public class Profession
         this.name = professionName;
     }
 
-    public Profession(Integer id, String name, Department department, String formOfTeaching)
+    public Profession(Integer id, String name, Department department)
     {
         this.id = id;
         this.name = name;
         this.department = department;
-        this.formOfTeaching = formOfTeaching;
     }
 
     public Integer getId()

@@ -56,9 +56,7 @@ public class DidaktRepository implements IDidaktRepository {
                      "INNER JOIN tbl_abteilung " +
                      "ON tbl_beruf.ID_abteilung = tbl_abteilung.AId " +
                      "INNER JOIN tbl_lehrer " +
-                     "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId " +
-                     "INNER JOIN tbl_uformberuf " +
-                     "ON BId = ID_Beruf INNER JOIN tbl_uform ON ID_UForm = UID;";;
+                     "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId ";
         ObservableList<Profession> professionList = FXCollections.observableArrayList();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -72,7 +70,8 @@ public class DidaktRepository implements IDidaktRepository {
                                                 teach);
                 Profession prof = new Profession(rs.getInt("BId"),
                                                 rs.getString("Berufname"),
-                                                dep, rs.getString("UFormname"));
+                                                dep);
+                prof.setFormOfTeaching(getFormOfTeaching(prof));
                 prof.setDurationList(getDuration(prof));
                 professionList.add(prof);
             }
@@ -83,6 +82,23 @@ public class DidaktRepository implements IDidaktRepository {
         return professionList;
     }
 
+    private String getFormOfTeaching(Profession profession){
+        String sql = "SELECT UFormname from tbl_uform INNER JOIN " +
+                "tbl_uformberuf " +
+                     "ON UID = ID_UForm WHERE ID_Beruf = ?";
+        String wayOfTeaching = null;
+        try{
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, profession.getId());
+            ResultSet rs = ps.executeQuery();
+
+            wayOfTeaching = rs.getString("UFormname");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return wayOfTeaching;
+    }
     /**
      *
      * @param profession
