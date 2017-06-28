@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public class FieldOfLearning {
     private String name;
     private Integer lfNr;
     private Subject subject;
-    private List<LearningSituation> learningSituationList;
+    private List<LearningSituation> learningSituationList = new ArrayList<>();
 
     public FieldOfLearning()
     {

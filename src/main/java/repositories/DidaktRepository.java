@@ -146,7 +146,7 @@ public class DidaktRepository implements IDidaktRepository {
                 learningSituation.setScenario(rs.getString("Szenario"));
                 learningSituation.setFieldOfLearning(field);
                 learningSituation.setSubject(field.getSubject().getName());
-                learningSituation.setSubjectArea((field.getSubject().getAoeID()));
+                learningSituation.setSubjectArea((field.getSubject().getAreaOfEducation()));
                 learningSituation.setStartWeek(rs.getInt("Von"));
                 learningSituation.setEndWeek(rs.getInt("Bis"));
                 learningSituation.setExpertiseList(getLearningTechniqueList(learningSituation));
@@ -211,12 +211,18 @@ public class DidaktRepository implements IDidaktRepository {
         return learningTechniques;
     }
 
+    /**
+     *
+     * @param profession
+     * @param year
+     * @return reportData
+     */
     @Override
     public ReportData getReportData(Profession profession, Integer year){
         ReportData reportData = new ReportData(profession);
         try{
             String supervisor = profession.getDepartment().getTeacher().getSex() + " " +
-                    profession.getDepartment().getTeacher();
+                    profession.getDepartment().getTeacher().getName();
 
             reportData.setReportHeader(new ReportHeader(profession.getDepartment().getName(),
                                                      profession.getName(),

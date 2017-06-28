@@ -9,7 +9,6 @@ public class Subject {
     private Integer id;
     private Integer year;
     private Integer position;
-    private Enum<AreaOfEducation> areaOfEducationEnum;
     private String name;
     private List<FieldOfLearning> fieldOfLearningList;
     private AreaOfEducation areaOfEducation;
@@ -22,7 +21,7 @@ public class Subject {
         this.id = id;
         this.year = year;
         this.position = position;
-        this.areaOfEducationEnum = (AreaOfEducation.values()[aoeId]);
+        this.areaOfEducation = (AreaOfEducation.values()[aoeId]);
         this.name = name;
     }
 
@@ -58,14 +57,6 @@ public class Subject {
 
     public void setPosition(Integer position) {
         this.position = position;
-    }
-
-    public Enum<AreaOfEducation> getAoeID() {
-        return areaOfEducationEnum;
-    }
-
-    public void setAoeID(Enum<AreaOfEducation> aoeID) {
-        this.areaOfEducationEnum = aoeID;
     }
 
     public String getName() {
