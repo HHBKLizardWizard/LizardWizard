@@ -146,7 +146,6 @@ public class TemplateRepository implements ITemplateRepository
     /**
      * Update a template
      * @param template which we want to update
-     * @return template which get updated
      */
     public void updateTemplate(Template template) {
         String sql = "UPDATE templates SET " +
