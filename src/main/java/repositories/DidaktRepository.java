@@ -16,15 +16,28 @@ import java.util.List;
 /**
  * Created by walde on 25.06.2017.
  */
+
+
+/**
+ *
+ */
 public class DidaktRepository implements IDidaktRepository {
     Connection con = null;
 
+    /**
+     *
+     * @param con
+     */
     public DidaktRepository(Connection con)
     {
         this.con = con;
         DatabaseConnector databaseConnector = new DatabaseConnector();
     }
 
+    /**
+     *
+     * @param dataSource
+     */
     public DidaktRepository(DataSource dataSource) {
         try {
             this.con = dataSource.getConnection();
@@ -33,6 +46,10 @@ public class DidaktRepository implements IDidaktRepository {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public ObservableList<Profession> getProfessionList() {
         String sql = "SELECT * FROM tbl_beruf " +
@@ -66,6 +83,11 @@ public class DidaktRepository implements IDidaktRepository {
         return professionList;
     }
 
+    /**
+     *
+     * @param profession
+     * @return
+     */
     @Override
     public List<Subject> getSubjectList(Profession profession) {
         String sql = "SELECT * FROM tbl_fach\n" +
@@ -96,6 +118,11 @@ public class DidaktRepository implements IDidaktRepository {
         return subjects;
     }
 
+    /**
+     *
+     * @param subject
+     * @return
+     */
     @Override
     public List<FieldOfLearning> getFieldList(Subject subject) {
         String sql = "SELECT * FROM tbl_lernfeld\n" +
@@ -109,7 +136,9 @@ public class DidaktRepository implements IDidaktRepository {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                FieldOfLearning fieldOfLearning = new FieldOfLearning(rs.getInt("LFDauer"),
+                FieldOfLearning fieldOfLearning = new FieldOfLearning(
+                                                          rs.getInt("LFID"),
+                                                          rs.getInt("LFDauer"),
                                                           rs.getString("Bezeichnung"),
                                                           rs.getInt("LFNR"));
                 fieldOfLearning.setSubject(subject);
@@ -124,13 +153,20 @@ public class DidaktRepository implements IDidaktRepository {
         return fieldOfLearningList;
     }
 
+    /**
+     *
+     * @param field
+     * @return
+     */
     @Override
     public List<LearningSituation> getLearningSituationList(FieldOfLearning field) {
-        String sql = "SELECT * FROM tbl_lernsituation WHERE LF_NR = ?";
+        String sql = "SELECT * FROM tbl_lernsituation WHERE LF_NR = ? AND " +
+                "ID_Lernfeld = ?";
         List<LearningSituation> learningSituationList = new ArrayList<>();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1,field.getLfNr());
+            ps.setInt(2,field.getId());
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 LearningSituation learningSituation = new LearningSituation();
@@ -160,6 +196,11 @@ public class DidaktRepository implements IDidaktRepository {
         return learningSituationList;
     }
 
+    /**
+     *
+     * @param learningSituation
+     * @return
+     */
     public List<PerformanceRecord> getPerformanceRecordList(LearningSituation learningSituation) {
         String sql = "SELECT LNID, Art from tbl_leistungsnachweis " +
                      "JOIN tbl_lernsituationleistungsnachweis " +
@@ -182,6 +223,11 @@ public class DidaktRepository implements IDidaktRepository {
         return performanceRecordList;
     }
 
+    /**
+     *
+     * @param situation
+     * @return
+     */
     @Override
     public List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
     {
@@ -215,7 +261,7 @@ public class DidaktRepository implements IDidaktRepository {
      *
      * @param profession
      * @param year
-     * @return reportData
+     * @return
      */
     @Override
     public ReportData getReportData(Profession profession, Integer year){
@@ -231,9 +277,13 @@ public class DidaktRepository implements IDidaktRepository {
                                                      supervisor));
             reportData.getProfession().setSubjects(getSubjectList(reportData.getProfession()));
             for (Subject subject : reportData.getProfession().getSubjects()) {
-                for (FieldOfLearning field : subject.getFieldOfLearningList()) {
-                    for (LearningSituation situation : field.getLearningSituationList()) {
-                        reportData.getLearningSituations().add(situation);
+                if(subject.getYear() == year){
+                    for (FieldOfLearning field : subject.getFieldOfLearningList())
+                    {
+                        for (LearningSituation situation : field.getLearningSituationList())
+                        {
+                            reportData.getLearningSituations().add(situation);
+                        }
                     }
                 }
             }
@@ -245,6 +295,11 @@ public class DidaktRepository implements IDidaktRepository {
         return reportData;
     }
 
+    /**
+     *
+     * @param profession
+     * @return
+     */
     public ObservableList<Integer> getDuration(Profession profession)
     {
         String sql = "SELECT DISTINCT Jahr FROM tbl_beruffach\n" +
