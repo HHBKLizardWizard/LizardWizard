@@ -83,15 +83,16 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     private String getFormOfTeaching(Profession profession){
-        String sql = "SELECT UFormname from tbl_uform INNER JOIN " +
-                "tbl_uformberuf " +
-                     "ON UID = ID_UForm WHERE ID_Beruf = ?";
+        String sql = "select distinct Uformname from tbl_uform\n"+
+                     "INNER JOIN tbl_uformberuf\n"+
+                     "ON UID = ID_UForm\n"+
+                     "WHERE ID_Beruf = ?\n";
         String wayOfTeaching = null;
         try{
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, profession.getId());
             ResultSet rs = ps.executeQuery();
-
+            rs.next();
             wayOfTeaching = rs.getString("UFormname");
         }
         catch (Exception e){

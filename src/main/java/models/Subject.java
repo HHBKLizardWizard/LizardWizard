@@ -21,7 +21,7 @@ public class Subject {
         this.id = id;
         this.year = year;
         this.position = position;
-        this.areaOfEducation = (AreaOfEducation.values()[aoeId]);
+        this.areaOfEducation = (AreaOfEducation.values()[aoeId - 1]);
         this.name = name;
     }
 
