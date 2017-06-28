@@ -16,6 +16,7 @@ import models.LearningSituationTableElement;
 import models.ReportData;
 import models.ReportHeader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -110,8 +111,8 @@ public class ReportBuilder {
             this.pdf = new PdfDocument(writer);
 
 
-            //this.createAnnualReport();
-            this.createDetailReports();
+            this.createAnnualReport();
+            //this.createDetailReports();
 
         } catch(Exception e) {
             e.printStackTrace();

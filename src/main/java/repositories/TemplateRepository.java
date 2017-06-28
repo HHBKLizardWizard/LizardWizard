@@ -20,7 +20,7 @@ public class TemplateRepository implements ITemplateRepository
     private Connection con = null;
 
     /**
-     * Baut eine Verbindung zur Datenbank auf
+     * Get a connection to our database
      * @param dataSource
      */
     public TemplateRepository(DataSource dataSource) {
@@ -32,10 +32,10 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     * Holt sich die Templates des angegebenen Users aus der Datenbank und speichert diese
-     * in eine ObservableList
-     * @param user
-     * @return
+     * Get all templates from the given user and save these in an ObservableList
+     *
+     * @param user for whom we get all the templates out of the database
+     * @return templateList with all of the users templates
      */
     public ObservableList<Template> getTemplatesByUser(User user, boolean forManagement) {
         ObservableList<Template> templateList = FXCollections.observableArrayList();
@@ -82,8 +82,8 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     * Löscht ein Template komplett aus der Datenbank
-     * @param template
+     * Delete an template from our database
+     * @param template which should get removed
      */
     public void deleteTemplate(Template template) {
         String sql = "DELETE FROM templates WHERE pk_id = ?";
@@ -100,8 +100,7 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     * Erstellt ein Template und schreibt diese in die Datenbank. Diese wird dem User
-     * zugeordnet, der gerade eingeloggt ist und diese erstellt hat
+     * Create a template and write this in our database. These will bind to his owner
      * @param template
      * @param user
      * @return
@@ -146,7 +145,7 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     * Aktualisiert ein Template
+     * Update a template
      * @param template
      * @return template
      */

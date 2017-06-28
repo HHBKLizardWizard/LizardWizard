@@ -78,7 +78,7 @@ public class LearningSituation extends LearningSituationTableElement {
         return subjectArea;
     }
 
-    public void setSubjectArea(Enum<AreaOfEducation> subjectArea) {
+    public void setSubjectArea(AreaOfEducation subjectArea) {
         this.subjectArea = subjectArea;
     }
 

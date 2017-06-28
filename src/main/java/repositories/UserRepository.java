@@ -22,7 +22,7 @@ public class UserRepository implements IUserRepository{
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
     /**
-     * Baut eine Verbindung zur Datenbank auf
+     * Get a connection to our database
      * @param dataSource
      */
     public UserRepository(DataSource dataSource) {
@@ -34,10 +34,9 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Legt einen User in der Datenbank an. Das angegebene Passwort wird
-     * dabei per gensalt() verschlüsselt
-     * @param user
-     * @return
+     * Create a user in our database. The given password get locked with gensalt()
+     * @param user which we want to create
+     * @return user which get created
      */
     public User registerUser(User user){
 
@@ -68,8 +67,8 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Löscht einen User komplett aus der Datenbank
-     * @param user
+     * Delete a user from our database
+     * @param user which we want to remove
      */
     public void deleteUser(User user) {
         String sql = "DELETE FROM users WHERE PK_ID = ?";
@@ -86,9 +85,9 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Holt sich einen Usernamen. Gesucht wird mit dem angegebenen Usernamen
-     * @param username
-     * @return
+     * Get a username with the given username
+     * @param username for whom we get a Username
+     * @return user which we looked for
      */
     public User getUserByUsername(String username){
         String sql = "SELECT * FROM users WHERE username = ?";
@@ -119,9 +118,9 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Holt sich einen Usernamen. Es wird mit der angegebenen UserID gesucht
-     * @param userId
-     * @return
+     * Get a password with the given UserID
+     * @param userId for whom we get the password
+     * @return password of our user
      */
 
     public String getPasswordByUserId(Integer userId){
@@ -142,9 +141,9 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Aktualisiert die Daten eines Benutzers in der Datenbank.
-     * @param user
-     * @return
+     * Update the data of a user in our database
+     * @param user for whom we update the user information
+     * @return a boolean value, which signals the success of the function
      */
     public boolean updateUser(User user) {
         String sql = "UPDATE users SET firstname = ?, " +
@@ -172,8 +171,8 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Holt sich alle User aus der Datenbank und speichert diese in ein ObservableList
-     * @return
+     * Get all useres from our database and save these in an ObservableList
+     * @return userList with all users
      */
     public ObservableList<User> getAllUsers() {
         String sql = "SELECT * FROM users";
