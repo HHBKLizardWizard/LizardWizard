@@ -134,7 +134,7 @@ public class ApplicationViewModel implements Initializable {
         ReportData reportData = didaktRepository.getReportData(profession, year);
 
         if (template != null){
-            new ReportBuilder("report.pdf", reportData).createReport(template);
+            new ReportBuilder(reportData).createReport(template);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("");

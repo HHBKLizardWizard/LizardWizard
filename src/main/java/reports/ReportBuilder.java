@@ -16,7 +16,10 @@ import models.LearningSituationTableElement;
 import models.ReportData;
 import models.ReportHeader;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,23 +31,15 @@ public class ReportBuilder {
     private PdfDocument pdf;
     private ReportData reportData;
     private Template template;
+    private String folderName;
 
-    public ReportBuilder(String fileName, ReportData reportData) {
-        try {
-            /* //TODO so solls nachher laufen wenn der merge der pdf`s läuft.
-            PdfWriter writer = new PdfWriter(fileName);
-            this.pdf = new PdfDocument(writer);
-            */
-
-            this.reportData = reportData;
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+    public ReportBuilder(ReportData reportData) {
+        this.reportData = reportData;
     }
 
     /**
      * @param isLandscape defines if the document should be picture or landscape
-     * @return            returns a Document object to be filled by with ReportData
+     * @return returns a Document object to be filled by with ReportData
      */
     private Document createDocument(boolean isLandscape) {
         Document document = isLandscape ? new Document(pdf, PageSize.A4.rotate()) : new Document(pdf);
@@ -54,7 +49,8 @@ public class ReportBuilder {
 
     /**
      * creates the header section for every generated pdf
-     * @param document  PdfDocument object
+     *
+     * @param document   PdfDocument object
      * @param headerData object combining all information necessary to build the pdf header
      */
     private void createPdfHeader(Document document, ReportHeader headerData) {
@@ -62,13 +58,13 @@ public class ReportBuilder {
         // set page title
         Paragraph title = new Paragraph("Didaktischer Jahresplan");
         title.setTextAlignment(TextAlignment.CENTER);
-        title.setFontColor(new DeviceRgb(100,149,237));
+        title.setFontColor(new DeviceRgb(100, 149, 237));
 
         // create uniform style for header section
         Style style = new Style();
         style.setTextAlignment(TextAlignment.LEFT);
         style.setFontSize(8);
-        style.setFontColor(new DeviceRgb(100,149,237));
+        style.setFontColor(new DeviceRgb(100, 149, 237));
         style.setMargin(0);
 
         // set department
@@ -101,12 +97,19 @@ public class ReportBuilder {
 
     /**
      * creates a PDF Report with the given template
-     * @param template  the selected template object
+     *
+     * @param template the selected template object
      */
     public void createReport(Template template) {
         try {
             this.template = template;
-            PdfWriter writer = new PdfWriter("annualReport.pdf");
+
+            DateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy");
+            Date date = new Date();
+
+            this.folderName = "reports_" + dateFormat.format(date);
+            new File(folderName).mkdir();
+            PdfWriter writer = new PdfWriter(this.folderName + "/annualReport.pdf");
 
             this.pdf = new PdfDocument(writer);
 
@@ -114,7 +117,7 @@ public class ReportBuilder {
             this.createAnnualReport();
             this.createDetailReports();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -141,23 +144,24 @@ public class ReportBuilder {
     }
 
     /**
-     *  iterates through a list of detailReports and
+     * iterates through a list of detailReports and
      */
     private void createDetailReports() {
         for (LearningSituationTableElement learningSituation : this.learningSituationList) {
-           if (learningSituation instanceof LearningSituation) {
-               this.createDetailReport((LearningSituation) learningSituation);
-           }
-       }
+            if (learningSituation instanceof LearningSituation) {
+                this.createDetailReport((LearningSituation) learningSituation);
+            }
+        }
     }
 
     /**
-     *  adds data of the given learningSituation to the document
+     * adds data of the given learningSituation to the document
+     *
      * @param learningSituation
      */
     private void createDetailReport(LearningSituation learningSituation) {
         try {
-            PdfWriter writer = new PdfWriter("detailReport" + learningSituation.getId() +".pdf");
+            PdfWriter writer = new PdfWriter(this.folderName + "/detailReport" + learningSituation.getId() + ".pdf");
             this.pdf = new PdfDocument(writer);
         } catch (Exception e) {
             e.printStackTrace();
@@ -178,15 +182,5 @@ public class ReportBuilder {
         document.add(new Paragraph(""));
         document.add(table);
         document.close();
-    }
-
-    /**
-     *
-     * @param document1 document to merge
-     * @param document2 document to merge
-     * @return merged document
-     */
-    public Document mergeDocuments(Document document1, Document document2) {
-        return null;
     }
 }

@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.User;
 import models.UserRights;
+import org.mindrot.jbcrypt.BCrypt;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,7 +48,7 @@ public class UserRepository implements IUserRepository{
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getFirstname());
             ps.setString(3, user.getLastname());
-            ps.setString(4, user.getPassword());
+            ps.setString(4, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             ps.setString(5, user.getRights().toString());
 
             ps.execute();
@@ -156,7 +158,7 @@ public class UserRepository implements IUserRepository{
             ps.setString(1, user.getFirstname());
             ps.setString(2, user.getLastname());
             ps.setString(3, user.getUsername());
-            ps.setString(4, user.getPassword());
+            ps.setString(4, BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
             ps.setString(5, user.getRights().toString());
             ps.setString(6, user.getId().toString());
 
