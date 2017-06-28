@@ -21,7 +21,12 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * Created by svv on 22.06.2017.
+ * Created by : Sil van Vliet
+ * Date       : 22.06.2017
+ *
+ * Model where all the functions are for the user view.
+ * Here the admin can view all the users and perform action
+ * such as add, update or delete users.
  */
 
 public class UserViewModel implements Initializable {
@@ -39,10 +44,11 @@ public class UserViewModel implements Initializable {
     private IUserRepository userRepository;
 
     /**
-     *   Class        : initialize
-     *   Class        : initializer
-     *   Beschreibung : Füllt die Benutzertablle mit allen Benutzern aus der Datenbank.
+     * fills the user table with all the existing users.
+     * @param location used to resolve relative paths for the root object (null if the location is not known).
+     * @param resources used to localize the root object (null if the root object was not localized).
      */
+    @SuppressWarnings("unchecked")
     public void initialize(URL location, ResourceBundle resources) {
         //todo: instead of what is below, get all users from DB
         userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
@@ -57,8 +63,7 @@ public class UserViewModel implements Initializable {
     }
 
     /**
-     *   Class        : deleteUserAction
-     *   Beschreibung : Benutzer löschen.
+     * deletes the selected user after confirmation
      */
     public void deleteUserAction(){
         User selectedUser = getSelectedUser();
@@ -91,9 +96,8 @@ public class UserViewModel implements Initializable {
     }
 
     /**
-     *   Class        : getSelectedUser
-     *   Beschreibung : Den ausgewählten Benutzer laden, wenn keiner ausgewählt wurde,
-     *                  eine Fehlermeldung ausgeben
+     * gets the selected user element from the table. When do element was selected
+     * an error message pop up
      */
     private User getSelectedUser(){
         User selectedUser = (User) tblUsers.getSelectionModel().getSelectedItem();
@@ -112,8 +116,7 @@ public class UserViewModel implements Initializable {
     }
 
     /**
-     *   Class        : closeButtonAction
-     *   Beschreibung : Schließt die User View Übersicht.
+     * Close the current stage
      */
     public void closeButtonAction(){
         Stage stage = (Stage) btnBack.getScene().getWindow();
@@ -121,17 +124,15 @@ public class UserViewModel implements Initializable {
     }
 
     /**
-     *   Class        : createUserAction
-     *   Beschreibung : Ruft die creatUpdateUser Methode mit NULL auf, so dass ein neuer Benutzer erstellt wird.
+     * launches createUpdateUser with null and so creating a new user
      */
     public void createUserAction(){
         creatUpdateUser(null);
     }
 
     /**
-     *   Class        : updateUserAction
-     *   Beschreibung : Überpruft, ob der Benutzer ausgewählt ist und ruft die creatUpdateUser Methode mit
-     *                  der ID vom ausgewählten Benutzer auf, so das die nächste View gefüllt werden kann.
+     * checks if there is a selected user or not. if there is it launches
+     * createUpdateUser with the selected user and so updating ita new user
      */
     public void updateUserAction(){
         User selectedUser = getSelectedUser();
@@ -141,10 +142,9 @@ public class UserViewModel implements Initializable {
     }
 
     /**
-     *   Class        : creatUpdateUser
-     *   Beschreibung : Erstellt oder aktualiesiert einen Benutzer.
-     *   Extra Info   : wenn userId = 0 => erstellt einen neuen Benutzer
-     *                  wenn userId > 0 => aktualisiert einen Benutzer
+     * Opens user edit view with the selected user data. When no user selected
+     * it leaves everything blank so that a new user can be created.
+     * @param user to check if new user is to be created or update existing one
      */
     private void creatUpdateUser(User user){
         try{

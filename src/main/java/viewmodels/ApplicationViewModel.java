@@ -14,7 +14,10 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import models.*;
 import reports.ReportBuilder;
-import repositories.*;
+import repositories.DidaktRepository;
+import repositories.IDidaktRepository;
+import repositories.ITemplateRepository;
+import repositories.TemplateRepository;
 import util.DatabaseConnector;
 
 import java.net.URL;
@@ -22,7 +25,11 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
- * Created by iho on 20.06.2017.
+ * Created by : Sil van Vliet
+ * Date       : 22.06.2017
+ *
+ * Model where all the functions are for the application view.
+ * This is the main screen that all users can see and extract PDFs.
  */
 public class ApplicationViewModel implements Initializable {
 
@@ -51,9 +58,10 @@ public class ApplicationViewModel implements Initializable {
     private Profession selectedProfession;
 
     /**
-     *   Class        : initialize
-     *   Beschreibung : Hollt sich die liste von Fäche, jahre und templates und
-     *                  füllt die ComboBoxen.
+     * Gets the List of all the Professions and Years from within the Professions object and
+     * fills the combo boxes. Also adds a listener to update certain elements on combo box change
+     * @param location used to resolve relative paths for the root object (null if the location is not known).
+     * @param resources used to localize the root object (null if the root object was not localized).
      */
     public void initialize(URL location, ResourceBundle resources){
         DatabaseConnector dbConnector = new DatabaseConnector();
@@ -97,8 +105,7 @@ public class ApplicationViewModel implements Initializable {
     }
 
     /**
-     *   Class        : handleProfessionComboBoxAction
-     *   Beschreibung : hollt sich die Jahre vom ausgewählte Profession Objekt
+     * Gets the years from the selected Profession Object.
      */
     @FXML
     private void handleProfessionComboBoxAction() {
@@ -108,9 +115,8 @@ public class ApplicationViewModel implements Initializable {
     }
 
     /**
-    *   Class        : createAnnualReport
-    *   Beschreibung : Generiert das pdf
-    */
+     * Generates the PDF.
+     */
     public void createAnnualReport() {
         // Erstelle Profession Object aus Comboboxen Auswahl
         Profession profession = selectedProfession;
@@ -127,7 +133,6 @@ public class ApplicationViewModel implements Initializable {
         ReportData reportData = didaktRepository.getReportData(profession, year);
 
         if(template != null){
-            //todo ABER ICH WIIIIILLLLL !!!! xD
             new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport(template);
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -140,16 +145,15 @@ public class ApplicationViewModel implements Initializable {
     }
 
     /**
-     *   Class        : closeButtonAction
-     *   Beschreibung : Schließt das Programm
+     * Closes the program.
      */
     public void closeButtonAction() {
         Platform.exit();
     }
 
     /**
-     *   Class        : openTargetWindowAction
-     *   Beschreibung : Öffnet das Fenster abhängig davon, welches Menu Item ausgewählt wurde.
+     * Opens the correct view depending on the element (MenuItem) that has been clicked.
+     * @param event that is happening through which we can get the Object that has been clicked.
      */
     @SuppressWarnings("ConstantConditions")
     public void openTargetWindowAction(ActionEvent event) {
@@ -205,9 +209,9 @@ public class ApplicationViewModel implements Initializable {
     }
 
     /**
-     *   Class        : setUserId
-     *   Beschreibung : Setzt UserId so, dass es in der nächsten View wieder verwendet werden kann
-     *   Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
+     * Puts the logged user element in this view so that certain Rights / views can be set.
+     * Also fills the dropdown fields with the user's personal Data.
+     * @param user that is logged into the application
      */
     public void setUser(User user) {
         loggedUser = user;
@@ -244,9 +248,8 @@ public class ApplicationViewModel implements Initializable {
     }
 
     /**
-     *   Class        : checkViewRights
-     *   Beschreibung : Setzt bestimmte Felder in der nächsten View auf "hidden", abhängig von den Benutzerrechten
-     *   Extra Info   : Muss Public sein, weil es im UserViewModel aufgerufen wird
+     * Puts certain element as hidden depending on the Users permission.
+     * @param user for whom we have to check the Permissions.
      */
     private void checkViewRights(User user) {
         UserRights loggedUserRights = user.getRights();
