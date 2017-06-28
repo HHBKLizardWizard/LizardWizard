@@ -101,9 +101,9 @@ public class TemplateRepository implements ITemplateRepository
 
     /**
      * Create a template and write this in our database. These will bind to his owner
-     * @param template
-     * @param user
-     * @return
+     * @param template which we want to create
+     * @param user for whom the template will create
+     * @return template which was created
      */
     @Transactional
     public Template createTemplate(Template template, User user) {
@@ -146,8 +146,8 @@ public class TemplateRepository implements ITemplateRepository
 
     /**
      * Update a template
-     * @param template
-     * @return template
+     * @param template which we want to update
+     * @return template which get updated
      */
     public void updateTemplate(Template template) {
         String sql = "UPDATE templates SET " +
