@@ -119,13 +119,13 @@ public class ApplicationViewModel implements Initializable {
      * Generates the PDF.
      */
     public void createAnnualReport() {
-        // Erstelle Profession Object aus Comboboxen Auswahl
+        // get Profession object from combobox selection
         Profession profession = selectedProfession;
 
-        // Hole Template Object aus Combobox Auswahl
+        // get Template object from combobox selection
         Template template = selectedTemplate;
 
-        // Hole Jahr aus Combobox
+        // get year from comboBox selection
         int year = cbYear.getSelectionModel().getSelectedItem();
 
         // get data from database and build report
@@ -133,9 +133,9 @@ public class ApplicationViewModel implements Initializable {
         didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
         ReportData reportData = didaktRepository.getReportData(profession, year);
 
-        if(template != null){
-            new ReportBuilder("dashierliestnochniemand:).pdf", reportData).createReport(template);
-        }else{
+        if (template != null){
+            new ReportBuilder("report.pdf", reportData).createReport(template);
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("");
             alert.setHeaderText("no template selected");
