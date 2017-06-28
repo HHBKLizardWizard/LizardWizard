@@ -43,7 +43,7 @@ public class Teacher
 
     public void setSex(String sex)
     {
-        if(sex == "W"){
+        if(sex.equals("W")){
             this.sex = "Frau";
         }
         else{

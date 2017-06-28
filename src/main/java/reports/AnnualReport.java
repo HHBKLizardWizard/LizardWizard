@@ -80,7 +80,13 @@ public class AnnualReport {
      */
     private List<List<Subject>> getSubjectsOrderedByAreaOfEducation(ReportData reportData) {
         List<List<Subject>> subjectListList = new ArrayList<>();
-        List<Subject> subjectList = reportData.getProfession().getSubjects();
+
+        List<Subject> subjectList = new ArrayList<>();
+        for (Subject subject : reportData.getProfession().getSubjects())
+        {
+            if(subject.getYear() == reportData.getReportHeader().getYearOfTraining())
+            subjectList.add(subject);
+        }
         List<Subject> subjectListBerufsbezogen = subjectList.stream().filter((subject) ->
                 subject.getAreaOfEducation().equals(AreaOfEducation.BERUFSBEZOGEN)).collect(Collectors.toList());
 
