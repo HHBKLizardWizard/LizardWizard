@@ -150,7 +150,7 @@ public class TemplatesViewModel implements Initializable {
                 templateRepository.createTemplate(template, loggedUser);
                 cbTemplate.getItems().add(template);
 
-                msgHeader = "Template Erstell";
+                msgHeader = "Template erstellt";
                 msgText = "Die neue Template " + txtTempName.getText() + "war erforgleich erstellt";
 
                 clearFields();

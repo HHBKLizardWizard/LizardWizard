@@ -43,7 +43,7 @@ public class ReportBuilder {
 
     /**
      * @param isLandscape defines if the document should be picture or landscape
-     * @return            returns a Document object to be filled by ReportFillers
+     * @return            returns a Document object to be filled by with ReportData
      */
     private Document createDocument(boolean isLandscape) {
         Document document = isLandscape ? new Document(pdf, PageSize.A4.rotate()) : new Document(pdf);
@@ -139,7 +139,7 @@ public class ReportBuilder {
     }
 
     /**
-     *
+     *  iterates through a list of detailReports and
      */
     private void createDetailReports() {
         for (LearningSituationTableElement learningSituation : this.learningSituationList) {
