@@ -8,17 +8,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import models.AreaOfEducation;
 import models.User;
 import org.mindrot.jbcrypt.BCrypt;
 import repositories.IUserRepository;
 import repositories.UserRepository;
 import util.DatabaseConnector;
 
+import java.awt.geom.Area;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by svv on 22.06.2017.
+ * Created by : Sil van Vliet
+ * Date       : 22.06.2017
+ *
+ * Model where all the functions are for the login view.
+ * Here the user needs to login to be able to view any other screen.
  */
 public class LoginViewModel implements Initializable {
 
@@ -36,8 +42,14 @@ public class LoginViewModel implements Initializable {
     @FXML
     private Label lblLoginFailed;
 
+    /**
+     *
+     * @param location used to resolve relative paths for the root object (null if the location is not known).
+     * @param resources used to localize the root object (null if the root object was not localized).
+     */
     public void initialize(URL location, ResourceBundle resources) {
     }
+
 
     /**
      *   Class        : LoginAction

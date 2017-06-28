@@ -18,7 +18,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Created by svv on 22.06.2017.
+ * Created by : Sil van Vliet
+ * Date       : 22.06.2017
+ *
+ * Model where all the functions are for the user edit view.
+ * Here the admin can add or update a user.
  */
 public class UserEditViewModel implements Initializable {
 
@@ -41,8 +45,11 @@ public class UserEditViewModel implements Initializable {
     private Integer maxTxtLength = 40;
 
     /**
-     *   Class        : initialize
-     *   Beschreibung : Füllt die ChoiceBoxes mit allen Rechten.
+     * fills the dropdown with all the available rights and adds
+     * listeners to the text fields.
+     * @param location used to resolve relative paths for the root object (null if the location is not known).
+     * @param resources used to localize the root object (null if the root object was not localized).
+
      */
     public void initialize(URL location, ResourceBundle resources) {
         ObservableList<UserRights> rightsList = FXCollections.observableArrayList();
@@ -58,9 +65,8 @@ public class UserEditViewModel implements Initializable {
     }
 
     /**
-     *   Class        : setUserData
-     *   Beschreibung : Wird im UserViewModel benutzt (deswegen public).
-     *                  Füllt alle Felder mit den selektierten Benutzerdaten.
+     * fills the text fields / dropdown can be filled with the users data.
+     * @param user that has been previously selected
      */
     private void setUserData(User user) {
 
@@ -77,10 +83,9 @@ public class UserEditViewModel implements Initializable {
     }
 
     /**
-     *   Class        : saveUserAction
-     *   Beschreibung : Nach der Überprüfung, ob alle Felder richtig gefüllt sind, wird überprüft,
-     *                  ob es sich um eine Benutzeraktualisierung oder um das Anlegen eines neuen Benutzers
-     *                  handelt und so entprechend die richtige Aktion ausführt.
+     * After verifying that all the fields are correctly set and checking if
+     * it is in regards to creating a new user or updating an already existing
+     * one, the appropriate action will be executed
      */
     public void saveUserAction() {
         UserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
@@ -143,12 +148,9 @@ public class UserEditViewModel implements Initializable {
     }
 
     /**
-     *   Class        : checkFieldsAction
-     *   Beschreibung : Überprüft, ob alle Felder gefüllt sind.
-     *   Extra info   : Passwortfeld bei der Benutzeraktualisierung muss nicht
-     *                  handelt und so entprechend die richtige Aktion ausführt.
-     *                  gefüllt sein. Wenn es leer bleibt, blebt das vorherige Passwort
-     *                  bestehen.
+     * checks if all the requirements have been met. Password field does not have
+     * to be filled when it is in regards to updating a already existing user. When
+     * it is not filled it will remain as it was previously.
      */
     private boolean checkFieldsAction() {
         Boolean allGood = true;
@@ -188,8 +190,8 @@ public class UserEditViewModel implements Initializable {
     }
 
     /**
-     *   Class        : closeButtonAction
-     *   Beschreibung : Schließt die User Edit Übersicht.
+     * closes the current stage and reopens the user view so that the table can be
+     * repopulated with the updated information
      */
     public void closeButtonAction(){
 
@@ -218,8 +220,9 @@ public class UserEditViewModel implements Initializable {
     }
 
     /**
-     *   Class        : setUserId
-     *   Beschreibung : Setzt UserId so, dass die richtige Templates aus dem Datenbank gehölt werden kann
+     * Called from UserViewModel, puts the selected user object in this view so that
+     * the text fields / dropdown can be filled with the users data.
+     * @param user that is selected
      */
     public void setUser(User user) {
         updateUser = user;
@@ -228,6 +231,10 @@ public class UserEditViewModel implements Initializable {
         }
     }
 
+    /**
+     * Listener to detect that the User does not fill in more then is necessary.
+     * @param txtField where the user is currently writing.
+     */
     private void addListener(TextField txtField){
         txtField.textProperty().addListener((ov, oldValue, newValue) -> {
             if (txtField.getText().length() > maxTxtLength) {
