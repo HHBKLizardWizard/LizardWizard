@@ -19,6 +19,11 @@ public class TemplateRepository implements ITemplateRepository
 {
     Connection con = null;
 
+    /**
+     * Class: TemplateRepository
+     * Beschreibung: Baut eine Verbindung zur Datenbank auf
+     * @param dataSource
+     */
     public TemplateRepository(DataSource dataSource) {
         try {
             con = dataSource.getConnection();
@@ -28,7 +33,9 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     *
+     * Class: getTemplatesByUser
+     * Beschreibung: Holt sich die Templates des angegebenen Users aus der Datenbank und speichert diese
+     *               in eine ObservableList
      * @param user
      * @return
      */
@@ -77,7 +84,8 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     *
+     * Class: deleteTemplate
+     * Beschreibung: Löscht ein Template komplett aus der Datenbank
      * @param template
      */
     public void deleteTemplate(Template template) {
@@ -95,7 +103,9 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     *
+     * Class: createTemplate
+     * Beschreibung: Erstellt ein Template und schreibt diese in die Datenbank. Diese wird dem User
+     *               zugeordnet, der gerade eingeloggt ist und diese erstellt hat
      * @param template
      * @param user
      * @return
@@ -140,7 +150,8 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     *
+     * Class: updateTemplate
+     * Beschreibung: Aktualisiert ein Template
      * @param template
      * @return template
      */

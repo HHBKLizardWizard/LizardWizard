@@ -22,7 +22,8 @@ public class UserRepository implements IUserRepository{
     public ObservableList<User> userList = FXCollections.observableArrayList();
 
     /**
-     *
+     * Class: UserRepository
+     * Beschreibung: Baut eine Verbindung zur Datenbank auf
      * @param dataSource
      */
     public UserRepository(DataSource dataSource) {
@@ -34,7 +35,9 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     *
+     * Class: registerUser
+     * Beschreibung: Legt einen User in der Datenbank an. Das angegebene Passwort wird
+     *               dabei per gensalt() verschlüsselt
      * @param user
      * @return
      */
@@ -69,7 +72,8 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     *
+     * Class: deleteUser
+     * Beschreibung: Löscht einen User komplett aus der Datenbank
      * @param user
      */
     public void deleteUser(User user) {
@@ -87,7 +91,8 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     *
+     * Class: getUserbyUsernasme
+     * Beschreibung: Holt sich einen Usernamen. Gesucht wird mit dem angegebenen Usernamen
      * @param username
      * @return
      */
@@ -119,7 +124,12 @@ public class UserRepository implements IUserRepository{
         return user;
     }
 
-
+    /**
+     * Class: getPasswordByUserID
+     * Beschreibung: Holt sich einen Usernamen. Es wird mit der angegebenen UserID gesucht
+     * @param userId
+     * @return
+     */
 
     public String getPasswordByUserId(Integer userId){
         String password = "";
@@ -139,7 +149,8 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     *
+     * Class: updateUser
+     * Beschreibung: Aktualisiert die Daten eines Benutzers in der Datenbank.
      * @param user
      * @return
      */
@@ -169,8 +180,9 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     *
-     *
+     * Class: getAllUsers
+     * Beschreibung: Holt sich alle User aus der Datenbank und speichert diese in eine
+     *               ObservableList
      * @return
      */
     public ObservableList<User> getAllUsers()
