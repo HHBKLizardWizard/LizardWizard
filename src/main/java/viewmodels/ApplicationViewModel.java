@@ -39,7 +39,7 @@ public class ApplicationViewModel implements Initializable {
     private Button btnExport;
 
     @FXML
-    private MenuItem menuUser, menuTemplate, menuLogout, menuExit;
+    private MenuItem menuUser, menuTemplate, menuLogout;
 
     @FXML
     private SeparatorMenuItem smiLine;
@@ -58,7 +58,6 @@ public class ApplicationViewModel implements Initializable {
     public void initialize(URL location, ResourceBundle resources){
         DatabaseConnector dbConnector = new DatabaseConnector();
         didaktRepository = new DidaktRepository(dbConnector.getDidaktDataSource());
-        IUserRepository userRepository = new UserRepository(dbConnector.getUserDataSource());
         templateRepository = new TemplateRepository(dbConnector.getUserDataSource());
 
         cbProfession.setItems(didaktRepository.getProfessionList());
@@ -152,6 +151,7 @@ public class ApplicationViewModel implements Initializable {
      *   Class        : openTargetWindowAction
      *   Beschreibung : Öffnet das Fenster abhängig davon, welches Menu Item ausgewählt wurde.
      */
+    @SuppressWarnings("ConstantConditions")
     public void openTargetWindowAction(ActionEvent event) {
         try {
             String menuItemClickedId = "", stageTitle;

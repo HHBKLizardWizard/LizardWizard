@@ -1,17 +1,11 @@
 package models;
 
-import java.util.List;
-
 /**
  * Created by iho on 22.06.2017.
  */
 public class User {
     private Integer id;
-    private String username;
-    private String firstname;
-    private String lastname;
-    private String password;
-    private List<Template> templateList;
+    private String username, firstname, lastname, password;
     private UserRights rights;
 
     public User(){}
@@ -82,13 +76,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<Template> getTemplateList() {
-        return this.templateList;
-    }
-
-    public void setTemplateList(List<Template> templateList) {
-        this.templateList = templateList;
     }
 }
