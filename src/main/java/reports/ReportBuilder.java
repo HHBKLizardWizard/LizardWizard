@@ -99,7 +99,8 @@ public class ReportBuilder {
     }
 
     /**
-     *
+     * creates a PDF Report with the given template
+     * @param template  the selected template object
      */
     public void createReport(Template template) {
         try {
@@ -118,7 +119,7 @@ public class ReportBuilder {
     }
 
     /**
-     *
+     * creates an annualReport with reportData
      */
     private void createAnnualReport() {
         Document document = this.createDocument(true);
@@ -151,7 +152,8 @@ public class ReportBuilder {
     }
 
     /**
-     * creates a single detailReport
+     *  adds data of the given learningSituation to the document
+     * @param learningSituation
      */
     private void createDetailReport(LearningSituation learningSituation) {
         try {
@@ -178,6 +180,12 @@ public class ReportBuilder {
         document.close();
     }
 
+    /**
+     *
+     * @param document1 document to merge
+     * @param document2 document to merge
+     * @return merged document
+     */
     public Document mergeDocuments(Document document1, Document document2) {
         return null;
     }

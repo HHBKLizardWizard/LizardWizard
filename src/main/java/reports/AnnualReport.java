@@ -65,10 +65,19 @@ public class AnnualReport {
 
     }
 
+    /**
+     * creates the body of an annualReport
+     * @param reportData
+     */
     public void createAnnualReportBody(ReportData reportData) {
         this.createSections(reportData);
     }
 
+    /**
+     * creates a List with subjectLists grouped by AreaOfEducations
+     * @param reportData
+     * @return  a List with subjectLists representing a areaOfEducationList
+     */
     private List<List<Subject>> getSubjectsOrderedByAreaOfEducation(ReportData reportData) {
         List<List<Subject>> subjectListList = new ArrayList<>();
         List<Subject> subjectList = reportData.getProfession().getSubjects();
@@ -87,7 +96,10 @@ public class AnnualReport {
         return subjectListList;
     }
 
-
+    /**
+     * creates AreaOfEducation sections
+     * @param reportData
+     */
     private void createSections(ReportData reportData) {
         Style paragraphStyle = new Style()
                 .setMarginLeft(4)
@@ -118,6 +130,10 @@ public class AnnualReport {
         }
     }
 
+    /**
+     * iterates through a List of fieldOfLearning and inserts data for those to the pdc document
+     * @param subject   a subject object holding a list with FieldOfLearning
+     */
     private void insertSubjectData(Subject subject) {
         for (FieldOfLearning fieldOfLearning : subject.getFieldOfLearningList()) {
             Paragraph paragraph = new Paragraph(fieldOfLearning.getName() + " ("
@@ -140,6 +156,11 @@ public class AnnualReport {
         }
     }
 
+    /**
+     *
+     * @param sortedList
+     * @return
+     */
     private List<LearningSituationTableElement> fillWithPlaceholders(List<LearningSituation> sortedList) {
         List<LearningSituationTableElement> filledList = new ArrayList<>();
 
