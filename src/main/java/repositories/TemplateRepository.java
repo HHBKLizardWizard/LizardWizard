@@ -34,8 +34,8 @@ public class TemplateRepository implements ITemplateRepository
     /**
      * Holt sich die Templates des angegebenen Users aus der Datenbank und speichert diese
      * in eine ObservableList
-     * @param user
-     * @return
+     * @param user for whom we get all the templates out of the database
+     * @return templateList with all of the users templates
      */
     public ObservableList<Template> getTemplatesByUser(User user, boolean forManagement) {
         ObservableList<Template> templateList = FXCollections.observableArrayList();
