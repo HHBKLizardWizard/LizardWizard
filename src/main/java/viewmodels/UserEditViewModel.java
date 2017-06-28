@@ -1,7 +1,5 @@
 package viewmodels;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,7 +23,7 @@ import java.util.ResourceBundle;
 public class UserEditViewModel implements Initializable {
 
     @FXML
-    private TextField txtLastName, txtFirstName, txtUserId, txtUsername;
+    private TextField txtLastName, txtFirstName, txtUsername;
 
     @FXML
     private PasswordField txtPassword;
@@ -34,12 +32,12 @@ public class UserEditViewModel implements Initializable {
     private ComboBox<UserRights> cbRole;
 
     @FXML
-    private Button btnSave, btnBack;
+    private Button btnBack;
 
     @FXML
     private Label lblPwInfo;
 
-    User updateUser;
+    private User updateUser;
     private Integer maxTxtLength = 40;
 
     /**
@@ -64,7 +62,7 @@ public class UserEditViewModel implements Initializable {
      *   Beschreibung : Wird im UserViewModel benutzt (deswegen public).
      *                  Füllt alle Felder mit den selektierten Benutzerdaten.
      */
-    public void setUserData(User user) {
+    private void setUserData(User user) {
 
         //setze hinweis wegen password wenn man ein Benutzer aktualiesieren will
         lblPwInfo.setVisible(true);
@@ -86,7 +84,7 @@ public class UserEditViewModel implements Initializable {
      */
     public void saveUserAction() {
         UserRepository userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
-        String msgTitle = "", msgText = "";
+        String msgTitle, msgText;
         Alert.AlertType alerType = Alert.AlertType.INFORMATION;
 
         //check if all form fields are good to go
@@ -107,10 +105,9 @@ public class UserEditViewModel implements Initializable {
 
                 //check if password field was filled, if so, update
                 if(!password.equals("")){
-                    //todo encrypt fixen
-                    //String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
                     updateUser.setPassword(password);
                 }
+
                 //update the User
                 userRepository.updateUser(updateUser);
 
@@ -232,13 +229,10 @@ public class UserEditViewModel implements Initializable {
     }
 
     private void addListener(TextField txtField){
-        txtField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                if (txtField.getText().length() > maxTxtLength) {
-                    String s = txtField.getText().substring(0, maxTxtLength);
-                    txtField.setText(s);
-                }
+        txtField.textProperty().addListener((ov, oldValue, newValue) -> {
+            if (txtField.getText().length() > maxTxtLength) {
+                String s = txtField.getText().substring(0, maxTxtLength);
+                txtField.setText(s);
             }
         });
     }

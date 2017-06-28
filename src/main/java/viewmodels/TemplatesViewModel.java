@@ -12,6 +12,7 @@ import repositories.TemplateRepository;
 import util.DatabaseConnector;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -27,13 +28,10 @@ public class TemplatesViewModel implements Initializable {
     private ComboBox<Template> cbTemplate;
 
     @FXML
-    private ComboBox cbGroup;
-
-    @FXML
     private TextField txtTempName;
 
     @FXML
-    private Button btnNewTemplate, btnDelete, btnSave, btnBack;
+    private Button btnBack;
 
     private User loggedUser;
 
@@ -114,8 +112,21 @@ public class TemplatesViewModel implements Initializable {
     public void removeTemplate(){
         Template selectedTemplate = cbTemplate.getSelectionModel().getSelectedItem();
         if(selectedTemplate.getId() != null){
-            cbTemplate.getItems().remove(selectedTemplate);
-            templateRepository.deleteTemplate(selectedTemplate);
+            //Confirmation if the Template should really be deleted.
+            ButtonType yes = new ButtonType("Ja", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("Nein", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.WARNING,
+                    "Sind Sie sicher das Sie der/die Benutzer " + selectedTemplate.getTemplateName() +
+                            "löschen willen?",
+                    yes,
+                    no);
+            alert.setTitle("Template löschen");
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if(result.isPresent() && result.get().getButtonData().isDefaultButton()){
+                cbTemplate.getItems().remove(selectedTemplate);
+                templateRepository.deleteTemplate(selectedTemplate);
+            }
         }
     }
 
@@ -129,8 +140,8 @@ public class TemplatesViewModel implements Initializable {
         Template selectedTemplate = cbTemplate.getSelectionModel().getSelectedItem();
         Alert.AlertType alertType = Alert.AlertType.INFORMATION;
         String msgTitle = "Success",
-               msgHeader = "",
-               msgText = "";
+               msgHeader,
+               msgText;
 
         if(selectedTemplate.getId() == null){
             if(!txtTempName.getText().equals("")){
@@ -204,5 +215,6 @@ public class TemplatesViewModel implements Initializable {
     public void closeWindow(){
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
+        //todo on refocuss on main window template dropdown needs to be refreshed
     }
 }

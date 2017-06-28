@@ -33,7 +33,7 @@ public class UserViewModel implements Initializable {
     private TableColumn colName, colFirstName, colRights;
 
     @FXML
-    private Button btnNew, btnDelete, btnChange, btnBack;
+    private Button btnBack;
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
     private IUserRepository userRepository;
@@ -75,7 +75,7 @@ public class UserViewModel implements Initializable {
                 alert.setTitle("Benutzer löschen");
                 Optional<ButtonType> result = alert.showAndWait();
 
-                if(result.get().getButtonData().isDefaultButton()){
+                if(result.isPresent() && result.get().getButtonData().isDefaultButton()){
                     userRepository.deleteUser(selectedUser);
                     userList.remove(selectedUser);
                     tblUsers.getItems().remove(tblUsers.getSelectionModel().getSelectedItem());
@@ -95,7 +95,7 @@ public class UserViewModel implements Initializable {
      *   Beschreibung : Den ausgewählten Benutzer laden, wenn keiner ausgewählt wurde,
      *                  eine Fehlermeldung ausgeben
      */
-    public User getSelectedUser(){
+    private User getSelectedUser(){
         User selectedUser = (User) tblUsers.getSelectionModel().getSelectedItem();
 
         if(selectedUser != null){
