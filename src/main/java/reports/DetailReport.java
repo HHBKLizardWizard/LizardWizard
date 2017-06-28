@@ -20,13 +20,8 @@ public class DetailReport {
             .setFontSize(8);
 
     private final Style boldStyle = new Style()
-            .setFontSize(8);
-
-    final String listItemTag = "<li>";
-    final String listItemClosingTag = "</li>";
-    final String listTag = "<ul>";
-    final String closingListTag = "</ul>";
-
+            .setFontSize(8)
+            .setBold();
 
     public DetailReport(Table table, LearningSituation learningSituation, Template template) {
         this.table = table;
@@ -36,39 +31,39 @@ public class DetailReport {
 
     public void createDetailReportBody() {
         if (template.isScenario()) {
-            this.createTemplateCell(this.learningSituation.getScenario());
+            this.createTemplateCell("Einstiegsszenario:", this.learningSituation.getScenario());
         }
 
         if (template.isResults()) {
-            this.createTemplateCell(this.learningSituation.getLearningResult());
+            this.createTemplateCell("Handlungsprodukt/Lernergebnis:", this.learningSituation.getLearningResult());
         }
 
         if (template.isCompetences()) {
-            this.createTemplateCell(this.learningSituation.getEssentialSkills());
+            this.createTemplateCell("Wesentliche Kompetenzen:", this.learningSituation.getEssentialSkills());
         }
 
         if (template.isContents()) {
-            this.createTemplateCell(this.learningSituation.getContents());
+            this.createTemplateCell("Inhalte:", this.learningSituation.getContents());
         }
 
         if (template.isMaterials()) {
-            this.createTemplateCell(this.learningSituation.getClassMaterial());
+            this.createTemplateCell("Unterrichtsmaterialien:", this.learningSituation.getClassMaterial());
         }
 
         if (template.isNotes()) {
-            this.createTemplateCell(this.learningSituation.getOrganisationalDetails());
+            this.createTemplateCell("Inhalte:", this.learningSituation.getOrganisationalDetails());
         }
 
         if (template.isTechnics()) {
-            this.createTemplateCell(this.learningSituation.getStudyTechniques());
+            this.createTemplateCell("Lern- und Arbeitstechniken:", this.learningSituation.getStudyTechniques());
         }
 
         if (template.isAchievements()) {
-            this.createTemplateCell(this.learningSituation.getCertificateOfPerformance());
+            this.createTemplateCell("Leistungsnachweis:", this.learningSituation.getCertificateOfPerformance());
         }
     }
 
-    private void createTemplateCell(String text) {
+    private void createTemplateCell(String sectionName, String text) {
         Cell cell = new Cell(1, 10);
         Div div = new Div();
 
@@ -77,7 +72,8 @@ public class DetailReport {
             String preparedString = this.removeAllHtmlTags(text);
             preparedString = this.removeEscapedCharacters(preparedString);
 
-            this.parseStringToPdf(div, preparedString);
+            div.add(new Paragraph(sectionName).addStyle(boldStyle));
+            div.add(new Paragraph(preparedString.trim()).addStyle(style));
 
             cell.add(div);
             this.table.addCell(cell);
@@ -88,7 +84,7 @@ public class DetailReport {
         Paragraph subject = new Paragraph("Fach: " + this.learningSituation.getSubject())
                 .addStyle(boldStyle);
 
-        Paragraph fieldOfLearning = new Paragraph("Lernfeld: " + this.learningSituation.getFieldOfLearning())
+        Paragraph fieldOfLearning = new Paragraph("Lernfeld: " + this.learningSituation.getFieldOfLearning().getName())
                 .addStyle(boldStyle);
 
         Paragraph requiredSituation = new Paragraph("Anforderungssituation: " +
@@ -128,35 +124,6 @@ public class DetailReport {
 
     private String removeAllHtmlTags(String string) {
         return string.replaceAll("<[^>]*>", "");
-    }
-
-    public void parseStringToPdf(Div div, String text) {
-        String tmp;
-        String workString = text;
-
-        while (workString.contains(listTag)) {
-            tmp = workString.substring(0, workString.indexOf(listTag));
-            div.add(new Paragraph(tmp).addStyle(style));
-
-            tmp = workString.substring(workString.indexOf(listTag) + listTag.length(), workString.indexOf(closingListTag));
-            this.parseListToPdf(div, tmp);
-            workString = workString.substring(workString.indexOf(closingListTag) + closingListTag.length(), workString.length());
-        }
-        div.add(new Paragraph(workString).addStyle(style));
-    }
-
-    private void parseListToPdf(Div div, String text) {
-        String tmp;
-        String workString = text;
-
-        com.itextpdf.layout.element.List pdfList = new com.itextpdf.layout.element.List();
-        pdfList.addStyle(this.style);
-        while (!workString.trim().isEmpty()) {
-            tmp = workString.substring(workString.indexOf(listItemTag) + listItemTag.length(), workString.indexOf(listItemClosingTag));
-            workString = workString.substring(workString.indexOf(listItemClosingTag) + listItemClosingTag.length(), workString.length());
-            pdfList.add(tmp);
-        }
-        div.add(pdfList);
     }
 
     private String removeEscapedCharacters(String string) {
