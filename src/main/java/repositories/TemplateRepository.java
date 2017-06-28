@@ -17,11 +17,10 @@ import java.sql.SQLException;
  */
 public class TemplateRepository implements ITemplateRepository
 {
-    Connection con = null;
+    private Connection con = null;
 
     /**
-     * Class: TemplateRepository
-     * Beschreibung: Baut eine Verbindung zur Datenbank auf
+     * Baut eine Verbindung zur Datenbank auf
      * @param dataSource
      */
     public TemplateRepository(DataSource dataSource) {
@@ -33,9 +32,8 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     * Class: getTemplatesByUser
-     * Beschreibung: Holt sich die Templates des angegebenen Users aus der Datenbank und speichert diese
-     *               in eine ObservableList
+     * Holt sich die Templates des angegebenen Users aus der Datenbank und speichert diese
+     * in eine ObservableList
      * @param user
      * @return
      */
@@ -84,8 +82,7 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     * Class: deleteTemplate
-     * Beschreibung: Löscht ein Template komplett aus der Datenbank
+     * Löscht ein Template komplett aus der Datenbank
      * @param template
      */
     public void deleteTemplate(Template template) {
@@ -103,9 +100,8 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     * Class: createTemplate
-     * Beschreibung: Erstellt ein Template und schreibt diese in die Datenbank. Diese wird dem User
-     *               zugeordnet, der gerade eingeloggt ist und diese erstellt hat
+     * Erstellt ein Template und schreibt diese in die Datenbank. Diese wird dem User
+     * zugeordnet, der gerade eingeloggt ist und diese erstellt hat
      * @param template
      * @param user
      * @return
@@ -150,8 +146,7 @@ public class TemplateRepository implements ITemplateRepository
     }
 
     /**
-     * Class: updateTemplate
-     * Beschreibung: Aktualisiert ein Template
+     * Aktualisiert ein Template
      * @param template
      * @return template
      */
@@ -182,7 +177,7 @@ public class TemplateRepository implements ITemplateRepository
             ps.executeUpdate();
 
         }catch (Exception e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 }
