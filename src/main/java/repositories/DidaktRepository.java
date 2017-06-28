@@ -112,6 +112,7 @@ public class DidaktRepository implements IDidaktRepository {
                 FieldOfLearning fieldOfLearning = new FieldOfLearning(rs.getInt("LFDauer"),
                                                           rs.getString("Bezeichnung"),
                                                           rs.getInt("LFNR"));
+                fieldOfLearning.setSubject(subject);
                 fieldOfLearning.setLearningSituationList(getLearningSituationList(fieldOfLearning));
                 fieldOfLearningList.add(fieldOfLearning);
             }
