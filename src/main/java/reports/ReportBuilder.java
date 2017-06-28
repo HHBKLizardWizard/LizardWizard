@@ -112,7 +112,7 @@ public class ReportBuilder {
 
 
             this.createAnnualReport();
-            //this.createDetailReports();
+            this.createDetailReports();
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -147,7 +147,6 @@ public class ReportBuilder {
         for (LearningSituationTableElement learningSituation : this.learningSituationList) {
            if (learningSituation instanceof LearningSituation) {
                this.createDetailReport((LearningSituation) learningSituation);
-               break; //entfernen
            }
        }
     }

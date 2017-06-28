@@ -159,8 +159,6 @@ public class AnnualReport {
             this.table.addCell(new Cell(1, 12)
                     .add(paragraph));
 
-            /*List<LearningSituation> sortedList = this.sortLearningSituationsByStartWeek(
-                    fieldOfLearning.getLearningSituationList());*/
             List<LearningSituation> sortedList = this.sortLearningSituationsByLsnr(fieldOfLearning.getLearningSituationList());
             List<LearningSituationTableElement> filledList = this.fillWithPlaceholders(sortedList);
             this.learningSituationList.addAll(filledList);
