@@ -15,15 +15,11 @@ import java.util.List;
 
 /**
  * Created by walde on 25.06.2017.
- */
-
-
-/**
- *
+ * Implementation of IDidaktrepository
  */
 public class DidaktRepository implements IDidaktRepository {
-    Connection con = null;
 
+    Connection con = null;
     /**
      *
      * @param con
@@ -105,8 +101,7 @@ public class DidaktRepository implements IDidaktRepository {
      * @param profession
      * @return
      */
-    @Override
-    public List<Subject> getSubjectList(Profession profession) {
+    private List<Subject> getSubjectList(Profession profession) {
         String sql = "SELECT * FROM tbl_fach\n" +
                      "INNER JOIN tbl_beruffach\n" +
                      "ON tbl_fach.FID = tbl_beruffach.ID_Fach\n" +
@@ -140,12 +135,13 @@ public class DidaktRepository implements IDidaktRepository {
      * @param subject
      * @return
      */
-    @Override
-    public List<FieldOfLearning> getFieldList(Subject subject) {
+    private List<FieldOfLearning> getFieldList(Subject subject) {
+        //Prepared SQL-Statement
         String sql = "SELECT * FROM tbl_lernfeld\n" +
                      "INNER JOIN tbl_beruffach\n" +
                      "ON tbl_lernfeld.ID_Beruffach = tbl_beruffach.BFID\n" +
                      "WHERE tbl_beruffach.ID_Fach = ?";
+        //Return Object
         List<FieldOfLearning> fieldOfLearningList = new ArrayList<>();
         try{
             PreparedStatement ps = con.prepareStatement(sql);
@@ -171,20 +167,24 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     *
-     * @param field
-     * @return
+     * @param field //A FieldOfLearning consist of multiple LearningSituations
+     * @return A List for all LearningSituations within @param field.
      */
-    @Override
-    public List<LearningSituation> getLearningSituationList(FieldOfLearning field) {
+    private List<LearningSituation> getLearningSituationList(FieldOfLearning field) {
+        //Prepared SQL-Statement
         String sql = "SELECT * FROM tbl_lernsituation WHERE LF_NR = ? AND " +
                 "ID_Lernfeld = ?";
+        //Return Object
         List<LearningSituation> learningSituationList = new ArrayList<>();
         try{
+
+            //Filling Variables into PreparedStatement
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1,field.getLfNr());
             ps.setInt(2,field.getId());
             ResultSet rs = ps.executeQuery();
+
+            //Processing ResultSet
             while(rs.next()){
                 LearningSituation learningSituation = new LearningSituation();
                 learningSituation.setId(rs.getInt("LSID"));
@@ -203,7 +203,9 @@ public class DidaktRepository implements IDidaktRepository {
                 learningSituation.setStartWeek(rs.getInt("Von"));
                 learningSituation.setEndWeek(rs.getInt("Bis"));
                 learningSituation.setExpertiseList(getLearningTechniqueList(learningSituation));
+                learningSituation.setStudyTechniques(learningSituation.getLearningTechniqueList().toString());
                 learningSituation.setPerformanceRecordList(getPerformanceRecordList(learningSituation));
+                learningSituation.setCertificateOfPerformance(learningSituation.getPerformanceRecordList().toString());
                 learningSituationList.add(learningSituation);
             }
 
@@ -216,26 +218,30 @@ public class DidaktRepository implements IDidaktRepository {
     /**
      *
      * @param learningSituation
-     * @return
+     * @return A List of PerformanceRecords.
      */
-    public List<PerformanceRecord> getPerformanceRecordList(LearningSituation learningSituation) {
+    private List<PerformanceRecord> getPerformanceRecordList(LearningSituation learningSituation) {
+        //Prepared SQL-Statement
         String sql = "SELECT LNID, Art from tbl_leistungsnachweis " +
                      "JOIN tbl_lernsituationleistungsnachweis " +
                      "ON LNID = ID_Leistungsnachweis " +
                      "WHERE ID_lernsituation = ?";
+        //ReturnObject
         List<PerformanceRecord> performanceRecordList = new ArrayList<>();
         try{
+            //Filling in Variables into SQL-Statement
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1,learningSituation.getId());
             ResultSet rs = ps.executeQuery();
 
+            //Processing ResultSet
             while(rs.next()){
                 PerformanceRecord performanceRecord = new PerformanceRecord(rs.getInt("LNID"), rs.getString("Art"));
                 performanceRecordList.add(performanceRecord);
             }
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
         return performanceRecordList;
     }
@@ -245,8 +251,7 @@ public class DidaktRepository implements IDidaktRepository {
      * @param situation
      * @return
      */
-    @Override
-    public List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
+    private List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
     {
         //Prepared SQL-Statement
         String sql = "SELECT * FROM tbl_lerntechnik " +
@@ -255,13 +260,17 @@ public class DidaktRepository implements IDidaktRepository {
                      "JOIN tbl_kompetenz " +
                      "ON ID_Kompetenz = KId " +
                      "WHERE ID_Lernsituation = ?";
-        //ReturnObject
+
+        //Return Object
         List<LearningTechnique> learningTechniques = new ArrayList<>();
         try
         {
+            ////Filling in Variables into SQL-Statement
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, situation.getId());
             ResultSet rs = ps.executeQuery();
+
+            //Processing Resultset
             while (rs.next()) {
                 LearningTechnique lt = new LearningTechnique(rs.getInt("LATID"),
                                                              rs.getString("Technik"),
@@ -319,11 +328,12 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     *
+     * Method to meassure the duration of a Apprenticechip using
+     * provided Subjects and the year they are thaught in.
      * @param profession
      * @return
      */
-    public ObservableList<Integer> getDuration(Profession profession)
+    private ObservableList<Integer> getDuration(Profession profession)
     {
         //Prepared SQL-Statement
         String sql = "SELECT DISTINCT Jahr FROM tbl_beruffach\n" +
