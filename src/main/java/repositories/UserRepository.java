@@ -4,8 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import models.User;
 import models.UserRights;
-import org.mindrot.jbcrypt.BCrypt;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +21,7 @@ public class UserRepository implements IUserRepository{
 
     /**
      * Get a connection to our database
-     * @param dataSource
+     * @param dataSource to get the connection
      */
     public UserRepository(DataSource dataSource) {
         try {

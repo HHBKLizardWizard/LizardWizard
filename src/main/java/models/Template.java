@@ -28,6 +28,7 @@ public class Template {
                     boolean results, boolean contents, boolean notes, boolean achievements, User user) {
 
         this(scenario, competences, materials, technics, results, contents, notes, achievements, user);
+        this.templateName = templateName;
         this.id = id;
     }
 

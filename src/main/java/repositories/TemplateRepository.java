@@ -21,7 +21,7 @@ public class TemplateRepository implements ITemplateRepository
 
     /**
      * Get a connection to our database
-     * @param dataSource
+     * @param dataSource to get the connection
      */
     public TemplateRepository(DataSource dataSource) {
         try {
@@ -33,7 +33,6 @@ public class TemplateRepository implements ITemplateRepository
 
     /**
      * Get all templates from the given user and save these in an ObservableList
-     *
      * @param user for whom we get all the templates out of the database
      * @return templateList with all of the users templates
      */
