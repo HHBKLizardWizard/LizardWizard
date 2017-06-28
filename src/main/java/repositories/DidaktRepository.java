@@ -20,8 +20,9 @@ import java.util.List;
 public class DidaktRepository implements IDidaktRepository {
 
     Connection con = null;
+
     /**
-     *
+     * CTOR
      * @param con
      */
     public DidaktRepository(Connection con)
@@ -31,7 +32,7 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     *
+     * Establisches Connection with Didakt.db
      * @param dataSource
      */
     public DidaktRepository(DataSource dataSource) {
@@ -43,21 +44,28 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     *
-     * @return
+     * Interface Method Provides a List of Professions including Duration,
+     * in order to by used by the UserInterface
+     * @return A List of all Professions in Didakt.db
      */
     @Override
     public ObservableList<Profession> getProfessionList() {
+        //Prepared SQL-Statement
         String sql = "SELECT * FROM tbl_beruf " +
                      "INNER JOIN tbl_abteilung " +
                      "ON tbl_beruf.ID_abteilung = tbl_abteilung.AId " +
                      "INNER JOIN tbl_lehrer " +
                      "ON tbl_abteilung.ID_Leiter = tbl_lehrer.LId ";
+        //Return Object
         ObservableList<Profession> professionList = FXCollections.observableArrayList();
         try{
+            //Querying Data from DB
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
+
+            //Processing Resultset
             while (rs.next()){
+                //Constructing necessary Objects
                 Teacher teach = new Teacher(rs.getInt("LId"),
                                             rs.getString("Lehrername"),
                                             rs.getString("Geschlecht"));
@@ -78,16 +86,25 @@ public class DidaktRepository implements IDidaktRepository {
         return professionList;
     }
 
+    /**
+     * Get all data necessary for the String from Didakt.db
+     * @param profession
+     * @return A String containing the Form of teaching for provided Profession
+     */
     private String getFormOfTeaching(Profession profession){
+        //Prepared SQL-Statement
         String sql = "select distinct Uformname from tbl_uform\n"+
                      "INNER JOIN tbl_uformberuf\n"+
                      "ON UID = ID_UForm\n"+
                      "WHERE ID_Beruf = ?\n";
+        //Return Object
         String wayOfTeaching = null;
         try{
+            //Filling PreparedStatement with Variables
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, profession.getId());
             ResultSet rs = ps.executeQuery();
+            //Processing ResultSet
             rs.next();
             wayOfTeaching = rs.getString("UFormname");
         }
@@ -97,23 +114,27 @@ public class DidaktRepository implements IDidaktRepository {
         return wayOfTeaching;
     }
     /**
-     *
+     * Get all data necessary for the List from Didakt.db
      * @param profession
-     * @return
+     * @return A List of all Subjects for the provided Profession
      */
     private List<Subject> getSubjectList(Profession profession) {
+        //Prepared SQL-Statement
         String sql = "SELECT * FROM tbl_fach\n" +
                      "INNER JOIN tbl_beruffach\n" +
                      "ON tbl_fach.FID = tbl_beruffach.ID_Fach\n" +
                      "INNER JOIN tbl_uformberuf\n" +
                      "ON tbl_beruffach.ID_UFormBeruf = tbl_uformberuf.UBID\n" +
                      "WHERE tbl_uformberuf.ID_Beruf = ?";
+        //Return Object
         List<Subject> subjects = new ArrayList<>();
         try{
+            //Filling PreparedStatement with Variables
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, profession.getId());
             ResultSet rs = ps.executeQuery();
 
+            //Processing ResultSet
             while (rs.next()){
                 Subject subject = new Subject(rs.getInt("FID"),
                                           rs.getInt("Jahr"),
@@ -131,9 +152,9 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     *
+     * Get all data necessary for the List from Didakt.db
      * @param subject
-     * @return
+     * @return A List of FieldOfLearning for provided Subject
      */
     private List<FieldOfLearning> getFieldList(Subject subject) {
         //Prepared SQL-Statement
@@ -167,6 +188,7 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
+     * Get all data necessary for the List from Didakt.db
      * @param field //A FieldOfLearning consist of multiple LearningSituations
      * @return A List for all LearningSituations within @param field.
      */
@@ -216,9 +238,9 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     *
+     * Get all data necessary for the List from Didakt.db
      * @param learningSituation
-     * @return A List of PerformanceRecords.
+     * @return A List of PerformanceRecords for provided LearningSituation.
      */
     private List<PerformanceRecord> getPerformanceRecordList(LearningSituation learningSituation) {
         //Prepared SQL-Statement
@@ -247,9 +269,9 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     *
+     * Get all data necessary for the List from Didakt.db
      * @param situation
-     * @return
+     * @return A List of all Learning Techniques used within provided LearningSituation
      */
     private List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
     {
@@ -286,10 +308,10 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     *
+     * Main Interface Method to get All the data necessary for the Report
      * @param profession
      * @param year
-     * @return
+     * @return ReportData Object holding all necessary data for the Report
      */
     @Override
     public ReportData getReportData(Profession profession, Integer year){
