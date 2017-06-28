@@ -3,6 +3,7 @@ package models;
 /**
  * Created by iho on 22.06.2017.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class Template {
     private Integer id;
     private String templateName;

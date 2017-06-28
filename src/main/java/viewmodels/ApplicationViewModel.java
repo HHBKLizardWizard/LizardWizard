@@ -3,6 +3,8 @@ package viewmodels;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import models.*;
 import reports.ReportBuilder;
@@ -181,6 +184,8 @@ public class ApplicationViewModel implements Initializable {
                 stageTitle = "Templates";
                 TemplatesViewModel templatesViewModel = loader.getController();
                 templatesViewModel.setUser(loggedUser);
+                stage.setOnCloseRequest(event1 -> updateTemplateList());
+
             } else if (Objects.equals(menuItemClickedId, menuUser.getId())) {
                 root2 = FXMLLoader.load(getClass().getClassLoader().getResource("users.fxml"));
                 stage.setScene(new Scene(root2, 600, 400));
@@ -264,7 +269,9 @@ public class ApplicationViewModel implements Initializable {
         }
     }
 
-    public void updateTemplateList(ObservableList<Template> templatesByUser) {
-        this.userTemplateList = templatesByUser;
+    private void updateTemplateList() {
+        this.userTemplateList = templateRepository.getTemplatesByUser(loggedUser,false);
+        cbTemplate.getItems().setAll(userTemplateList);
     }
+
 }

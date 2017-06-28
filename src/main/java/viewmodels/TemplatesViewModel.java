@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import models.Template;
 import models.User;
@@ -12,6 +13,7 @@ import repositories.ITemplateRepository;
 import repositories.TemplateRepository;
 import util.DatabaseConnector;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -220,8 +222,14 @@ public class TemplatesViewModel implements Initializable {
     /**
      * Closes the Template view stage
      */
-    public void closeWindow(){
+    public void closeWindow() {
         Stage stage = (Stage) btnBack.getScene().getWindow();
-        stage.close();
+
+        stage.fireEvent(
+                new WindowEvent(
+                        stage,
+                        WindowEvent.WINDOW_CLOSE_REQUEST
+                )
+        );
     }
 }
