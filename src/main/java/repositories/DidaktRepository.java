@@ -248,12 +248,14 @@ public class DidaktRepository implements IDidaktRepository {
     @Override
     public List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
     {
+        //Prepared SQL-Statement
         String sql = "SELECT * FROM tbl_lerntechnik " +
                      "JOIN tbl_lernsituationlerntechnik " +
                      "ON LATID = ID_lerntechnik " +
                      "JOIN tbl_kompetenz " +
                      "ON ID_Kompetenz = KId " +
                      "WHERE ID_Lernsituation = ?";
+        //ReturnObject
         List<LearningTechnique> learningTechniques = new ArrayList<>();
         try
         {
@@ -282,17 +284,20 @@ public class DidaktRepository implements IDidaktRepository {
      */
     @Override
     public ReportData getReportData(Profession profession, Integer year){
+        //Return Object
         ReportData reportData = new ReportData(profession);
         try{
+            //Constructing necessary Objects
             String supervisor = profession.getDepartment().getTeacher().getSex() + " " +
                     profession.getDepartment().getTeacher().getName();
-
             reportData.setReportHeader(new ReportHeader(profession.getDepartment().getName(),
                                                      profession.getName(),
                                                      year,
                                                      profession.getFormOfTeaching(),
                                                      supervisor));
             reportData.getProfession().setSubjects(getSubjectList(reportData.getProfession()));
+
+            //Combining all LearningSituations into 1 List<>
             for (Subject subject : reportData.getProfession().getSubjects()) {
                 if(subject.getYear() == year){
                     for (FieldOfLearning field : subject.getFieldOfLearningList())
@@ -305,6 +310,7 @@ public class DidaktRepository implements IDidaktRepository {
                 }
             }
         }
+
         catch(Exception e){
             e.printStackTrace();
         }
@@ -319,90 +325,29 @@ public class DidaktRepository implements IDidaktRepository {
      */
     public ObservableList<Integer> getDuration(Profession profession)
     {
+        //Prepared SQL-Statement
         String sql = "SELECT DISTINCT Jahr FROM tbl_beruffach\n" +
                      "LEFT JOIN tbl_uformberuf\n" +
                      "ON tbl_beruffach.ID_UFormBeruf = tbl_uFormBeruf.UBID\n" +
                      "WHERE tbl_UFormBeruf.ID_Beruf = ?";
-
+        //Return Object
         ObservableList<Integer> duration = FXCollections.observableArrayList();
         try {
+
+            //Filling in Variables into SQL-Statement
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, profession.getId());
             ResultSet rs = ps.executeQuery();
+
+            //Processsing ResultSet
             while (rs.next()){
                 duration.add(rs.getInt("Jahr"));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return duration;
     }
-
-
-   /* private Subject getSubject(ResultSet rs, AreaOfEducation area){
-        Subject foo = null;
-        try {
-            foo = new Subject(rs.getInt("FId"),
-                                      rs.getString("Bezeichnung"),
-                                      area,
-                                      getFieldOfLearning(rs));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return foo;
-    }
-
-    private List<FieldOfLearning> getFieldOfLearning(){
-        return null;
-    }
-ää
-
-   /* public Department getDepartment(Integer bid)
-    {
-        String sql = "SELECT * FROM tbl_abteilung WHERE Aid = ?";
-        Department dep;
-        try{
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, bid.toString());
-
-            ResultSet rs = ps.executeQuery();
-            dep = new Department(rs.getInt("AId"),
-                             rs.getString("Abteilungsname"),
-                             rs.getString("Abteilungskuerzel"),
-                             rs.getString("Abteilungserlaeuterung"),
-                             getTeacher(rs.getInt("ID_Leiter")),
-                             getTeacher(rs.getInt("ID_Vertreiter")));
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
-        return null;
-    }
-
-    public Teacher getTeacher(Integer id){
-        String sql = "SELECT * FROM tbl_lehrer WHERE LId = ?";
-        Teacher teacher = null;
-        try{
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, id.toString());
-
-            ResultSet rs = ps.executeQuery();
-            teacher = new Teacher(rs.getInt("LId"),
-                                  rs.getString("Lehrername"),
-                                  rs.getString("Geschlecht"));
-        }
-        catch (Exception e){
-            System.out.println();
-        }
-        return teacher;
-    }
-
-    public WayOfTeachingProfession getWayOfTeachingProfession(Integer id){
-        String sql = "SELECT";
-
-        return null;
-    }
-
-    */
 }
