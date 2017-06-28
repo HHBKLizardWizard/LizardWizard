@@ -80,13 +80,13 @@ public class AnnualReport {
      */
     private List<List<Subject>> getSubjectsOrderedByAreaOfEducation(ReportData reportData) {
         List<List<Subject>> subjectListList = new ArrayList<>();
-
         List<Subject> subjectList = new ArrayList<>();
-        for (Subject subject : reportData.getProfession().getSubjects())
-        {
+
+        for (Subject subject : reportData.getProfession().getSubjects()) {
             if(subject.getYear() == reportData.getReportHeader().getYearOfTraining())
             subjectList.add(subject);
         }
+
         List<Subject> subjectListBerufsbezogen = subjectList.stream().filter((subject) ->
                 subject.getAreaOfEducation().equals(AreaOfEducation.BERUFSBEZOGEN)).collect(Collectors.toList());
 
@@ -107,7 +107,7 @@ public class AnnualReport {
      * @param reportData
      */
     private void createSections(ReportData reportData) {
-        String areaOfEducationText[] = {"Berufsbezogener Lernbereich," +
+        String areaOfEducationText[] = {"Berufsbezogener Lernbereich",
                 "Berufsübergreifender Lernbereich",
                 "Differenzierungsbereich"};
         Style paragraphStyle = new Style()
@@ -116,13 +116,12 @@ public class AnnualReport {
                 .setBold();
 
         List<List<Subject>> areaOfEducationList = this.getSubjectsOrderedByAreaOfEducation(reportData);
-
+        int i = 0;
         for (List<Subject> subjectList : areaOfEducationList) {
-            if (!subjectList.isEmpty()) {
-                Paragraph aoeParagraph = new Paragraph(subjectList.get(0).getAreaOfEducation().getValue())
+                Paragraph aoeParagraph = new Paragraph(areaOfEducationText[i])
                         .addStyle(paragraphStyle);
 
-                this.table.addHeaderCell(new Cell(1, 12)
+                this.table.addCell(new Cell(1, 12)
                         .add(aoeParagraph)
                         .setBackgroundColor(new DeviceRgb(100, 149, 237)));
 
@@ -132,14 +131,15 @@ public class AnnualReport {
                                 .addStyle(paragraphStyle)
                                 .setFontColor(Color.WHITE);
 
-                        this.table.addHeaderCell(new Cell(1, 12)
+                        //HeaderCell ?
+                        this.table.addCell(new Cell(1, 12)
                                 .add(subjectParagraph)
                                 .setBackgroundColor(new DeviceRgb(169, 169, 169)));
 
                         this.insertSubjectData(subject);
                     }
                 }
-            }
+                i++;
         }
     }
 

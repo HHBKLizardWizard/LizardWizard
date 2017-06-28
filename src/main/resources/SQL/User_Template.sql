@@ -52,4 +52,4 @@ CREATE TABLE user_templates
 
 INSERT INTO users (username, firstname, lastname, password, rights) VALUES ("root", "root", "root", "$2a$10$hpCiGuXnxnjdtx.W9UjPJ.rQCMxtmtiTyywNcfu33AWUBO8JOQ0tm", "admin");
 INSERT INTO templates (pk_id, achievements, competences, contents, materials, notes, results, scenario, technics) VALUES (1, 1, 1, 1, 1, 1, 1, 1, 1);
-INSERT INTO user_templates (fk_templateid, fk_userid, templatename) VALUES (1, 1, "Standard");
+INSERT INTO user_templates (fk_templateid, fk_userid, templatename) VALUES (1, 1, "Admin");
