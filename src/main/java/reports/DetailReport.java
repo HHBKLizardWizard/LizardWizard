@@ -22,6 +22,11 @@ public class DetailReport {
     private final Style boldStyle = new Style()
             .setFontSize(8);
 
+    final String listItemTag = "<li>";
+    final String listItemClosingTag = "</li>";
+    final String listTag = "<ul>";
+    final String closingListTag = "</ul>";
+
 
     public DetailReport(Table table, LearningSituation learningSituation, Template template) {
         this.table = table;
@@ -67,30 +72,36 @@ public class DetailReport {
         Cell cell = new Cell(1, 10);
         Div div = new Div();
 
-        String preparedString = this.removeUnsupportedHtmlTags(text);
-        this.parseStringToPdf(div, preparedString);
+        if (text != null && !text.isEmpty()) {
 
-        cell.add(div);
-        this.table.addCell(cell);
+            String preparedString = this.removeAllHtmlTags(text);
+            preparedString = this.removeEscapedCharacters(preparedString);
+
+            this.parseStringToPdf(div, preparedString);
+
+            cell.add(div);
+            this.table.addCell(cell);
+        }
     }
 
     public void createDetailReportHeader() {
         Paragraph subject = new Paragraph("Fach: " + this.learningSituation.getSubject())
                 .addStyle(boldStyle);
 
-        Paragraph fieldOfLearning = new Paragraph("Lernfeld: ")
+        Paragraph fieldOfLearning = new Paragraph("Lernfeld: " + this.learningSituation.getFieldOfLearning())
                 .addStyle(boldStyle);
 
-        Paragraph requiredSituation = new Paragraph("Anforderungssituation: ")
+        Paragraph requiredSituation = new Paragraph("Anforderungssituation: " +
+                this.learningSituation.getRequiredSituation())
                 .addStyle(boldStyle);
 
-        Paragraph learningSituation = new Paragraph("Lernsituation X: ")
+        Paragraph learningSituation = new Paragraph("Lernsituation: " + this.learningSituation.getName())
                 .addStyle(boldStyle);
 
-        Paragraph duration = new Paragraph("Dauer: " + "" + "UStd")
+        Paragraph duration = new Paragraph("Dauer: " + this.learningSituation.getLessonHours() + "UStd")
                 .addStyle(boldStyle);
 
-        Paragraph id = new Paragraph("ID: ")
+        Paragraph id = new Paragraph("ID: " + this.learningSituation.getId())
                 .addStyle(boldStyle);
 
         this.table.addCell(new Cell(1, 10)
@@ -122,8 +133,6 @@ public class DetailReport {
     public void parseStringToPdf(Div div, String text) {
         String tmp;
         String workString = text;
-        final String listTag = "<ul>";
-        final String closingListTag = "</ul>";
 
         while (workString.contains(listTag)) {
             tmp = workString.substring(0, workString.indexOf(listTag));
@@ -139,11 +148,10 @@ public class DetailReport {
     private void parseListToPdf(Div div, String text) {
         String tmp;
         String workString = text;
-        final String listItemTag = "<li>";
-        final String listItemClosingTag = "</li>";
 
         com.itextpdf.layout.element.List pdfList = new com.itextpdf.layout.element.List();
-        while (!workString.isEmpty()) {
+        pdfList.addStyle(this.style);
+        while (!workString.trim().isEmpty()) {
             tmp = workString.substring(workString.indexOf(listItemTag) + listItemTag.length(), workString.indexOf(listItemClosingTag));
             workString = workString.substring(workString.indexOf(listItemClosingTag) + listItemClosingTag.length(), workString.length());
             pdfList.add(tmp);
@@ -151,13 +159,9 @@ public class DetailReport {
         div.add(pdfList);
     }
 
-    private String removeUnsupportedHtmlTags(String string) {
+    private String removeEscapedCharacters(String string) {
         String cleanString;
-        cleanString = string.replaceAll("</?p[^>]*>", "");
-        cleanString = cleanString.replaceAll("</?span[^>]*>", "");
-        cleanString = cleanString.replaceAll("</?strong[^>]*>", "");
-        cleanString = cleanString.replaceAll("</?br[^>]*>", "\n");
-
+        cleanString = string.replaceAll("(\\\\[A-Za-z])", "");
         return cleanString;
     }
 

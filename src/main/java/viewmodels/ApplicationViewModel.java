@@ -128,8 +128,8 @@ public class ApplicationViewModel implements Initializable {
         // get year from comboBox selection
         int year = cbYear.getSelectionModel().getSelectedItem();
 
-        // get data from database and build report
 
+        // get connection to database and fetch data
         didaktRepository = new DidaktRepository(new DatabaseConnector().getDidaktDataSource());
         ReportData reportData = didaktRepository.getReportData(profession, year);
 
