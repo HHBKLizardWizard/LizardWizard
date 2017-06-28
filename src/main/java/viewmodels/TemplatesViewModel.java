@@ -43,17 +43,31 @@ public class TemplatesViewModel implements Initializable {
     private Button btnBack;
 
     private User loggedUser;
-
+    private Integer maxTxtLength = 60;
     private ITemplateRepository templateRepository;
 
     /**
-     * created conection with DB to get Template data
+     * created conection with DB to get Template data and adds max length listener to template name
      * @param location used to resolve relative paths for the root object (null if the location is not known).
      * @param resources used to localize the root object (null if the root object was not localized).
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         templateRepository = new TemplateRepository(new DatabaseConnector().getUserDataSource());
+        addListener(txtTempName);
+    }
+
+    /**
+     * Listener to detect that the User does not fill in more then is necessary.
+     * @param txtField where the user is currently writing.
+     */
+    private void addListener(TextField txtField){
+        txtField.textProperty().addListener((ov, oldValue, newValue) -> {
+            if (txtField.getText().length() > maxTxtLength) {
+                String s = txtField.getText().substring(0, maxTxtLength);
+                txtField.setText(s);
+            }
+        });
     }
 
     /**
