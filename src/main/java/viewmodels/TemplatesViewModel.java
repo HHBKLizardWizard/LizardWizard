@@ -16,8 +16,14 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * Created by svv on 22.06.2017.
+ * Created by : Sil van Vliet
+ * Date       : 22.06.2017
+ *
+ * Model where all the functions are for the template view.
+ * Here the user ( when he has the rights to add / edit templates)
+ * can add, update or delete templates
  */
+
 public class TemplatesViewModel implements Initializable {
 
     @FXML
@@ -37,10 +43,10 @@ public class TemplatesViewModel implements Initializable {
 
     private ITemplateRepository templateRepository;
 
-
     /**
-     *   Class        :
-     *   Beschreibung :
+     * created conection with DB to get Template data
+     * @param location used to resolve relative paths for the root object (null if the location is not known).
+     * @param resources used to localize the root object (null if the root object was not localized).
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -48,8 +54,9 @@ public class TemplatesViewModel implements Initializable {
     }
 
     /**
-     *   Class        : handleProfessionComboBoxAction
-     *   Beschreibung : hollt sich die Jahre vom ausgewählte Profession Objekt
+     * Fills the template info in editable area. Filling the template name text field and
+     * putting all checkboxes on true that the user has previously saved. In case selected
+     * template ID is null then clears all fields.
      */
     @FXML
     public void handleTemplateComboBoxAction() {
@@ -71,8 +78,9 @@ public class TemplatesViewModel implements Initializable {
     }
 
     /**
-     *   Class        : setUserId
-     *   Beschreibung : Setzt UserId so, dass die richtige Templates aus dem Datenbank gehölt werden kann
+     * Called from different vew model, puts logged User in this view and fills the template drop down
+     * with all the created templates by this user.
+     * @param user that has logged in.
      */
     public void setUser(User user) {
         loggedUser = user;
@@ -81,8 +89,7 @@ public class TemplatesViewModel implements Initializable {
     }
 
     /**
-     *   Class        : setTemplatesForUser
-     *   Beschreibung : hölt templates für benutzer
+     * Retrieves all the Templates for the logged user.
      */
     private void getTemplatesForUser() {
         cbTemplate.setItems(templateRepository.getTemplatesByUser(loggedUser, true));
@@ -105,9 +112,9 @@ public class TemplatesViewModel implements Initializable {
     }
 
     /**
-     *   Class        : removeTemplate
-     *   Beschreibung : löscht des selektierte Template aus die dropDown und aud dem DatenBank.
-     *                  Nur nicht wenn das ID null ist weil das ist für neu anlegen von Tabelle.
+     * Removes the selected template from the dropdown and out of the database.
+     * Does first check if the selected template Id is null or not since this
+     * is being used to create new templates.
      */
     public void removeTemplate(){
         Template selectedTemplate = cbTemplate.getSelectionModel().getSelectedItem();
@@ -131,10 +138,8 @@ public class TemplatesViewModel implements Initializable {
     }
 
     /**
-     *   Class        : saveTemplate
-     *   Beschreibung : Speichert oder aktualiesiert das ausgewählte Template.
-     *   Extra Info   : Wenn das ausgewählte Template id null ist erstellt es ein
-     *                  neue Template.
+     * Saves a new or updates the selected Template. This is being controlled by if the
+     * selected template ID is null or not. When yes, new template will be created.
      */
     public void saveTemplate(){
         Template selectedTemplate = cbTemplate.getSelectionModel().getSelectedItem();
@@ -197,8 +202,7 @@ public class TemplatesViewModel implements Initializable {
     }
 
     /**
-     *   Class        : clearFields
-     *   Beschreibung : Leert template name text feld und setzt alle checkboxen auf false.
+     * Empties the Template name text field and puts all the checkboxes False.
      */
     private void clearFields() {
         txtTempName.setText("");
@@ -212,6 +216,9 @@ public class TemplatesViewModel implements Initializable {
         chk_leistung.setSelected(false);
     }
 
+    /**
+     * Closes the Template view stage
+     */
     public void closeWindow(){
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
