@@ -1,6 +1,7 @@
 package viewmodels;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -222,6 +223,5 @@ public class TemplatesViewModel implements Initializable {
     public void closeWindow(){
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();
-        //todo on refocuss on main window template dropdown needs to be refreshed
     }
 }

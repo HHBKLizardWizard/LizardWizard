@@ -56,6 +56,7 @@ public class ApplicationViewModel implements Initializable {
     private User loggedUser;
     private Template selectedTemplate;
     private Profession selectedProfession;
+    private ObservableList<Template> userTemplateList;
 
     /**
      * Gets the List of all the Professions and Years from within the Professions object and
@@ -217,11 +218,11 @@ public class ApplicationViewModel implements Initializable {
         loggedUser = user;
 
         //templates müssen vor Initialize gefüllt werden weil variable loggedUser im Initialize noch null ist.
-        ObservableList<Template> templateList = templateRepository.getTemplatesByUser(loggedUser, false);
+        userTemplateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
-        cbTemplate.setItems(templateList);
+        cbTemplate.setItems(userTemplateList);
         try{
-            selectedTemplate = templateList.get(0);
+            selectedTemplate = userTemplateList.get(0);
         }catch (Exception e){
             selectedTemplate = null;
         }
@@ -261,5 +262,9 @@ public class ApplicationViewModel implements Initializable {
         }else if(loggedUserRights.equals(UserRights.LEHRER)){
             menuUser.setVisible(false);
         }
+    }
+
+    public void updateTemplateList(ObservableList<Template> templatesByUser) {
+        this.userTemplateList = templatesByUser;
     }
 }

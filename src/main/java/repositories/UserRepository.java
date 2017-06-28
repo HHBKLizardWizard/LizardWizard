@@ -18,12 +18,11 @@ import java.sql.SQLException;
 
 public class UserRepository implements IUserRepository{
 
-    Connection con = null;
-    public ObservableList<User> userList = FXCollections.observableArrayList();
+    private Connection con = null;
+    private ObservableList<User> userList = FXCollections.observableArrayList();
 
     /**
-     * Class: UserRepository
-     * Beschreibung: Baut eine Verbindung zur Datenbank auf
+     * Baut eine Verbindung zur Datenbank auf
      * @param dataSource
      */
     public UserRepository(DataSource dataSource) {
@@ -35,15 +34,12 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Class: registerUser
-     * Beschreibung: Legt einen User in der Datenbank an. Das angegebene Passwort wird
-     *               dabei per gensalt() verschlüsselt
+     * Legt einen User in der Datenbank an. Das angegebene Passwort wird
+     * dabei per gensalt() verschlüsselt
      * @param user
      * @return
      */
     public User registerUser(User user){
-        //TODO encryption fixen
-        String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
         String sql = "INSERT INTO users(username, firstname, lastname, password, rights) " +
                 "VALUES (?,?,?,?,?)";
@@ -72,8 +68,7 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Class: deleteUser
-     * Beschreibung: Löscht einen User komplett aus der Datenbank
+     * Löscht einen User komplett aus der Datenbank
      * @param user
      */
     public void deleteUser(User user) {
@@ -91,8 +86,7 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Class: getUserbyUsernasme
-     * Beschreibung: Holt sich einen Usernamen. Gesucht wird mit dem angegebenen Usernamen
+     * Holt sich einen Usernamen. Gesucht wird mit dem angegebenen Usernamen
      * @param username
      * @return
      */
@@ -125,8 +119,7 @@ public class UserRepository implements IUserRepository{
     }
 
     /**
-     * Class: getPasswordByUserID
-     * Beschreibung: Holt sich einen Usernamen. Es wird mit der angegebenen UserID gesucht
+     * Holt sich einen Usernamen. Es wird mit der angegebenen UserID gesucht
      * @param userId
      * @return
      */
@@ -143,18 +136,17 @@ public class UserRepository implements IUserRepository{
             password = rs.getString("password");
 
         }catch (Exception e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return password;
     }
 
     /**
-     * Class: updateUser
-     * Beschreibung: Aktualisiert die Daten eines Benutzers in der Datenbank.
+     * Aktualisiert die Daten eines Benutzers in der Datenbank.
      * @param user
      * @return
      */
-    public boolean updateUser (User user){
+    public boolean updateUser(User user) {
         String sql = "UPDATE users SET firstname = ?, " +
                                         "lastname = ?, " +
                                         "username = ?, " +
@@ -173,20 +165,17 @@ public class UserRepository implements IUserRepository{
 
             ps.executeUpdate();
         }catch (Exception e){
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return false;
         }
         return true;
     }
 
     /**
-     * Class: getAllUsers
-     * Beschreibung: Holt sich alle User aus der Datenbank und speichert diese in eine
-     *               ObservableList
+     * Holt sich alle User aus der Datenbank und speichert diese in ein ObservableList
      * @return
      */
-    public ObservableList<User> getAllUsers()
-    {
+    public ObservableList<User> getAllUsers() {
         String sql = "SELECT * FROM users";
 
         try{
