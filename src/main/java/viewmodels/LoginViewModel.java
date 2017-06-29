@@ -8,14 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import models.AreaOfEducation;
 import models.User;
 import org.mindrot.jbcrypt.BCrypt;
 import repositories.IUserRepository;
 import repositories.UserRepository;
 import util.DatabaseConnector;
-
-import java.awt.geom.Area;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -43,17 +40,14 @@ public class LoginViewModel implements Initializable {
     private Label lblLoginFailed;
 
     /**
-     *
      * @param location used to resolve relative paths for the root object (null if the location is not known).
      * @param resources used to localize the root object (null if the root object was not localized).
      */
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-
     /**
-     *   Class        : LoginAction
-     *   Beschreibung : Check user login
+     * Check user login
      */
     public void loginAction(){
         lblLoginFailed.setVisible(false);
@@ -73,8 +67,8 @@ public class LoginViewModel implements Initializable {
     }
 
     /**
-     *   Class        : checkLoginFields
-     *   Beschreibung : Check, if the login and password field are empty
+     * Check, if the login and password field are empty
+     * @return true or false depending if all fields are filled correctly
      */
     private boolean checkLoginFields() {
         if(!txtLogin.getText().equals("") && (txtPassword != null && !txtPassword.getText().equals(""))){
@@ -90,8 +84,8 @@ public class LoginViewModel implements Initializable {
     }
 
     /**
-     *   Class        : showApplication
-     *   Beschreibung : Close login view and open application view
+     * Close login view and open application view
+     * @param user
      */
     private void showApplication(User user) {
         try{
@@ -117,7 +111,10 @@ public class LoginViewModel implements Initializable {
             stage.show();
 
         } catch (Exception e) {
-            e.printStackTrace(); //@todo create appropriate error message for user to contact administrator
-        }
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Unbekannter Fehler");
+            alert.setHeaderText("Bitte kontaktieren Sie Ihren Administrator mit folgender Nachricht");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();        }
     }
 }
