@@ -12,7 +12,7 @@ created by Sil van Vliet
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.UserViewModel">
+<GridPane alignment="center" hgap="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.UserViewModel">
     <rowConstraints>
         <RowConstraints maxHeight="200.0" minHeight="208.0" prefHeight="200.0" />
         <RowConstraints maxHeight="35.0" minHeight="35.0" prefHeight="35.0" />
@@ -50,7 +50,7 @@ created by Sil van Vliet
                 <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
             </GridPane.margin>
         </Button>
-        <Button fx:id="btnBack" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="25.0" prefWidth="186.0" text="Züruck" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button fx:id="btnBack" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="25.0" prefWidth="186.0" text="Zurück" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <GridPane.margin>
                 <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
             </GridPane.margin>

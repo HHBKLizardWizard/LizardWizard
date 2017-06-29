@@ -16,7 +16,7 @@ created by Sil van Vliet
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" maxWidth="600.0" minWidth="-Infinity" prefHeight="328.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.TemplatesViewModel">
+<GridPane alignment="center" hgap="10" maxWidth="600.0" minWidth="-Infinity" prefHeight="328.0" prefWidth="600.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.TemplatesViewModel">
     <rowConstraints>
         <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
         <RowConstraints maxHeight="36.0" minHeight="20.0" prefHeight="23.0" />
@@ -58,6 +58,6 @@ created by Sil van Vliet
         <CheckBox fx:id="chk_hinweis" mnemonicParsing="false" text="Organisatorische Hinweise" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6" />
         <CheckBox fx:id="chk_leistung" mnemonicParsing="false" text="Leistungsnachweis" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7" />
         <Button fx:id="btnSave" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveTemplate" text="Speichern" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-        <Button fx:id="btnBack" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#closeWindow" text="Züruck" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+        <Button fx:id="btnBack" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#closeWindow" text="Zurück" GridPane.columnIndex="3" GridPane.rowIndex="9" />
     </children>
 </GridPane>
