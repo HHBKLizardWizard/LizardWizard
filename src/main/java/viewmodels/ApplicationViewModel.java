@@ -247,8 +247,7 @@ public class ApplicationViewModel implements Initializable {
             }
         });
 
-
-
+        //auto select first element on drop down
         cbTemplate.getSelectionModel().select(0);
         checkViewRights(user);
     }
@@ -269,6 +268,11 @@ public class ApplicationViewModel implements Initializable {
         }
     }
 
+    /**
+     * called on closing the template view, serves to update
+     * the drop down where the user can choose from all the
+     * templates available.
+     */
     private void updateTemplateList() {
         this.userTemplateList = templateRepository.getTemplatesByUser(loggedUser,false);
         cbTemplate.getItems().setAll(userTemplateList);

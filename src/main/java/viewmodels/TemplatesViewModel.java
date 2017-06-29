@@ -147,6 +147,7 @@ public class TemplatesViewModel implements Initializable {
             alert.setTitle("Template löschen");
             Optional<ButtonType> result = alert.showAndWait();
 
+            //check the answer given in the confirmation pop up
             if(result.isPresent() && result.get().getButtonData().isDefaultButton()){
                 cbTemplate.getItems().remove(selectedTemplate);
                 templateRepository.deleteTemplate(selectedTemplate);
@@ -165,6 +166,8 @@ public class TemplatesViewModel implements Initializable {
                msgHeader,
                msgText;
 
+        //check if existing id or not and if not create new template otherwise
+        //update already existing template.
         if(selectedTemplate.getId() == null){
             if(!txtTempName.getText().equals("")){
                 Template template = new Template(
