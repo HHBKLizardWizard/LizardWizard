@@ -57,7 +57,7 @@ public class UserEditViewModel implements Initializable {
         cbRole.setItems(rightsList);
         cbRole.getSelectionModel().select(0);
 
-        //max größe für text felder
+        //max size for text fields
         addListener(txtUsername);
         addListener(txtFirstName);
         addListener(txtLastName);
@@ -70,7 +70,7 @@ public class UserEditViewModel implements Initializable {
      */
     private void setUserData(User user) {
 
-        //setze hinweis wegen password wenn man ein Benutzer aktualiesieren will
+        //set a hint for password, if you want to update a user
         lblPwInfo.setVisible(true);
 
         txtFirstName.setText(user.getFirstname());
@@ -116,26 +116,27 @@ public class UserEditViewModel implements Initializable {
                 //update the User
                 userRepository.updateUser(updateUser);
 
-                msgTitle = "User updated";
-                msgText = "The User was successfully updated.";
+                msgTitle = "Benutzer aktualisiert";
+                msgText = "Benutzer wurde erfolgreich aktualisiert.";
             }else{
                 //No id found => creating new User
                 User user = userRepository.registerUser(new User(userName,fName,lName,password, uRight));
 
                 if(user != null){
-                    msgTitle = "User created";
-                    msgText = "The User was successfully created.";
+                    msgTitle = "Benutzer erstellt";
+                    msgText = "Benutzer wurde erfolgreich angelegt.";
                 }else{
                     alerType = Alert.AlertType.ERROR;
-                    msgTitle = "An error has occured";
-                    msgText = "An error has occured while creating the User in the Database, please contact" +
-                            "your administrator to solve the issue (issue: error with Insert statement";
+                    msgTitle = "Ein Fehler ist aufgetreten";
+                    msgText = "Ein Fehler ist während der Benutzererstellung aufgetreten. Die Daten konnten nicht in die Datenbank geschrieben werden!" +
+                            "Bitte kontaktieren sie Ihren Administrator, um das Problem zu beheben!" +
+                            "(Fehler: Fehler im Insert statement)";
                 }
             }
 
-            //Feedback Nachricht
+            //Feedback message
             Alert alert = new Alert(alerType);
-            alert.setTitle("Success");
+            alert.setTitle("Erfolg");
             alert.setHeaderText(msgTitle);
             alert.setContentText(msgText);
             alert.showAndWait();
@@ -154,7 +155,7 @@ public class UserEditViewModel implements Initializable {
      */
     private boolean checkFieldsAction() {
         Boolean allGood = true;
-        String emptyFields = "The following Data is missing:";
+        String emptyFields = "Folgende Informationen fehlen:";
 
         if(txtUsername.getText().equals("")){
             allGood = false;
@@ -182,7 +183,7 @@ public class UserEditViewModel implements Initializable {
         if(!allGood){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("");
-            alert.setHeaderText("Missing Info");
+            alert.setHeaderText("Fehlende Informationen");
             alert.setContentText(emptyFields);
             alert.showAndWait();
         }

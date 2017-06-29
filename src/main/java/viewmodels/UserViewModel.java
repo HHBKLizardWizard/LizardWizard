@@ -73,8 +73,8 @@ public class UserViewModel implements Initializable {
                 ButtonType yes = new ButtonType("Ja", ButtonBar.ButtonData.OK_DONE);
                 ButtonType no = new ButtonType("Nein", ButtonBar.ButtonData.CANCEL_CLOSE);
                 Alert alert = new Alert(Alert.AlertType.WARNING,
-                        "Sind Sie sicher das Sie der/die Benutzer " + selectedUser.getFirstname() + " "
-                        + selectedUser.getLastname() + " löschen willen?",
+                        "Sind Sie sicher das Sie den/die Benutzer/in " + selectedUser.getFirstname() + " "
+                        + selectedUser.getLastname() + " löschen wollen?",
                         yes,
                         no);
                 alert.setTitle("Benutzer löschen");
@@ -87,9 +87,10 @@ public class UserViewModel implements Initializable {
                 }
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("nope!! ");
-                alert.setHeaderText("Admin kann nicht gelöscht werden");
-                alert.setContentText("Es ist keine gute idee um die Admin benutzer zu löschen!");
+                alert.setTitle("Achtung!");
+                alert.setHeaderText("Administrator kann nicht gelöscht werden");
+                alert.setContentText("Es ist keine gute Idee, den Administrator zu löschen! Wer soll denn dann" +
+                                        "die Administration übernehmen?");
                 alert.showAndWait();
             }
         }
@@ -107,9 +108,9 @@ public class UserViewModel implements Initializable {
         }else{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("");
-            alert.setHeaderText("Element not found");
-            alert.setContentText("There was no element found to modify. " +
-                    "Please make sure that you select an item before trying to make changes.");
+            alert.setHeaderText("Benutzer nicht gefunden");
+            alert.setContentText("Kein Benutzer zum Ändern gefunden. " +
+                    "Bitte achten Sie darauf, dass Sie einen Benutzer ausgewählt haben, bevor Sie Änderungen vornehmen.");
             alert.showAndWait();
             return null;
         }
