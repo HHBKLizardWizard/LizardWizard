@@ -3,8 +3,6 @@ package viewmodels;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.StringConverter;
 import models.*;
 import reports.ReportBuilder;
@@ -95,13 +92,13 @@ public class ApplicationViewModel implements Initializable {
         //primary for onChangeAction, but it has to be filled here too
         handleProfessionComboBoxAction();
 
-        /* store selected Template on change*/
+        //store selected Template on change
         cbTemplate.valueProperty().addListener((obs, oldval, newval) -> {
             if(newval != null)
                 selectedTemplate = newval;
         });
 
-        /* store selected Template on change*/
+        //store selected Template on change
         cbProfession.valueProperty().addListener((obs, oldval, newval) -> {
             if(newval != null)
                 selectedProfession = newval;
@@ -141,9 +138,9 @@ public class ApplicationViewModel implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("");
-            alert.setHeaderText("no template selected");
-            alert.setContentText("No template was selected, in case you do not have any templates and you are " +
-                    "unable to make them due to not have the permissions to then please contact your administrator");
+            alert.setHeaderText("Kein Template ausgewählt");
+            alert.setContentText("Kein Template wurde ausgewählt! Wenn Sie keine Templates angelegt haben und nicht in der " +
+                    "Lage sind, aufgrund Ihrer Berechtigung, ein Template zu erstellen, kontaktieren Sie bitte Ihren Administrator!");
             alert.showAndWait();
         }
     }
@@ -159,14 +156,15 @@ public class ApplicationViewModel implements Initializable {
      * Opens the correct view depending on the element (MenuItem) that has been clicked.
      * @param event that is happening through which we can get the Object that has been clicked.
      */
-    @SuppressWarnings("ConstantConditions")
     public void openTargetWindowAction(ActionEvent event) {
         try {
-            String menuItemClickedId = "", stageTitle;
+            String menuItemClickedId = "", stageTitle = "";
             Object eventSource = event.getSource();
             Stage stage = new Stage();
+            boolean OpenNextWindow = true;
             Parent root2;
 
+            //check if the even is from the Menu
             if (eventSource instanceof MenuItem) {
                 MenuItem menuItemClicked = (MenuItem) eventSource;
                 menuItemClickedId = menuItemClicked.getId();
@@ -179,6 +177,9 @@ public class ApplicationViewModel implements Initializable {
                 loader.setLocation(getClass().getClassLoader().getResource("templates.fxml"));
                 loader.load();
 
+                //The only difference between loading this view and the other
+                //two below is that there has to be an on close request action
+                //to update the template drop down in case it has changed
                 Parent p = loader.getRoot();
                 stage.setScene(new Scene(p, 600, 328));
                 stageTitle = "Templates";
@@ -199,18 +200,30 @@ public class ApplicationViewModel implements Initializable {
                 Stage st = (Stage) btnExport.getScene().getWindow();
                 st.close();
             }else{
-                throw new Exception(); //@todo create own exception? is it worth it?
+                OpenNextWindow = false;
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Menüpunkt nicht gefunden");
+                alert.setHeaderText("Bitte kontaktieren Sie Ihren Administrator mit folgender Nachricht");
+                alert.setContentText("Der Menüpunkt wurde in der Methode 'openTargetWindowAction' nicht gefunden");
+                alert.showAndWait();
             }
 
-            //Open new Window with correct title
-            stage.setTitle(stageTitle);
-            stage.setResizable(false);
-            //disable Primary Stage
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
+            //only continue if Menu Item was found
+            if(OpenNextWindow){
+                //Open new Window with correct title
+                stage.setTitle(stageTitle);
+                stage.setResizable(false);
+                //disable Primary Stage
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.show();
+            }
 
         } catch (Exception e) {
-            e.printStackTrace(); //@todo create appropriate error message for user to contact administrator
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Unbekannter Fehler");
+            alert.setHeaderText("Bitte kontaktieren Sie Ihren Administrator mit folgender Nachricht");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 
@@ -222,7 +235,10 @@ public class ApplicationViewModel implements Initializable {
     public void setUser(User user) {
         loggedUser = user;
 
-        //templates must be filled before Initialize, because the variable loggedUser in Initialize is null 
+
+        //templates need to be filled before Initialize due to it not being able to access
+        //the logged user variable (it remains null even due to it being filled before)
+
         userTemplateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
         cbTemplate.setItems(userTemplateList);
