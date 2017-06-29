@@ -39,8 +39,6 @@ public class AnnualReport {
 
     /**
      * creates the first two rows of an annual report containing the 12 weeks of the school block
-     *
-     * @return returns a table with two rows containing the weeks of the school block
      */
     public void createAnnualReportHeader() {
         Paragraph weeks = new Paragraph("Unterrichtswochen")
@@ -67,7 +65,7 @@ public class AnnualReport {
 
     /**
      * creates the body of an annualReport
-     * @param reportData
+     * @param reportData contains all information necessary for generating a report
      */
     public void createAnnualReportBody(ReportData reportData) {
         this.createSections(reportData);
@@ -75,7 +73,7 @@ public class AnnualReport {
 
     /**
      * creates a List with subjectLists grouped by AreaOfEducations
-     * @param reportData
+     * @param reportData contains all information necessary for generating a report
      * @return  a List with subjectLists representing a areaOfEducationList
      */
     private List<List<Subject>> getSubjectsOrderedByAreaOfEducation(ReportData reportData) {
@@ -90,21 +88,21 @@ public class AnnualReport {
         List<Subject> subjectListBerufsbezogen = subjectList.stream().filter((subject) ->
                 subject.getAreaOfEducation().equals(AreaOfEducation.BERUFSBEZOGEN)).collect(Collectors.toList());
 
-        List<Subject> subjectListBerufsübergreifend = subjectList.stream().filter((subject) ->
+        List<Subject> subjectListBerufsuebergreifend = subjectList.stream().filter((subject) ->
                 subject.getAreaOfEducation().equals(AreaOfEducation.BERUFSÜBERGREIFEND)).collect(Collectors.toList());
 
         List<Subject> subjectListDifferenzierung = subjectList.stream().filter((subject) ->
                 subject.getAreaOfEducation().equals(AreaOfEducation.DIFFERENZIERUNG)).collect(Collectors.toList());
 
         subjectListList.add(subjectListBerufsbezogen);
-        subjectListList.add(subjectListBerufsübergreifend);
+        subjectListList.add(subjectListBerufsuebergreifend);
         subjectListList.add(subjectListDifferenzierung);
         return subjectListList;
     }
 
     /**
      * creates AreaOfEducation sections
-     * @param reportData
+     * @param reportData contains all information necessary for generating a report
      */
     private void createSections(ReportData reportData) {
         String areaOfEducationText[] = {"Berufsbezogener Lernbereich",
@@ -147,7 +145,7 @@ public class AnnualReport {
 
     /**
      * iterates through a List of fieldOfLearning and inserts data for those to the pdc document
-     * @param subject   a subject object holding a list with FieldOfLearning
+     * @param subject  a subject object holding a list with FieldOfLearning
      */
     private void insertSubjectData(Subject subject) {
         for (FieldOfLearning fieldOfLearning : subject.getFieldOfLearningList()) {
@@ -171,8 +169,8 @@ public class AnnualReport {
 
     /**
      *
-     * @param sortedList
-     * @return
+     * @param sortedList a ordered list with all LearningSituations
+     * @return returns a list with LearningSituationTableElements containing LearningSituations and placeholders
      */
     private List<LearningSituationTableElement> fillWithPlaceholders(List<LearningSituation> sortedList) {
         List<LearningSituationTableElement> filledList = new ArrayList<>();
@@ -221,6 +219,11 @@ public class AnnualReport {
         return learningSituationList.stream().sorted(byStartWeek).collect(Collectors.toList());
     }
 
+    /**
+     * sorts a list with learningSituations by Lsnr
+     * @param learningSituationList  a list with LearningSituations
+     * @return a sorted list of LearningSituations sorted by Lsnr
+     */
     private List<LearningSituation> sortLearningSituationsByLsnr(List<LearningSituation> learningSituationList) {
         Comparator<LearningSituation> byLsnr = (ls1, ls2) -> Integer.compare(
                 ls1.getLsnr(), ls2.getLsnr());
@@ -228,6 +231,10 @@ public class AnnualReport {
         return learningSituationList.stream().sorted(byLsnr).collect(Collectors.toList());
     }
 
+    /**
+     *  inserts a learningSituation onto the pdf
+     * @param learningSituation a learningSituation object
+     */
     private void insertLearningSituation(LearningSituationTableElement learningSituation) {
         Paragraph paragraph = new Paragraph(learningSituation.getName())
                 .setFontSize(8)
