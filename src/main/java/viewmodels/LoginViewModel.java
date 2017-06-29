@@ -85,6 +85,7 @@ public class LoginViewModel implements Initializable {
 
     /**
      * Close login view and open application view
+     * @param user
      */
     private void showApplication(User user) {
         try{
@@ -111,8 +112,8 @@ public class LoginViewModel implements Initializable {
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Unknown error");
-            alert.setHeaderText("Please Contact your administrator with the following message");
+            alert.setTitle("Unbekannter Fehler");
+            alert.setHeaderText("Bitte kontaktieren Sie Ihren Administrator mit folgender Nachricht");
             alert.setContentText(e.getMessage());
             alert.showAndWait();        }
     }

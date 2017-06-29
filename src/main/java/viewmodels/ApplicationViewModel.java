@@ -89,7 +89,7 @@ public class ApplicationViewModel implements Initializable {
 
         cbProfession.getSelectionModel().select(0);
 
-        //eigentlich für onChangeAction aber es muss hier auch gefüllt werden
+        //primary for onChangeAction, but it has to be filled here too
         handleProfessionComboBoxAction();
 
         //store selected Template on change
@@ -138,9 +138,9 @@ public class ApplicationViewModel implements Initializable {
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("");
-            alert.setHeaderText("no template selected");
-            alert.setContentText("No template was selected, in case you do not have any templates and you are " +
-                    "unable to make them due to not have the permissions to then please contact your administrator");
+            alert.setHeaderText("Kein Template ausgewählt");
+            alert.setContentText("Kein Template wurde ausgewählt! Wenn Sie keine Templates angelegt haben und nicht in der " +
+                    "Lage sind, aufgrund Ihrer Berechtigung, ein Template zu erstellen, kontaktieren Sie bitte Ihren Administrator!");
             alert.showAndWait();
         }
     }
@@ -202,9 +202,9 @@ public class ApplicationViewModel implements Initializable {
             }else{
                 OpenNextWindow = false;
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Menu item not found");
-                alert.setHeaderText("Please Contact your administrator with the following message");
-                alert.setContentText("The menu item was not found in method 'openTargetWindowAction'");
+                alert.setTitle("Menüpunkt nicht gefunden");
+                alert.setHeaderText("Bitte kontaktieren Sie Ihren Administrator mit folgender Nachricht");
+                alert.setContentText("Der Menüpunkt wurde in der Methode 'openTargetWindowAction' nicht gefunden");
                 alert.showAndWait();
             }
 
@@ -220,8 +220,8 @@ public class ApplicationViewModel implements Initializable {
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Unknown error");
-            alert.setHeaderText("Please Contact your administrator with the following message");
+            alert.setTitle("Unbekannter Fehler");
+            alert.setHeaderText("Bitte kontaktieren Sie Ihren Administrator mit folgender Nachricht");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
@@ -235,8 +235,10 @@ public class ApplicationViewModel implements Initializable {
     public void setUser(User user) {
         loggedUser = user;
 
+
         //templates need to be filled before Initialize due to it not being able to access
         //the logged user variable (it remains null even due to it being filled before)
+
         userTemplateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
         cbTemplate.setItems(userTemplateList);
