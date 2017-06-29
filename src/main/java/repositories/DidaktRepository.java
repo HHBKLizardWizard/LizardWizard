@@ -23,7 +23,7 @@ public class DidaktRepository implements IDidaktRepository {
 
     /**
      * CTOR
-     * @param con
+     * @param con to create connection to Database
      */
     public DidaktRepository(Connection con)
     {
@@ -33,7 +33,7 @@ public class DidaktRepository implements IDidaktRepository {
 
     /**
      * Establisches Connection with Didakt.db
-     * @param dataSource
+     * @param dataSource to create connection to Database
      */
     public DidaktRepository(DataSource dataSource) {
         try {
@@ -309,8 +309,8 @@ public class DidaktRepository implements IDidaktRepository {
 
     /**
      * Main Interface Method to get All the data necessary for the Report
-     * @param profession
-     * @param year
+     * @param profession that has been selected to generate the report
+     * @param year that has been selected to generate the report
      * @return ReportData Object holding all necessary data for the Report
      */
     @Override
