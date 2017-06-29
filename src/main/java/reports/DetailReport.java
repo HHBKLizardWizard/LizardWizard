@@ -69,7 +69,7 @@ public class DetailReport {
     /**
      * creates a template cell with preparedStrings for the report body
      * @param sectionName heading for the section
-     * @param text
+     * @param text a text as String
      */
     private void createTemplateCell(String sectionName, String text) {
         Cell cell = new Cell(1, 10);
@@ -139,8 +139,8 @@ public class DetailReport {
 
     /**
      * removes all html tags from the input string
-     * @param string
-     * @return a string without '<' and '>' tags
+     * @param string a string
+     * @return a string without html tags
      */
     private String removeAllHtmlTags(String string) {
         return string.replaceAll("<[^>]*>", "");
@@ -148,7 +148,7 @@ public class DetailReport {
 
     /**
      * removes all with '\' escaped characters from the string
-     * @param string
+     * @param string a string
      * @return a string with no escaped characters
      */
     private String removeEscapedCharacters(String string) {

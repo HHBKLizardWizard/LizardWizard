@@ -18,8 +18,6 @@ public class User {
         this.rights   = rights;
     }
 
-
-    /*testtesttesttest*/
     public User(Integer id, String username, String firstname, String lastname, String password, UserRights rights){
         this.username = username;
         this.firstname = firstname;
@@ -28,7 +26,6 @@ public class User {
         this.password = password;
         this.id = id;
     }
-    /*testtesttesttest*/
 
     public Integer getId() {
         return id;

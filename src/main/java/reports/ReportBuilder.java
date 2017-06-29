@@ -4,6 +4,7 @@ import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.element.Paragraph;
@@ -159,7 +160,7 @@ public class ReportBuilder {
     /**
      * adds data of the given learningSituation to the document
      *
-     * @param learningSituation
+     * @param learningSituation a learningSituation object
      */
     private void createDetailReport(LearningSituation learningSituation) {
         try {
