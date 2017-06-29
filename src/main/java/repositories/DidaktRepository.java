@@ -19,10 +19,10 @@ import java.util.List;
  */
 public class DidaktRepository implements IDidaktRepository {
 
-    Connection con = null;
+    private Connection con = null;
 
     /**
-     * CTOR
+     * CONNECTOR
      * @param con to create connection to Database
      */
     public DidaktRepository(Connection con)
@@ -32,7 +32,7 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     * Establisches Connection with Didakt.db
+     * Establishes Connection with Didakt Database
      * @param dataSource to create connection to Database
      */
     public DidaktRepository(DataSource dataSource) {
@@ -46,7 +46,7 @@ public class DidaktRepository implements IDidaktRepository {
     /**
      * Interface Method Provides a List of Professions including Duration,
      * in order to by used by the UserInterface
-     * @return A List of all Professions in Didakt.db
+     * @return A List of all Professions in Didakt Database
      */
     @Override
     public ObservableList<Profession> getProfessionList() {
@@ -87,8 +87,8 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     * Get all data necessary for the String from Didakt.db
-     * @param profession
+     * Get all data necessary for the String from Didakt database
+     * @param profession to get the form name from
      * @return A String containing the Form of teaching for provided Profession
      */
     private String getFormOfTeaching(Profession profession){
@@ -114,8 +114,8 @@ public class DidaktRepository implements IDidaktRepository {
         return wayOfTeaching;
     }
     /**
-     * Get all data necessary for the List from Didakt.db
-     * @param profession
+     * Get all data necessary for the List from Didakt database
+     * @param profession to get the subjects from
      * @return A List of all Subjects for the provided Profession
      */
     private List<Subject> getSubjectList(Profession profession) {
@@ -146,14 +146,14 @@ public class DidaktRepository implements IDidaktRepository {
             }
         }
         catch (Exception e){
-            e.printStackTrace();;
+            e.printStackTrace();
         }
         return subjects;
     }
 
     /**
-     * Get all data necessary for the List from Didakt.db
-     * @param subject
+     * Get all data necessary for the List from Didakt database
+     * @param subject to get the Firld of Learning from
      * @return A List of FieldOfLearning for provided Subject
      */
     private List<FieldOfLearning> getFieldList(Subject subject) {
@@ -188,7 +188,7 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     * Get all data necessary for the List from Didakt.db
+     * Get all data necessary for the List from Didakt database
      * @param field //A FieldOfLearning consist of multiple LearningSituations
      * @return A List for all LearningSituations within @param field.
      */
@@ -238,8 +238,8 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     * Get all data necessary for the List from Didakt.db
-     * @param learningSituation
+     * Get all data necessary for the List from Didakt database
+     * @param learningSituation to get Performance Record from
      * @return A List of PerformanceRecords for provided LearningSituation.
      */
     private List<PerformanceRecord> getPerformanceRecordList(LearningSituation learningSituation) {
@@ -269,8 +269,8 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     * Get all data necessary for the List from Didakt.db
-     * @param situation
+     * Get all data necessary for the List from Didakt database
+     * @param situation to get the Learning techniques from
      * @return A List of all Learning Techniques used within provided LearningSituation
      */
     private List<LearningTechnique> getLearningTechniqueList(LearningSituation situation)
@@ -330,7 +330,7 @@ public class DidaktRepository implements IDidaktRepository {
 
             //Combining all LearningSituations into 1 List<>
             for (Subject subject : reportData.getProfession().getSubjects()) {
-                if(subject.getYear() == year){
+                if(subject.getYear().equals(year)){
                     for (FieldOfLearning field : subject.getFieldOfLearningList())
                     {
                         for (LearningSituation situation : field.getLearningSituationList())
@@ -350,10 +350,10 @@ public class DidaktRepository implements IDidaktRepository {
     }
 
     /**
-     * Method to meassure the duration of a Apprenticechip using
-     * provided Subjects and the year they are thaught in.
-     * @param profession
-     * @return
+     * Method to meassure the duration of a Apprenticeship using
+     * provided Subjects and the year they are taught in.
+     * @param profession to get the duration of.
+     * @return the duration of Apprenticeship
      */
     private ObservableList<Integer> getDuration(Profession profession)
     {

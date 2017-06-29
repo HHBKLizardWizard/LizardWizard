@@ -67,7 +67,7 @@ public class UserViewModel implements Initializable {
     public void deleteUserAction(){
         User selectedUser = getSelectedUser();
         if(selectedUser != null){
-            if(selectedUser.getId() != 1){
+            if(selectedUser.getId() != 1 && selectedUser.getId() != 2){
                 //Confirmation if the User should really be deleted.
                 ButtonType yes = new ButtonType("Ja", ButtonBar.ButtonData.OK_DONE);
                 ButtonType no = new ButtonType("Nein", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -87,8 +87,8 @@ public class UserViewModel implements Initializable {
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Achtung!");
-                alert.setHeaderText("Administrator kann nicht gelöscht werden");
-                alert.setContentText("Es ist keine gute Idee, den Administrator zu löschen! Wer soll denn dann" +
+                alert.setHeaderText("Administrator und Gast können nicht gelöscht werden");
+                alert.setContentText("Es ist keine gute Idee, den Administrator oder Gast zu löschen! Wer soll denn dann" +
                                         "die Administration übernehmen?");
                 alert.showAndWait();
             }
@@ -169,6 +169,7 @@ public class UserViewModel implements Initializable {
             //close login window and show new Stage
             Stage st = (Stage) btnBack.getScene().getWindow();
             st.close();
+            stage.show();
             stage.show();
 
         } catch (Exception e) {

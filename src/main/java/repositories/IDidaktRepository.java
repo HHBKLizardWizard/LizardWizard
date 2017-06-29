@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Created by walde on 25.06.2017.
- * Interface used for Communication with the Didakt.db
+ * Interface used for Communication with the Didakt database
  */
 public interface IDidaktRepository {
     ObservableList<Profession> getProfessionList();
