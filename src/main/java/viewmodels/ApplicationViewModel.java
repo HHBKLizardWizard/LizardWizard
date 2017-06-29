@@ -92,7 +92,7 @@ public class ApplicationViewModel implements Initializable {
 
         cbProfession.getSelectionModel().select(0);
 
-        //eigentlich für onChangeAction aber es muss hier auch gefüllt werden
+        //primary for onChangeAction, but it has to be filled here too
         handleProfessionComboBoxAction();
 
         /* store selected Template on change*/
@@ -222,7 +222,7 @@ public class ApplicationViewModel implements Initializable {
     public void setUser(User user) {
         loggedUser = user;
 
-        //templates müssen vor Initialize gefüllt werden weil variable loggedUser im Initialize noch null ist.
+        //templates must be filled before Initialize, because the variable loggedUser in Initialize is null 
         userTemplateList = templateRepository.getTemplatesByUser(loggedUser, false);
 
         cbTemplate.setItems(userTemplateList);
