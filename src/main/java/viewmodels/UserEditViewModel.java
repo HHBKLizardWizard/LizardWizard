@@ -49,7 +49,6 @@ public class UserEditViewModel implements Initializable {
      * listeners to the text fields.
      * @param location used to resolve relative paths for the root object (null if the location is not known).
      * @param resources used to localize the root object (null if the root object was not localized).
-
      */
     public void initialize(URL location, ResourceBundle resources) {
         ObservableList<UserRights> rightsList = FXCollections.observableArrayList();
@@ -141,7 +140,6 @@ public class UserEditViewModel implements Initializable {
             alert.setContentText(msgText);
             alert.showAndWait();
 
-            //autom
             if(alerType.equals(Alert.AlertType.CONFIRMATION)) {
                 closeButtonAction();
             }
@@ -152,6 +150,7 @@ public class UserEditViewModel implements Initializable {
      * checks if all the requirements have been met. Password field does not have
      * to be filled when it is in regards to updating a already existing user. When
      * it is not filled it will remain as it was previously.
+     * @return true or false depending if all fields are correctly filled
      */
     private boolean checkFieldsAction() {
         Boolean allGood = true;
@@ -172,7 +171,9 @@ public class UserEditViewModel implements Initializable {
             emptyFields = emptyFields.concat("\nName");
         }
 
-        //ist kein muss wenn benutzer schon existiert
+        //password does not have to be filled when the User already
+        //exists. in this case, when left empty, the password will
+        //remain the same
         if(updateUser == null) {
             if(txtPassword.getText().equals("")){
                 allGood = false;
@@ -216,7 +217,11 @@ public class UserEditViewModel implements Initializable {
             stage.show();
 
         } catch (Exception e) {
-            e.printStackTrace(); //@todo create appropriate error message for user to contact administrator
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Unbekannter Fehler");
+            alert.setHeaderText("Bitte kontaktieren Sie Ihren Administrator mit folgender Nachricht");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 

@@ -45,7 +45,7 @@ public class TemplatesViewModel implements Initializable {
     private ITemplateRepository templateRepository;
 
     /**
-     * created conection with DB to get Template data and adds max length listener to template name
+     * created connection with DB to get Template data and adds max length listener to template name
      * @param location used to resolve relative paths for the root object (null if the location is not known).
      * @param resources used to localize the root object (null if the root object was not localized).
      */

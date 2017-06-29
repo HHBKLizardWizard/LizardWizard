@@ -50,7 +50,6 @@ public class UserViewModel implements Initializable {
      */
     @SuppressWarnings("unchecked")
     public void initialize(URL location, ResourceBundle resources) {
-        //todo: instead of what is below, get all users from DB
         userRepository = new UserRepository(new DatabaseConnector().getUserDataSource());
         userList.addAll(userRepository.getAllUsers());
 
@@ -99,6 +98,7 @@ public class UserViewModel implements Initializable {
     /**
      * gets the selected user element from the table. When do element was selected
      * an error message pop up
+     * @return user that was selected
      */
     private User getSelectedUser(){
         User selectedUser = (User) tblUsers.getSelectionModel().getSelectedItem();
@@ -172,7 +172,11 @@ public class UserViewModel implements Initializable {
             stage.show();
 
         } catch (Exception e) {
-            e.printStackTrace(); //@todo create appropriate error message for user to contact administrator
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Unbekannter Fehler");
+            alert.setHeaderText("Bitte kontaktieren Sie Ihren Administrator mit folgender Nachricht");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 }
