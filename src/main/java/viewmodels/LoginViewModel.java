@@ -53,7 +53,7 @@ public class LoginViewModel implements Initializable {
 
     /**
      *   Class        : LoginAction
-     *   Beschreibung : Benutzer Login Überprüfung
+     *   Beschreibung : Check user login
      */
     public void loginAction(){
         lblLoginFailed.setVisible(false);
@@ -74,7 +74,7 @@ public class LoginViewModel implements Initializable {
 
     /**
      *   Class        : checkLoginFields
-     *   Beschreibung : Überprüfung, ob Benutzername- und Passwortfeld gefüllt sind
+     *   Beschreibung : Check, if the login and password field are empty
      */
     private boolean checkLoginFields() {
         if(!txtLogin.getText().equals("") && (txtPassword != null && !txtPassword.getText().equals(""))){
@@ -82,8 +82,8 @@ public class LoginViewModel implements Initializable {
         }else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("");
-            alert.setHeaderText("Empty field");
-            alert.setContentText("Either Login or Password is empty. Please make sure to fill both fields!");
+            alert.setHeaderText("Leeres Feld");
+            alert.setContentText("Login- oder Passwortfeld ist nicht gefüllt. Bitte beide Felder ausfüllen!");
             alert.showAndWait();
             return false;
         }
@@ -91,7 +91,7 @@ public class LoginViewModel implements Initializable {
 
     /**
      *   Class        : showApplication
-     *   Beschreibung : Login Fenster schließen und Application Fenster öffnen
+     *   Beschreibung : Close login view and open application view
      */
     private void showApplication(User user) {
         try{

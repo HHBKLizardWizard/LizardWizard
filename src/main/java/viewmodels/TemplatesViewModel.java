@@ -1,7 +1,6 @@
 package viewmodels;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -13,7 +12,6 @@ import repositories.ITemplateRepository;
 import repositories.TemplateRepository;
 import util.DatabaseConnector;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -140,8 +138,8 @@ public class TemplatesViewModel implements Initializable {
             ButtonType yes = new ButtonType("Ja", ButtonBar.ButtonData.OK_DONE);
             ButtonType no = new ButtonType("Nein", ButtonBar.ButtonData.CANCEL_CLOSE);
             Alert alert = new Alert(Alert.AlertType.WARNING,
-                    "Sind Sie sicher das Sie der/die Benutzer " + selectedTemplate.getTemplateName() +
-                            "löschen willen?",
+                    "Sind Sie sicher das Sie das Template " + selectedTemplate.getTemplateName() +
+                            "löschen wollen?",
                     yes,
                     no);
             alert.setTitle("Template löschen");
@@ -187,14 +185,14 @@ public class TemplatesViewModel implements Initializable {
                 cbTemplate.getItems().add(template);
 
                 msgHeader = "Template erstellt";
-                msgText = "Die neue Template " + txtTempName.getText() + "war erforgleich erstellt";
+                msgText = "Das neue Template " + txtTempName.getText() + "wurde erfolgreich erstellt";
 
                 clearFields();
             }else{
                 //Error message
                 msgTitle = "ERROR";
                 msgHeader = "Name ist Leer";
-                msgText = "Es kann kein Template hinterlegt werden ohne Name.";
+                msgText = "Es kann kein Template ohne Name hinterlegt werden.";
                 alertType = Alert.AlertType.ERROR;
             }
         }else{
@@ -209,8 +207,8 @@ public class TemplatesViewModel implements Initializable {
             selectedTemplate.setAchievements(chk_leistung.isSelected());
 
             templateRepository.updateTemplate(selectedTemplate);
-            msgHeader = "Template Erstell";
-            msgText = "Die Template " + txtTempName.getText() + "war erforgleich aktualiesiert";
+            msgHeader = "Template aktualisiert";
+            msgText = "Das Template " + txtTempName.getText() + "wurde erfolgreich aktualisiert";
 
         }
 
